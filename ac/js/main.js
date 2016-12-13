@@ -76,31 +76,31 @@
 		event.preventDefault();
 		var l = document.getElementById("login");
 		var r = document.getElementById("room");
-		console.log({l:l.value, r:r.value})
+				console.log({l:l.value, r:r.value})
 				window.ws = new WebSocket('ws://achex.ca:4010');
 			
-				ws.onmessage = function(evt){
+				window.ws.onmessage = function(evt){
 					if(evt && evt.data){
 						data = JSON.parse(evt.data);
 						console.info(data);
 						
 						if(data && data.SID && data.SID>0){
-							console.info("SID", data.sid)
+							console.info("SID", data.SID)
 						}
 						
 					}
 				}; 
 				
-				ws.onerror = function(error) {
+				window.ws.onerror = function(error) {
 					console.log("WS:" + error)
 				
 				};
 				
-				ws.onopen = function() {
-			console.log("WS open")
-		};
+				window.ws.onopen = function() {
+					console.log("WS open")
+				};
 				
-					ws.send( JSON.stringify({setID:l.value, passwd:l.value}));
+				window.ws.send( JSON.stringify({setID:l.value, passwd:l.value}));
 						
 		return false;
 	}}},

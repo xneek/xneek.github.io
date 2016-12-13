@@ -130,7 +130,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				});
 			
 			
-			msg.animate('slideInUp',()=>{
+			//msg.animate('slideInUp',()=>{
 				// timer = setTimeout(()=>{
 					// msg.animate('fadeOut',()=>{
 						// cont.removeChild(msg);
@@ -138,7 +138,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					// });
 				// },3000)			
 			// 
-			});
+		//});
 		}
 	};		
 

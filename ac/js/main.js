@@ -90,6 +90,12 @@
 						
 					}
 				}; 
+				
+				ws.onerror = function(error) {
+					console.log("WS:" + error)
+				
+				};
+						
 		return false;
 	}}},
 		crEl('div',{c:'form-group'},

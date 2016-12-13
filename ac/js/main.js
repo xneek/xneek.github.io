@@ -97,10 +97,11 @@
 				};
 				
 				window.ws.onopen = function() {
-					console.log("WS open")
+					console.log("WS open");
+					window.ws.send( JSON.stringify({setID:l.value, passwd:l.value}));
 				};
 				
-				window.ws.send( JSON.stringify({setID:l.value, passwd:l.value}));
+				
 						
 		return false;
 	}}},

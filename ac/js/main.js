@@ -66,13 +66,26 @@
 			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.vibrate)!=='undefined'){
 				navigator.notification.vibrate(milliseconds);	
 			}
+		},
+		msg: function(txt,c, btns){
+			var msg = crEl('div',{c:'notify '+( c || ''), e:{click:{function(){
+			alert(2)
+				document.body.removeChild(this)
+			}}}}, txt);
+			document.body.appendChild(msg);
+			setTimeout(function(){
+				document.body.removeChild(msg)
+			},3000)
+			
+			
+		
 		}
 	};		
 
 
 	Content.innerHTML = '';
-	
-	content.appendChild(crEl('form', {s:'padding:24px; background:#FFCDD2', e:{submit: function(event){
+	//http://www.achex.ca/dev/
+	content.appendChild(crEl('form', {s:'padding:24px; background:#f8f8f8', e:{submit: function(event){
 		event.preventDefault();
 		var l = document.getElementById("login");
 		var r = document.getElementById("room");
@@ -82,12 +95,14 @@
 				window.ws.onmessage = function(evt){
 					if(evt && evt.data){
 						data = JSON.parse(evt.data);
-						console.info(data);
+						//console.info(data);
 						
 						if(data && data.SID && data.SID>0){
 							console.info("SID", data.SID)
 						}
-						
+						if(data && data.auth && data.auth=='ok'){
+							console.info("Auth success")
+						}						
 					}
 				}; 
 				
@@ -105,9 +120,10 @@
 						
 		return false;
 	}}},
+
 		crEl('div',{c:'form-group'},
 			crEl('label','Логин'),
-			crEl('input',{placeholder:'Введите логин (латинские буквы и цифры)', id:'login', pattern:'[A-Za-z0-9]{3,}', required:true})
+			crEl('input',{placeholder:'Введите логин (латинские буквы и цифры)', id:'login', pattern:'[A-Za-z0-9]{3,}', required:true, autofocus:true})
 		),
 		crEl('div',{c:'form-group'},
 			crEl('label','Идентификатор игры'),

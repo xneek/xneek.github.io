@@ -107,7 +107,6 @@ input {
 	z-index:9;
 }
 .notify {
-	-webkit-user-drag: element;
 	border:none;
 	background: #323232;
 	font-family: Roboto;

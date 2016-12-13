@@ -78,7 +78,7 @@
 		var r = document.getElementById("room");
 		console.log({l:l.value, r:r.value})
 				window.ws = new WebSocket('ws://achex.ca:4010');
-				ws.send( JSON.stringify({setID:l.value, passwd:l.value}));
+			
 				ws.onmessage = function(evt){
 					if(evt && evt.data){
 						data = JSON.parse(evt.data);
@@ -95,6 +95,12 @@
 					console.log("WS:" + error)
 				
 				};
+				
+				ws.onopen = function() {
+			console.log("WS open")
+		};
+				
+					ws.send( JSON.stringify({setID:l.value, passwd:l.value}));
 						
 		return false;
 	}}},

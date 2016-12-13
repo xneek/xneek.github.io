@@ -1,8 +1,91 @@
 
 	var Content = document.getElementById('content');
+function isLocalStorageAvailable() { try { return 'localStorage' in window && window['localStorage'] !== null; } catch (e) { return false;}}
+if(isLocalStorageAvailable()){
+    ls = {
+        set: function(key,value){ localStorage.setItem(key, value)},
+        get: function(key){ return localStorage.getItem(key)},
+        unset: function(key){ localStorage.removeItem(key)},
+        clear: function(){ localStorage.clear()},
+        empty: function(key){return !(localStorage.getItem(key))}
+    }
+    window.ls = ls;
+} else {
+    alert("You need in modern browser");
+}
 
+function swipe(el, obj){
+	let startPoint={};
+	let nowPoint;
+	let ldelay;
+	el.addEventListener('touchstart', function(event) {
+	event.preventDefault();
+	event.stopPropagation();
+	startPoint.x=event.changedTouches[0].pageX;
+	startPoint.y=event.changedTouches[0].pageY;
+	ldelay=new Date(); 
+	}, false);
+	/*Ловим движение пальцем*/
+	el.addEventListener('touchmove', function(event) {
+	event.preventDefault();
+	event.stopPropagation();
+	var otk={};
+	nowPoint=event.changedTouches[0];
+	otk.x=nowPoint.pageX-startPoint.x;
+	/*Обработайте данные*/
+	/*Для примера*/
+	if(Math.abs(otk.x)>200){
+	if(otk.x<0){
+		if(obj && typeof(obj.leftStart) === 'function'){obj.leftStart()}
+	}
+	if(otk.x>0){
+			if(obj && typeof(obj.rightStart) === 'function'){obj.rightStart()}
+	}
+	startPoint={x:nowPoint.pageX,y:nowPoint.pageY};
+	}
+	}, false);
+	/*Ловим отпускание пальца*/
+	el.addEventListener('touchend', function(event) {
+	var pdelay=new Date(); 
+	nowPoint=event.changedTouches[0];
+	var xAbs = Math.abs(startPoint.x - nowPoint.pageX);
+	var yAbs = Math.abs(startPoint.y - nowPoint.pageY);
+	if ((xAbs > 20 || yAbs > 20) && (pdelay.getTime()-ldelay.getTime())<200) {
+	if (xAbs > yAbs) {
+	if (nowPoint.pageX < startPoint.x){
+		if(obj && typeof(obj.left) === 'function'){obj.left()}
+	}
+	else{if(obj && typeof(obj.right) === 'function'){obj.right()}}
+	}
+	else {
+	if (nowPoint.pageY < startPoint.y){if(obj && typeof(obj.top) === 'function'){obj.top()}}
+	else{if(obj && typeof(obj.bottom) === 'function'){obj.bottom()}}
+	}
+	}
+	}, false);
+}
+
+Element.prototype.empty = function(){ this.innerHTML = null; /*while (this.firstChild) {this.removeChild(this.firstChild);}*/ return this;}
+
+Element.prototype.show =  function(){  this.style.display = ''; return this;}
+Element.prototype.hide =  function(){  this.style.display = 'none'; return this;}
+
+Element.prototype.remove =  function(){ return this.parentNode.removeChild(this);}
+Element.prototype.animate = function(className, callback){ // dep. Animate.css
+    var it = this;
+    if( typeof it.onanimationend != 'undefined') it.removeEventListener('animationend');
+    it.addEventListener("animationend", function(){
+        if( typeof callback === 'function' ){ callback.call(it) }
+        it.classList.remove('animated');
+        it.classList.remove(className);
+        if( typeof it.onanimationend != 'undefined') it.removeEventListener('animationend');
+    });
+    this.classList.add('animated');
+    this.classList.add(className);
+    return this;
+}
 	window.addEventListener('load', function() {
-		window.addEventListener('hashchange', console.log);
+		
 		document.addEventListener('visibilitychange', function() {
 		  if(document.hidden) {
 			console.log('save')
@@ -11,7 +94,7 @@
 
 	});
 
-
+	window.addEventListener('hashchange', function(){});
 	window.onerror = function (msg, url, lineNo, columnNo, error) {
 		var string = msg.toLowerCase();
 		var substring = "script error";
@@ -67,25 +150,35 @@
 				navigator.notification.vibrate(milliseconds);	
 			}
 		},
-		msg: function(txt,c, btns){
-			var msg = crEl('div',{c:'notify '+( c || ''), e:{click:{function(){
-			alert(2)
-				document.body.removeChild(this)
-			}}}}, txt);
-			document.body.appendChild(msg);
-			setTimeout(function(){
-				document.body.removeChild(msg)
-			},3000)
-			
-			
-		
+		msg: function(txt, btns){
+			let cont = document.getElementById('notify_container');
+			if(!cont){ cont = crEl('div',{id:'notify_container'}); document.body.appendChild(cont);}
+			let msg = crEl('div',{c:'notify'}, txt);
+			let timer = null;
+			cont.appendChild(msg);
+			msg.onclick = ()=>{
+				if(timer){clearTimeout(timer);}
+				msg.animate('fadeOut',()=>{
+					cont.removeChild(msg);
+					console.info('msg removed by click');
+				});				
+			}
+			 swipe(msg, {left:()=>{alert('l');}, right:()=>{alert('r')}})
+			msg.animate('slideInUp',()=>{
+				timer = setTimeout(()=>{
+					msg.animate('fadeOut',()=>{
+						cont.removeChild(msg);
+						console.info('msg removed');
+					});
+				},3000)			
+			});
 		}
 	};		
 
 
 	Content.innerHTML = '';
 	//http://www.achex.ca/dev/
-	content.appendChild(crEl('form', {s:'padding:24px; background:#f8f8f8', e:{submit: function(event){
+	Content.appendChild(crEl('form', {s:'padding:24px; background:#f8f8f8', e:{submit: function(event){
 		event.preventDefault();
 		var l = document.getElementById("login");
 		var r = document.getElementById("room");
@@ -133,6 +226,8 @@
 			crEl('button',{type:'submit', c:'btn btn-primary'},'Подключиться')
 		)
 	)); 
+	
+	Content.appendChild(crEl('button',{e:{click: function(){app.msg(new Date().toLocaleString())}}},'test'))
 	/*
 	content.appendChild(crEl('div',{c:'full-centred'},
 		

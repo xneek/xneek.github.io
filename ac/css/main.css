@@ -99,8 +99,15 @@ input {
 .form-group label { margin: 8px 0 8px 0; display:block; font-size:0.8em; }
 .form-group input {  width:100%; margin-bottom: 16px;}
 
-
+#notify_container {
+	position: fixed;
+	bottom:0;
+	width:100%;
+	left:0;
+	z-index:9;
+}
 .notify {
+	-webkit-user-drag: element;
 	border:none;
 	background: #323232;
 	font-family: Roboto;
@@ -115,17 +122,12 @@ input {
 	display: flex!important;
 	justify-content: space-between;
 	align-items: center;
-	position: fixed;
-	bottom:8px;
-	width:98%;
-	left:2%;
-	transition: transform 0.8s ease-in;
-	transform: translateY(30px);
+	margin:4px 8px;
+	
+
 }
 
-.notify_active {
-	transform: translateY(15);
-}
+
 	
 .notify.success {
 		color:#68EFAD;

@@ -233,12 +233,12 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
 			Content.innerHTML = '';
-			Content.innerHTML = 'Игра началась...';	
+			Content.innerHTML = '<div class="full-centred"><h1>Игра началась...</h1></div>';	
 				
 						
 		return false;
 	}}},
-		crEl('div',{c:'form-group'},
+		crEl('div',{c:'form-group', id:'idenTyContainer'},
 			crEl('label','Идентификатор игры'),
 			crEl('input',{type:'tel',placeholder:'Введите идентификатор игры', id:'room', autofocus:true, pattern:'[0-9]{3,}', value:(location.hash && location.hash.length?location.hash.substr(1):''), required:true})
 		),
@@ -271,6 +271,11 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			crEl('button',{type:'submit', c:'btn btn-primary'},'Подключиться')
 		)
 	)); 
+	
+	if(location.hash && location.hash.length){
+		document.getElementById("idenTyContainer").hide()
+		document.getElementById("name").focus();
+	}
 
 
 app.full = function(body,cb){

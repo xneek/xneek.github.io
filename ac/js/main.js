@@ -78,7 +78,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			snd.play();
 		},	
 		vibrate: function(milliseconds=200){
-			if(navigator && typeof(window.navigator.vibrate)!=='undefined'){
+			if("vibrate" in navigator){
 				window.navigator.vibrate(milliseconds);	
 			}
 		},
@@ -224,7 +224,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	Content.appendChild(crEl('button',{e:{click: function(){app.msg(new Date().toLocaleString(),5000).addAction('Закрыть')}}},'test'))
 	Content.appendChild(crEl('button',{e:{click: function(){app.beep()}}},'beep'))
 	Content.appendChild(crEl('button',{e:{click: function(){app.vibrate(300)}}},'vibrate'))
-	Content.appendChild(crEl('button',{e:{click: function(){app.vibrate([100,200,300,400,500])}}},'vibrate 100-500'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.vibrate([100,50,100,50,100,10,100,300])}}},'vibrate 100-500'))
 	/*
 	content.appendChild(crEl('div',{c:'full-centred'},
 		

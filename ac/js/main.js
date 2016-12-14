@@ -99,12 +99,27 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				navigator.notification.vibrate(milliseconds);	
 			}
 		},
-		msg: function(txt, btns){
+		msg: function(txt='', type=0, duration = 3000){
+
 			let cont = document.getElementById('notify_container');
 			if(!cont){ cont = crEl('div',{id:'notify_container'}); document.body.appendChild(cont);}
 			let msg = crEl('div',{c:'notify'}, txt);
+			msg.close =  function(){
+				this.parentNode.removeChild(this);
+			}
+			msg.addAction =  function(caption, cb, closeOnClick=true){
+				let th = this;
+				this.appendChild(crEl('button',{c:'action', e:{click: ()=>{
+					if( typeof cb === 'function' ){ cb(th); }
+					if( closeOnClick ){ th.close(); }
+				}}},caption));
+				return this;
+			}
 			let timer = null;
 			cont.appendChild(msg);
+	
+			if( type>0 || type==='success' ){msg.classList.add('success')}
+			if( type<0 || type==='error' ){msg.classList.add('danger')}
 			
 			let hammerHandler = new Hammer(msg, {prevent_default: false});
 				hammerHandler.on('pan', function(e) {
@@ -116,29 +131,31 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					var opacityPercent = 1-Math.abs(deltaX / activationDistance);
 					if (opacityPercent < 0)  opacityPercent = 0;
 					msg.style.opacity = opacityPercent;
+					msg.style.transform = 'translate('+deltaX + 'px)';
 				});
 
 				hammerHandler.on('panend', function(e) {
 				  let deltaX = e.deltaX;
 				  let activationDistance = 80;
 				  if (Math.abs(deltaX) > activationDistance) {
-					cont.removeChild(msg);
+					msg.close();
 				  } else {
 					msg.classList.remove('panning');
 					msg.style.opacity = 1;
+					msg.style.transform = 'translate(0)';
 				  }
 				});
 			
 			
-			//msg.animate('slideInUp',()=>{
-				// timer = setTimeout(()=>{
-					// msg.animate('fadeOut',()=>{
-						// cont.removeChild(msg);
-						// console.info('msg removed');
-					// });
-				// },3000)			
-			// 
-		//});
+			msg.animate('fadeIn',()=>{
+				 timer = setTimeout(()=>{
+					 msg.animate('fadeOut',()=>{
+						 msg.close();
+					 });
+			 },duration)			
+			 
+		 });
+		 return msg;
 		}
 	};		
 
@@ -193,8 +210,42 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			crEl('button',{type:'submit', c:'btn btn-primary'},'Подключиться')
 		)
 	)); 
-	
+/*
+		alert: function(message, alertCallback, title, buttonName){
+			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.alert)!=='undefined'){
+				navigator.notification.alert(message, alertCallback, title, buttonName);	
+			}
+		},
+		confirm: function(message, confirmCallback, title, buttonLabels){
+			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.confirm)!=='undefined'){
+				navigator.notification.confirm(message, confirmCallback, title, buttonLabels);	
+			}	
+		},
+		prompt: function(message, promptCallback, title, buttonLabels, defaultText){
+			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.prompt)!=='undefined'){
+				navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);	
+			}	
+		},
+		beep: function(times){
+			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.beep)!=='undefined'){
+				navigator.notification.beep(times);	
+			}
+		},	
+		vibrate: function(milliseconds){
+			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.vibrate)!=='undefined'){
+				navigator.notification.vibrate(milliseconds);	
+			}
+		},
+
+*/	
 	Content.appendChild(crEl('button',{e:{click: function(){app.msg(new Date().toLocaleString())}}},'test'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.alert(new Date().toLocaleString(),()=>{alert('alertcb')},'title','Кнопко')}}},'alert'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.confirm(new Date().toLocaleString(),()=>{alert('confirm cb')},'title сщта','Кнопко 2')}}},'confirm'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.prompt(new Date().toLocaleString(),()=>{alert('prompt cb')},'title зепромпт','Кнопко 3','щдщдщд')}}},'prompt'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.beep(300)}}},'beep'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.beep([100,200,300,400,500])}}},'beep 100-500'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.vibrate(300)}}},'vibrate'))
+	Content.appendChild(crEl('button',{e:{click: function(){app.vibrate([100,200,300,400,500])}}},'vibrate 100-500'))
 	/*
 	content.appendChild(crEl('div',{c:'full-centred'},
 		

@@ -122,21 +122,12 @@ input {
 	justify-content: space-between;
 	align-items: center;
 	margin:4px 8px;
-	
-
 }
 
 
 	
-.notify.success {
-		color:#68EFAD;
-	}
-.notify.warning {
-		color:#FF5252;
-	}
-.notify.danger {
-		color:#FF5252;
-}
+.notify.success { color:#68EFAD; }
+.notify.danger { color:#FF5252;}
 
 .notify .action {
 	background: inherit;
@@ -150,9 +141,7 @@ input {
 	padding: 0px;
 	min-width: min-content;
 	float: right;
-
 }
-
 
 
 

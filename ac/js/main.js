@@ -238,7 +238,18 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
 			Content.innerHTML = '';
-			Content.innerHTML = '<div class="full-centred"><div class="text-center"><h5>Игра началась...</h5><img src="'+photo+'"></div></div>';	
+
+			content.appendChild(crEl('div', {c:'full-centred'},
+				crEl('div', {c:'text-center'},
+					crEl('h5','Игра началась'),
+					crEl('img', {src:photo}),
+					crEl('button',{c:'btn', e:{click: function(){
+						if (document.fullscreenEnabled) {
+							requestFullscreen(Content);
+						}
+					}}},'Во весь экран')
+				)
+			))
 				
 						
 		return false;
@@ -310,9 +321,7 @@ function requestFullscreen(element) {
     }
 }
 
-if (document.fullscreenEnabled) {
-    requestFullscreen(document.documentElement);
-}
+
 	window.onbeforeunload = function(){ window.ws.send( JSON.stringify({toS:app.server, data: {kill:app.id}}));  ws.close();  } 
 	/*
 window.onbeforeunload = function() {

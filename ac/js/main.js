@@ -210,7 +210,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 	Content.innerHTML = '';
 	//http://www.achex.ca/dev/
-	Content.appendChild(crEl('form', {s:'padding:24px; background:#f8f8f8', e:{submit: function(event){
+	Content.appendChild(crEl('form', {id:'joinToGameForm',s:'padding:24px; background:#f8f8f8', e:{submit: function(event){
 		event.preventDefault();
 		var l = document.getElementById("name");
 		var r = document.getElementById("room");
@@ -233,18 +233,25 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
 			Content.innerHTML = '';
-			Content.innerHTML = '<div class="full-centred"><h1>Игра началась...</h1></div>';	
+			Content.innerHTML = '<div class="full-centred"><h5 class="text-center">Игра началась...</h5></div>';	
 				
 						
 		return false;
 	}}},
+		
+		location.hash && location.hash.length?crEl('h4',{s:'margin-bottom:30px; opacity:0.5'}, crEl('strong', 'Подключение к игре ',location.hash)):null,
+	
 		crEl('div',{c:'form-group', id:'idenTyContainer'},
 			crEl('label','Идентификатор игры'),
 			crEl('input',{type:'tel',placeholder:'Введите идентификатор игры', id:'room', autofocus:true, pattern:'[0-9]{3,}', value:(location.hash && location.hash.length?location.hash.substr(1):''), required:true})
 		),
 		crEl('div',{c:'form-group'},
 			crEl('label','Имя Фамилия'),
-			crEl('input',{placeholder:'Введите имя и фамилию через пробел', id:'name', pattern:'[А-Яа-я\-]{3,} [А-Яа-я\-]{3,}', required:true})
+			crEl('input',{placeholder:'Введите имя и фамилию через пробел', id:'name', pattern:'[А-Яа-я\-]{3,} [А-Яа-я\-]{3,}', required:true, e:{keydown: function(event){
+				if(event.keyCode===13){
+					document.getElementById("joinToGameForm").submit();
+				}
+			}}})
 		),
 		
 		crEl('div',{s:'display:flex'},

@@ -90,8 +90,8 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			}
 			msg.addAction =  function(caption, cb, closeOnClick=true){
 				let th = this;
-				this.appendChild(crEl('button',{c:'action', e:{click: ()=>{
-					if( typeof cb === 'function' ){ cb(th); }
+				this.appendChild(crEl('button',{c:'action', e:{click: function(){
+					if( typeof cb === 'function' ){ cb(this); }
 					if( closeOnClick ){ th.close(); }
 				}}},caption));
 				return this;
@@ -169,8 +169,13 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 							window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}))
 						});
 						if(data.data.task.music){app.msg('Музыка '+data.data.task.music).addAction('Воспроизвести', function(){
-							window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
-						});}
+							if(!this.dataset.play){
+								window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
+							} else {
+								//pauseMusic
+							}
+							
+						}, false);}
 					}						
 					
 					if(data.data.dropDice){
@@ -216,14 +221,14 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		var r = document.getElementById("room");
 			app.server = r.value;	
 				
-			
+			let photo = 'http://vk.com/images/gift/'+(   100+Math.round(  Math.random()*500  )   )+'/256.jpg';
 			let nm = document.getElementById("name").value.trim();
 			let arr = nm.split(/\s/,2)
 			let user = {
 				id: app.id,
 				name:arr[0] || 'Безымянный',
 				surname: arr[1] || 'Безфамильный',
-				photo:'',
+				photo: photo,
 				sex: document.getElementById("sex").checked?1:0,
 				color: document.getElementById("color").value
 			
@@ -233,7 +238,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
 			Content.innerHTML = '';
-			Content.innerHTML = '<div class="full-centred"><h5 class="text-center">Игра началась...</h5></div>';	
+			Content.innerHTML = '<div class="full-centred"><div class="text-center"><h5>Игра началась...</h5><img src="'+photo+'"></div></div>';	
 				
 						
 		return false;
@@ -293,7 +298,22 @@ app.full = function(body,cb){
 		return this;
 }		
 	
-	
+window.onload = function () {
+    hideAddressBar();
+    window.addEventListener("orientationchange", function () {
+        hideAddressBar();
+    }, false);
+}
+
+function hideAddressBar() {
+    setTimeout(function () {
+        document.body.style.height = window.outerHeight + 'px';
+        setTimeout(function () {
+            window.scrollTo(0, 1);
+        }, 1100);
+    }, 1000);
+    return false;
+}	
 	window.onbeforeunload = function(){ window.ws.send( JSON.stringify({toS:app.server, data: {kill:app.id}}));  ws.close();  } 
 	/*
 window.onbeforeunload = function() {

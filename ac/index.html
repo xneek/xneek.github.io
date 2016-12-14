@@ -37,13 +37,5 @@
         <script src="js/crel.min.js"></script>
         <script src="js/hammer.min.js"></script>
         <script src="js/main.js"></script>
-		<script>
-			if ('serviceWorker' in navigator) {
-			  navigator.serviceWorker.register('service-worker.js',{ scope: '/ac/' }).then(function() {}, function(a,b) { });
-			  navigator.serviceWorker.ready.then(function(registration) {});
-			} else {
-			 
-			}
-		</script>
     </body>
 </html>

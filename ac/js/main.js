@@ -298,22 +298,21 @@ app.full = function(body,cb){
 		return this;
 }		
 	
-window.onload = function () {
-    hideAddressBar();
-    window.addEventListener("orientationchange", function () {
-        hideAddressBar();
-    }, false);
+document.fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.documentElement.webkitRequestFullScreen;
+
+function requestFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullScreen) {
+        element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
 }
 
-function hideAddressBar() {
-    setTimeout(function () {
-        document.body.style.height = window.outerHeight + 'px';
-        setTimeout(function () {
-            window.scrollTo(0, 1);
-        }, 1100);
-    }, 1000);
-    return false;
-}	
+if (document.fullscreenEnabled) {
+    requestFullscreen(document.documentElement);
+}
 	window.onbeforeunload = function(){ window.ws.send( JSON.stringify({toS:app.server, data: {kill:app.id}}));  ws.close();  } 
 	/*
 window.onbeforeunload = function() {

@@ -74,17 +74,14 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 	var app = {
 		beep: function(){
-			new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU'+Array(1e3).join(123)).play()
+		  new Audio("sound/audio_end.ogg").play();
+		  return false;
 		},	
-		boop: function(){
-			o=(A=new AudioContext()).createOscillator();o.connect(A.destination);o.start(0);
-			setTimeout(()=>{o.stop(0)},500)
-		},
 		vibrate: function(milliseconds=200){
-			if("vibrate" in navigator){ window.navigator.vibrate(milliseconds);	 }
+			if("vibrate" in navigator){ window.navigator.vibrate(milliseconds);	 } else {console.log('вжж')}
 		},
-		msg: function(txt='', type=0, duration = 3000){
-
+		msg: function(txt='', type=0, duration = 3000, playSound = true){
+			if(playSound){ new Audio('sound/audio_initiate.ogg').play() }
 			let cont = document.getElementById('notify_container');
 			if(!cont){ cont = crEl('div',{id:'notify_container'}); document.body.appendChild(cont);}
 			let msg = crEl('div',{c:'notify'}, txt);
@@ -140,103 +137,141 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			 
 		 });
 		 return msg;
+		},
+		rndColor: function(){
+		//
+			return ['#F44336','#E91E63','#9C27B0','#673AB7','#3F51B5','#2196F3','#03A9F4','#00BCD4','#009688','#4CAF50','#8BC34A','#CDDC39','#FFEB3B','#FFC107','#FF9800','#FF5722','#795548'][Math.round(Math.random()*16)]
 		}
 	};		
 
+		window.ws = new WebSocket('ws://achex.ca:4010');
+		window.ws.onmessage = function(evt){
+			if(evt && evt.data){
+				data = JSON.parse(evt.data);
+				console.info(data);
+				
+				if(data && data.SID && data.SID>0){
+					console.info("SID", data.SID);
+					app.id = data.SID;
+				}
+				if(data && data.auth && data.auth=='ok'){
+					console.info("Auth success")
+				}						
+			
+				if(data.data){
+				
+					if(data.data.move){
+						app.msg('Выпало ' + data.data.move.dice);
+						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');
+					}
+					if(data.data.task){
+						app.msg(data.data.task.text,2,60000).addAction('Выполнено', function(){
+							window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}))
+						});
+						if(data.data.task.music){app.msg('Музыка '+data.data.task.music).addAction('Воспроизвести', function(){
+							window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
+						});}
+					}						
+					
+					if(data.data.dropDice){
+						app.msg('Бросай кубик').addAction('Бросить', function(){
+							window.ws.send( JSON.stringify({toS:app.server, data: {dice:true}}))
+						})
+					}			
+				}
+			
+
+			
+			}
+		}; 
+
+		window.ws.onerror = function(error) {
+			console.log("WS:" + error)
+
+		};
+
+		window.ws.onopen = function() {
+			console.log("WS open");
+			window.ws.send( JSON.stringify({setID: 'login_'+new Date().getTime(), passwd:'login_'+new Date().getTime()}));
+			
+
+			/*
+				user
+				id,
+				name,
+				surname,
+				photo,
+				sex 0-Ж; 1-М,
+				color
+			*/
+		};
+		
+		window.ws.onclose = function(evt){ app.msg("Disconnected");};
 
 	Content.innerHTML = '';
 	//http://www.achex.ca/dev/
 	Content.appendChild(crEl('form', {s:'padding:24px; background:#f8f8f8', e:{submit: function(event){
 		event.preventDefault();
-		var l = document.getElementById("login");
+		var l = document.getElementById("name");
 		var r = document.getElementById("room");
-				console.log({l:l.value, r:r.value})
-				window.ws = new WebSocket('ws://achex.ca:4010');
+			app.server = r.value;	
+				
 			
-				window.ws.onmessage = function(evt){
-					if(evt && evt.data){
-						data = JSON.parse(evt.data);
-						//console.info(data);
-						
-						if(data && data.SID && data.SID>0){
-							console.info("SID", data.SID)
-						}
-						if(data && data.auth && data.auth=='ok'){
-							console.info("Auth success")
-						}						
-					}
-				}; 
-				
-				window.ws.onerror = function(error) {
-					console.log("WS:" + error)
-				
-				};
-				
-				window.ws.onopen = function() {
-					console.log("WS open");
-					window.ws.send( JSON.stringify({setID:l.value, passwd:l.value}));
-				};
-				
+			let nm = document.getElementById("name").value.trim();
+			let arr = nm.split(/\s/,2)
+			let user = {
+				id: app.id,
+				name:arr[0] || 'Безымянный',
+				surname: arr[1] || 'Безфамильный',
+				photo:'',
+				sex: document.getElementById("sex").checked?1:0,
+				color: document.getElementById("color").value
+			
+			};
+			
+			console.info(user)
+			
+			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
+			Content.innerHTML = '';
+			Content.innerHTML = 'Игра началась...';	
 				
 						
 		return false;
 	}}},
-
-		crEl('div',{c:'form-group'},
-			crEl('label','Логин'),
-			crEl('input',{placeholder:'Введите логин (латинские буквы и цифры)', id:'login', pattern:'[A-Za-z0-9]{3,}', required:true, autofocus:true})
-		),
 		crEl('div',{c:'form-group'},
 			crEl('label','Идентификатор игры'),
-			crEl('input',{type:'tel',placeholder:'Введите идентификатор игры', id:'room', pattern:'[0-9]{3,}', required:true})
+			crEl('input',{type:'tel',placeholder:'Введите идентификатор игры', id:'room', autofocus:true, pattern:'[0-9]{3,}', value:(location.hash && location.hash.length?location.hash.substr(1):''), required:true})
 		),
+		crEl('div',{c:'form-group'},
+			crEl('label','Имя Фамилия'),
+			crEl('input',{placeholder:'Введите имя и фамилию через пробел', id:'name', pattern:'[А-Яа-я\-]{3,} [А-Яа-я\-]{3,}', required:true})
+		),
+		
+		crEl('div',{s:'display:flex'},
+			crEl('div',{c:'form-group',s:'width:49%; margin-right:1%'},
+				crEl('label',{},'Пол'),
+				//crEl('select',{id:'sex',required:true}, crEl('option',{value:'0'},"Ж"), crEl('option',{value:'1'},"М"))
+				crEl('label',{for:'sex',c:'gender'}, crEl('input',{id:'sex',type:'checkbox'}), crEl('span'))
+			),
+
+			crEl('div',{c:'form-group', s:'width:49%; margin-left:1%'},
+				crEl('label','Цвет фишки'),
+				crEl('div',{s:'display:flex'},
+					crEl('input',{ id:'color', type:'color', value:app.rndColor()}),
+					crEl('button',{c:'btn', s:'margin:0; margin-left:8px; height:40px; width:40px; flex:0 40px; padding:8px; min-width:40px', e:{click:function(event){
+						event.preventDefault();
+						document.getElementById("color").value = app.rndColor();
+						return false;
+					}}},crEl('img',{src:'img/colors.png'}))
+				)
+			)
+		),
+		
 		crEl('div',{c:'form-group'},
 			crEl('button',{type:'submit', c:'btn btn-primary'},'Подключиться')
 		)
 	)); 
-/*
-		alert: function(message, alertCallback, title, buttonName){
-			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.alert)!=='undefined'){
-				navigator.notification.alert(message, alertCallback, title, buttonName);	
-			}
-		},
-		confirm: function(message, confirmCallback, title, buttonLabels){
-			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.confirm)!=='undefined'){
-				navigator.notification.confirm(message, confirmCallback, title, buttonLabels);	
-			}	
-		},
-		prompt: function(message, promptCallback, title, buttonLabels, defaultText){
-			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.prompt)!=='undefined'){
-				navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);	
-			}	
-		},
-		beep: function(times){
-			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.beep)!=='undefined'){
-				navigator.notification.beep(times);	
-			}
-		},	
-		vibrate: function(milliseconds){
-			if(navigator && typeof(navigator.notification)!=='undefined' && typeof(navigator.notification.vibrate)!=='undefined'){
-				navigator.notification.vibrate(milliseconds);	
-			}
-		},
 
-*/	
-	Content.appendChild(crEl('button',{e:{click: function(){app.msg(new Date().toLocaleString(),5000).addAction('Закрыть')}}},'test'))
-	Content.appendChild(crEl('button',{e:{click: function(){app.beep()}}},'beep'))
-	Content.appendChild(crEl('button',{e:{click: function(){app.boop()}}},'boop'))
-	Content.appendChild(crEl('button',{e:{click: function(){app.vibrate(300)}}},'vibrate'))
-	Content.appendChild(crEl('button',{e:{click: function(){app.vibrate([100,50,100,50,100,10,100,300])}}},'vibrate 100-500'))
-	/*
-	content.appendChild(crEl('div',{c:'full-centred'},
-		
-		crEl('div',
-			crEl('button',{c:'btn', e:{click: function(){
-
-				
-			}}},'test')
-		)
-	)); */
 
 app.full = function(body,cb){
 		this._el = crEl('div',{id:'modal',s:'position:fixed; z-index:99999; top:0; left:0; width:100%; height:100%; background:#fff;'}, body);
@@ -245,4 +280,12 @@ app.full = function(body,cb){
 		if(typeof cb === 'function'){ cb(this) }
 		return this;
 }		
-		
+	
+	
+	window.onbeforeunload = function(){ window.ws.send( JSON.stringify({toS:app.server, data: {kill:app.id}}));  ws.close();  } 
+	/*
+window.onbeforeunload = function() {
+    ws.onclose = function () {}; // disable onclose handler first
+    ws.close()
+	alert('434');
+};*/

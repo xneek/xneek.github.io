@@ -215,45 +215,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 	Content.innerHTML = '';
 	//http://www.achex.ca/dev/
-	Content.appendChild(crEl('form', {id:'joinToGameForm',s:'padding:24px; background:#f8f8f8', e:{submit: function(event){
-		event.preventDefault();
-		var l = document.getElementById("name");
-		var r = document.getElementById("room");
-			app.server = r.value;	
-				
-			let photo = 'http://vk.com/images/gift/'+(   100+Math.round(  Math.random()*500  )   )+'/256.jpg';
-			let nm = document.getElementById("name").value.trim();
-			let arr = nm.split(/\s/,2)
-			let user = {
-				id: app.id,
-				name:arr[0] || 'Безымянный',
-				surname: arr[1] || 'Безфамильный',
-				photo: photo,
-				sex: document.getElementById("sex").checked?1:0,
-				color: document.getElementById("color").value
-			
-			};
-			
-			console.info(user)
-			
-			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
-			Content.innerHTML = '';
-
-			content.appendChild(crEl('div', {c:'full-centred'},
-				crEl('div', {c:'text-center'},
-					crEl('h5','Игра началась'),
-					crEl('img', {src:photo}),
-					crEl('button',{c:'btn', e:{click: function(){
-						if (document.fullscreenEnabled) {
-							requestFullscreen(Content);
-						}
-					}}},'Во весь экран')
-				)
-			))
-				
-						
-		return false;
-	}}},
+	let addForm = (crEl('form', {id:'joinToGameForm',s:'padding:24px; background:#f8f8f8'},
 		
 		location.hash && location.hash.length?crEl('h4',{s:'margin-bottom:30px; opacity:0.5'}, crEl('strong', 'Подключение к игре ',location.hash)):null,
 	
@@ -263,7 +225,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		),
 		crEl('div',{c:'form-group'},
 			crEl('label','Имя Фамилия'),
-			crEl('input',{placeholder:'Введите имя и фамилию через пробел', id:'name', pattern:'[А-Яа-я\-]{3,} [А-Яа-я\-]{3,}', required:true, e:{keydown: function(event){
+			crEl('input',{name: 'name',placeholder:'Введите имя и фамилию через пробел', id:'name', pattern:'[А-Яа-я\-]{3,} [А-Яа-я\-]{3,}', required:true, e:{keydown: function(event){
 				if(event.keyCode===13){
 					document.getElementById("joinToGameForm").submit();
 				}
@@ -293,7 +255,49 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		crEl('div',{c:'form-group'},
 			crEl('button',{type:'submit', c:'btn btn-primary'},'Подключиться')
 		)
-	)); 
+	))
+	Content.appendChild(addForm); 
+	addForm.onsubmit = function(event){
+event.preventDefault();
+		
+		var l = document.getElementById("name");
+		var r = document.getElementById("room");
+			app.server = r.value;	
+				
+			let photo = 'http://vk.com/images/gift/'+(   100+Math.round(  Math.random()*500  )   )+'/256.jpg';
+			let nm = document.getElementById("name").value.trim();
+			let arr = nm.split(/\s/,2)
+			let user = {
+				id: app.id,
+				name:arr[0] || 'Безымянный',
+				surname: arr[1] || 'Безфамильный',
+				photo: photo,
+				sex: document.getElementById("sex").checked?1:0,
+				color: document.getElementById("color").value
+			
+			};
+			
+			console.info(user)
+			
+			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
+			Content.innerHTML = '';
+
+			content.appendChild(crEl('div', {c:'full-centred'},
+				crEl('div', {c:'text-center'},
+					crEl('h5','Игра началась'),
+					crEl('img', {src:photo}), crEl('br'),
+					crEl('button',{c:'btn', e:{click: function(){
+						if (document.fullscreenEnabled) {
+							requestFullscreen(Content);
+						}
+					}}},'Во весь экран')
+				)
+			))
+				
+						
+		return false;
+	
+	}
 	
 	if(location.hash && location.hash.length){
 		document.getElementById("idenTyContainer").hide()

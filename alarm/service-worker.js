@@ -15,9 +15,14 @@ this.ontask = function(task) {
     function onError(error) {
         alert("Sorry, couldn't set the alarm: " + error);
     }
+  if ('pushManager' in registration) {
+      // The service worker supports push
+    } else {
+      // The service worker doesn't support push
+    }
 
-    navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-        serviceWorkerRegistration.taskScheduler.add(Date.now() + (1 * 60000), {
+  
+        self.taskScheduler.add(Date.now() + (1 * 60000), {
             message: "It's been 1 minutes, your soup is ready!"
         }).then(onTaskAdded, onError);
-    });
+   

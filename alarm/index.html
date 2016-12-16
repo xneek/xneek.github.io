@@ -6,31 +6,25 @@
 </head>
 <body>
 	
-<script>
 
-	
-	
-	
-	
-</script>
 
 		<script>
 			// ServiceWorker is a progressive technology. Ignore unsupported browsers
 			if ('serviceWorker' in navigator) {
-			//  console.log('CLIENT: service worker registration in progress.');
+			 console.log('CLIENT: service worker registration in progress.');
 			  navigator.serviceWorker.register('service_worker.js',{ scope: '/alarm/' }).then(function() {
-				//console.log('CLIENT: service worker registration complete.');
+				console.log('CLIENT: service worker registration complete.');
 				}, function(a,b) {
-			//	console.log('CLIENT: service worker registration failure.',a,b);
+				console.log('CLIENT: service worker registration failure.',a,b);
 			  });
 			  
 			  
 			  navigator.serviceWorker.ready.then(function(registration) {
-			 //  console.log('Service Worker Ready');
+			   console.log('Service Worker Ready');
 			});
 			  
 			} else {
-			 // console.log('CLIENT: service worker is not supported.');
+			  console.log('CLIENT: service worker is not supported.');
 			}
 		</script>
 

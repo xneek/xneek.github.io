@@ -23,16 +23,24 @@ recognition.onresult = function(event) {
   bg.style.backgroundColor = color;
 }
 */
+
+var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
+//var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
+//var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
 	var recognition = new SpeechRecognition();
 	recognition.lang = 'ru-RU';
+	recognition.interimResults = true;
+//recognition.maxAlternatives = 1;
 btn.onclick = function(){
 
-recognition.interimResults = false;
-recognition.maxAlternatives = 1;
+
 recognition.onresult = function(event) {
-  var color = event.results[0][0].transcript;
-  diagnostic.textContent = 'Result received: ' + color;
-  bg.style.backgroundColor = color;
+  var result = event.results[event.resultIndex];
+  if(result.isFinal){
+	  res.innerHTML = result[0].transcript
+  } else {
+	console.info(result[0].transcript)
+  }
 }
 recognition.start();
 

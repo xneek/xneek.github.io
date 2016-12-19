@@ -1,0 +1,31 @@
+{
+  "name": "Клиент для игры Alka",
+  "short_name": "Alka",
+  "icons": [{
+        "src": "img/logo128.png",
+        "type": "image/png",
+        "sizes": "128x128"
+      }, {
+        "src": "img/logo152.png",
+        "type": "image/png",
+        "sizes": "152x152"
+      }, {
+        "src": "img/logo144.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      }, {
+        "src": "img/logo192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "img/logo256.png",
+        "type": "image/png",
+        "sizes": "256x256"
+      }],
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFCDD2",
+  "theme_color": "#D32F2F"
+}

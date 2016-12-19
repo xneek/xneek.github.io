@@ -18,7 +18,12 @@ if(isLocalStorageAvailable()){
 
 
 function fetch(address, callback, method ='GET') {
-    var xmlhttp = new XMLHttpRequest();
+	 var XHR = window.XDomainRequest || window.XMLHttpRequest
+	 var xmlhttp = new XHR();
+
+		xmlhttp.withCredentials = true;
+		xmlhttp.open(method, address, true);
+		xmlhttp.send();
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
@@ -26,16 +31,15 @@ function fetch(address, callback, method ='GET') {
                callback(xmlhttp.responseText);
            }
            else if (xmlhttp.status == 400) {
-              throw new Error('There was an error 400');
+              console.log('There was an error 400');
            }
            else {
-               throw new Error('something else other than 200 was returned');
+                console.log('something else other than 200 was returned'+xmlhttp.status);
            }
         }
     };
 
-    xmlhttp.open(method, address, true);
-    xmlhttp.send();
+
 }
 
 
@@ -341,7 +345,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		if(sData){
 			if(sData.news){
 			
-				fetch('https://lenta.ru/rss/top7', function(res){
+				$.get('http://lenta.ru/rss/top7', function(res){
 					console.log(res)
 				})
 			/*

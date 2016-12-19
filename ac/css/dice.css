@@ -1,0 +1,137 @@
+body {
+    background: #343434;
+}
+.dice {
+    margin: 50px;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    box-sizing: border-box;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+}
+.dice .side {
+    width: 200px;
+    height: 200px;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    text-align: center;
+    line-height: 200px;
+    font-size: 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: inset 0 0 30px #C9C9C9;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border-radius: 10px;
+}
+.dice .side .point {
+    width: 20%;
+    height: 20%;
+    background-color: #0045BC;
+    border-radius: 100%;
+    box-shadow: inset 5px 3px 10px rgba(0, 0, 0, 0.4);
+    background-image: -webkit-radial-gradient(circle, #5694ff, #0045bc);
+    position: absolute;
+}
+.dice .side .point.one {
+    width: 30%;
+    height: 30%;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -30px;
+    margin-top: -30px;
+}
+.dice .side .point.red {
+    background-image: -webkit-radial-gradient(circle, #e49b90, #d0513e);
+}
+.dice .side .point.ptop {
+    top: 12%;
+}
+.dice .side .point.pbottom {
+    bottom: 12%;
+}
+.dice .side .point.pycenter {
+    top: 40%;
+}
+.dice .side .point.pxcenter {
+    left: 40%;
+}
+.dice .side .point.pleft {
+    left: 12%;
+}
+.dice .side .point.pright {
+    right: 12%;
+}
+.solid .side {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.cube {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-transition: 400ms;
+    transition: 400ms;
+    -webkit-transform: translateZ(-100px) rotateX(0) rotateY(0);
+    transform: translateZ(-100px) rotateX(0) rotateY(0);
+ 
+}
+.cube .side {
+    position: absolute;
+  border-radius:15px;
+}
+.cube.front {
+    -webkit-transform: translateZ(-100px);
+    transform: translateZ(-100px);
+}
+.cube.back {
+    -webkit-transform: translateZ(-100px) rotateX(180deg) rotateY(0);
+    transform: translateZ(-100px) rotateX(180deg) rotateY(0);
+}
+.cube.top {
+    -webkit-transform: translateZ(-100px) rotateX(-90deg) rotateY(0);
+    transform: translateZ(-100px) rotateX(-90deg) rotateY(0);
+}
+.cube.bottom {
+    -webkit-transform: translateZ(-100px) rotateX(90deg) rotateY(0);
+    transform: translateZ(-100px) rotateX(90deg) rotateY(0);
+}
+.cube.left {
+    -webkit-transform: translateZ(-100px) rotateX(0) rotateY(90deg);
+    transform: translateZ(-100px) rotateX(0) rotateY(90deg);
+}
+.cube.right {
+    -webkit-transform: translateZ(-100px) rotateX(0) rotateY(-90deg);
+    transform: translateZ(-100px) rotateX(0) rotateY(-90deg);
+}
+.cube .top {
+    -webkit-transform: rotateX(90deg) translateZ(100px);
+    transform: rotateX(90deg) translateZ(100px);
+}
+.cube .bottom {
+    -webkit-transform: rotateX(-90deg) translateZ(100px);
+    transform: rotateX(-90deg) translateZ(100px);
+}
+.cube .front {
+    -webkit-transform: translateZ(100px);
+    transform: translateZ(100px);
+}
+.cube .back {
+    -webkit-transform: rotateX(-180deg) translateZ(100px);
+    transform: rotateX(-180deg) translateZ(100px);
+}
+.cube .left {
+    -webkit-transform: rotateY(-90deg) translateZ(100px);
+    transform: rotateY(-90deg) translateZ(100px);
+}
+.cube .right {
+    -webkit-transform: rotateY(90deg) translateZ(100px);
+    transform: rotateY(90deg) translateZ(100px);
+}
+.cube .rolling {
+    -webkit-transition: 6s;
+    transition: 6s;
+}

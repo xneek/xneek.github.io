@@ -258,7 +258,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	))
 	Content.appendChild(addForm); 
 	addForm.onsubmit = function(event){
-event.preventDefault();
+	event.preventDefault();
 		
 		var l = document.getElementById("name");
 		var r = document.getElementById("room");
@@ -285,12 +285,7 @@ event.preventDefault();
 			content.appendChild(crEl('div', {c:'full-centred'},
 				crEl('div', {c:'text-center'},
 					crEl('h5','Игра началась'),
-					crEl('img', {src:photo}), crEl('br'),
-					crEl('button',{c:'btn', e:{click: function(){
-						if (document.fullscreenEnabled) {
-							requestFullscreen(Content);
-						}
-					}}},'Во весь экран')
+					crEl('img', {src:photo})
 				)
 			))
 				

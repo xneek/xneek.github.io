@@ -282,7 +282,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
 			Content.innerHTML = '';
 
-			content.appendChild(crEl('div', {c:'full-centred'},
+			Content.appendChild(crEl('div', {c:'full-centred'},
 				crEl('div', {c:'text-center'},
 					crEl('h5','Игра началась'),
 					crEl('img', {src:photo})
@@ -297,6 +297,21 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	if(location.hash && location.hash.length){
 		document.getElementById("idenTyContainer").hide()
 		document.getElementById("name").focus();
+		if(location.hash=='#game'){
+			Content.innerHTML = '';
+
+			Content.appendChild(crEl('div', {s:'background:#fff; width:100%; height:100%; margin:0; float:left;'},
+				crEl('div', {c:'text-center'},
+					crEl('h5','Игра началась'),
+					crEl('div',{c:'players'},
+						crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Вася иванов'), crEl('div',{c:'fishka'})),
+						crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Даша Кукушкина'), crEl('div',{c:'fishka'},'12')),
+						crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Петя'), crEl('div',{c:'fishka', s:'left:33%; background-color:pink;'},'35'))
+					)
+				)
+			))
+		}
+
 	}
 
 
@@ -308,17 +323,6 @@ app.full = function(body,cb){
 		return this;
 }		
 	
-document.fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.documentElement.webkitRequestFullScreen;
-
-function requestFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullScreen) {
-        element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-}
 
 
 	window.onbeforeunload = function(){ window.ws.send( JSON.stringify({toS:app.server, data: {kill:app.id}}));  ws.close();  } 

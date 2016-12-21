@@ -176,74 +176,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		}
 	};		
 
-		window.ws = new WebSocket('ws://achex.ca:4010');
-		window.ws.onmessage = function(evt){
-			if(evt && evt.data){
-				data = JSON.parse(evt.data);
-				console.info(data);
-				
-				if(data && data.SID && data.SID>0){
-					console.info("SID", data.SID);
-					app.id = data.SID;
-				}
-				if(data && data.auth && data.auth=='ok'){
-					console.info("Auth success")
-				}						
-			
-				if(data.data){
-				
-					if(data.data.move){
-						app.msg('Выпало ' + data.data.move.dice);
-						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');
-					}
-					if(data.data.task){
-						app.msg(data.data.task.text,2,60000).addAction('Выполнено', function(){
-							window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}))
-						});
-						if(data.data.task.music){app.msg('Музыка '+data.data.task.music).addAction('Воспроизвести', function(){
-							if(!this.dataset.play){
-								window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
-							} else {
-								//pauseMusic
-							}
-							
-						}, false);}
-					}						
-					
-					if(data.data.dropDice){
-						app.msg('Бросай кубик').addAction('Бросить', function(){
-							window.ws.send( JSON.stringify({toS:app.server, data: {dice:true}}))
-						})
-					}			
-				}
-			
-
-			
-			}
-		}; 
-
-		window.ws.onerror = function(error) {
-			console.log("WS:" + error)
-
-		};
-
-		window.ws.onopen = function() {
-			console.log("WS open");
-			window.ws.send( JSON.stringify({setID: 'login_'+new Date().getTime(), passwd:'login_'+new Date().getTime()}));
-			
-
-			/*
-				user
-				id,
-				name,
-				surname,
-				photo,
-				sex 0-Ж; 1-М,
-				color
-			*/
-		};
 		
-		window.ws.onclose = function(evt){ app.msg("Disconnected");};
 
 	Content.innerHTML = '';
 	// https://lenta.ru/rss/top7

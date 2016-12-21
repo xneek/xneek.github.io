@@ -78,8 +78,6 @@ function speak(text, params, callback){
 				
 			};
 
-
-			au.play();
 			au.onended = function(){
 				document.getElementById("pcontrol").remove()
 				if(typeof(callback)==='function'){ 

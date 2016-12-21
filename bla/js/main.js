@@ -444,7 +444,8 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			speakCollection.push("Я смогу рассказать тебе кое што интересное.");
 
 			recursiveSpeak(0, function(){
-				app.msg("Конец")
+				app.msg("Конец");
+				app.speak('У меня всё')
 			})
 		
 		

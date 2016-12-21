@@ -53,7 +53,7 @@ function speak(text, params, callback){
 				app.msg('ошибка загрузки файла'+src);
 			}, false);
 			au.addEventListener('loadedmetadata', function() {
-				app.msg("loaded")
+				app.msg("loaded" + au.duration).addAction('play', au.play)
 			if(!document.getElementById("pcontrol")){
 				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
 			}

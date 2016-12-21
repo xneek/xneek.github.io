@@ -345,7 +345,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		if(sData){
 			if(sData.news){
 			
-				$.get('http://lenta.ru/rss/top7', function(res){
+				$.get('https://news.yandex.ru/index.rss', function(res){
 					console.log(res)
 				})
 			/*

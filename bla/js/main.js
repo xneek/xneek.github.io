@@ -17,7 +17,7 @@ if(isLocalStorageAvailable()){
 
 
 
-function speak(text, params){
+function speak(text, params, callback){
 if(!params){params = {};}
 const speakers = ['jane', 'omazh', 'zahar', 'ermil'];
 const emotions = ['good', 'neutral','evil','mixed' ];	
@@ -43,8 +43,8 @@ let url =	'https://tts.voicetech.yandex.net/generate?'
 	if(url && url.length){
 		let au = new Audio(url);
 			au.play();
-		if(typeof(params.callback)==='function'){ 
-			au.onended =  params.callback
+		if(typeof(callback)==='function'){ 
+			au.onended =  callback
 		}
 	}
 
@@ -223,43 +223,25 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	// https://lenta.ru/rss/top7
 
 	
+
+	
 	function settings(){
 	
-		let test = true;
+
 		
-		tabs = crEl('div', {c: 'tabs'},
-	crEl('input', {checked: '', name: 'tabs', type: 'radio', id: 'tab1'}),
-	crEl('label', {title: 'Вкладка 1', for: 'tab1'}, 'Вкладка 1'),
-	crEl('input', {name: 'tabs', type: 'radio', id: 'tab2'}),
-	crEl('label', {title: 'Вкладка 2', for: 'tab2'}, 'Вкладка 2'),
-	crEl('input', {name: 'tabs', type: 'radio', id: 'tab3'}),
-	crEl('label', {title: 'Вкладка 3', for: 'tab3'}, 'Вкладка 3'),
-	crEl('input', {name: 'tabs', type: 'radio', id: 'tab4'}),
-	crEl('label', {title: 'Вкладка 4', for: 'tab4'}, 'Вкладка 4'),
-	crEl('section', {id: 'content1'},
-		crEl('p', 'Здесь размещаете любое содержание....')
-	),
-	crEl('section', {id: 'content2'}, 
-		crEl('p', 'Здесь размещаете любое содержание....')
-	),
-	crEl('section', {id: 'content3'}, 
-		crEl('p', 'Здесь размещаете любое содержание....')
-	),
-	crEl('section', {id: 'content4'}, 
-		crEl('p', 'Здесь размещаете любое содержание....')
-	)
-)
-	
 	
 		let interface = app.full(crEl('div',
 		
-		test?tabs:crEl('form', {s:'padding:8px 16px', e:{submit: function(event){
+		crEl('form', {s:'padding:8px 16px', e:{submit: function(event){
 			event.preventDefault();
 			let obj = {
 				name: document.getElementById("name").value.trim(),
 				news: document.getElementById("news").checked,
 				weather: document.getElementById("weather").checked,
-				cource: document.getElementById("cource").checked
+				cource: document.getElementById("cource").checked,
+				speaker: document.getElementById("speaker").value,
+				emotion: document.getElementById("emotion").value,
+				robot: document.getElementById("robot").checked
 			}
 			
 			let evName = document.getElementById("event_name").value.trim();
@@ -275,13 +257,47 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			console.log(obj)
 			 ls.set('data',  JSON.stringify(obj) ); 
+			 
+			 location.reload()
 			//interface.close();
 			return false;
 		}}},
+			crEl('h4','Основное'),
 			crEl('div',{c:'form-group'},
 				crEl('label','Как я могу к вам обращаться'),
 				crEl('input',{id:'name', placeholder:'Игнатий Спартакович', required:true})
 			),
+			
+			crEl('div',{c:'form-group'},
+				
+				crEl('div', {s:'display:flex'},
+					crEl('div', {s:'margin-right:8px; width:40%'},
+						crEl('label','Голос'),
+						crEl('select',{id:'speaker'},
+							crEl('option',{value:'jane', selected:true},'jane'),
+							crEl('option',{value:'alyss'},'alyss'),
+							crEl('option',{value:'omazh'},'omazh'),
+							crEl('option',{value:'zahar'},'zahar'),
+							crEl('option',{value:'ermil'},'ermil')
+						)
+					),
+					crEl('div', {s:'margin-right:8px; width:40%'},
+						crEl('label','Интонация '),
+						crEl('select',{id:'emotion'},
+							crEl('option',{value:'good'},'good'),
+							crEl('option',{value:'neutral', selected:true},'neutral'),
+							crEl('option',{value:'evil'},'evil'),
+							crEl('option',{value:'mixed'},'mixed')
+						)
+					),
+					crEl('div', {s:'margin-left:8px'},
+						crEl('label','Робот'),
+						crEl('input',{type:'checkbox', id:'robot'})
+					)
+				)
+			),
+			
+			
 			crEl('div',{c:'form-group'},
 				crEl('label','О чём вам рассказывать'),
 				crEl('div',{s:'display:flex'},
@@ -314,17 +330,57 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		), function(){
 			
 			let sData = JSON.parse( ls.get('data') ) || {};
-		/*	if(sData && sData.name){
+
+			if(sData && sData.name){
 				document.getElementById("name").value = sData.name;
 				document.getElementById("news").checked =  sData.news;
 				document.getElementById("weather").checked =  sData.weather;
 				document.getElementById("cource").checked =  sData.cource;
-				if(sData.event){
+				document.getElementById("speaker").value =  sData.speaker || 'jane';
+				document.getElementById("emotion").value =  sData.emotion || 'neutral';
+				document.getElementById("robot").checked =  sData.robot || false;
+				if(sData.event && sData.event.uts){
 					document.getElementById("event_name").value = sData.event.name;
 					document.getElementById("event_date").value = new Date(sData.event.uts*1000).toISOString().substr(0,10);
 				}
 			}
-			*/
+			
+			
+			document.getElementById("speaker").onchange = function(){
+			
+				speak('Привет, ' + document.getElementById("name").value + ', меня зовут ' + document.getElementById("speaker").value+'!', {
+					speaker: document.getElementById("speaker").value,
+					emotion: document.getElementById("emotion").value,
+					robot:document.getElementById("robot").checked
+				})
+			
+			}
+
+
+			
+			document.getElementById("emotion").onchange = function(){
+			
+				speak('Привет, ' + document.getElementById("name").value + ', меня зовут ' + document.getElementById("speaker").value+'!', {
+					speaker: document.getElementById("speaker").value,
+					emotion: document.getElementById("emotion").value,
+					robot:document.getElementById("robot").checked
+				})
+			
+			}
+
+
+			
+			document.getElementById("robot").onchange = function(){
+			
+				speak('Привет, ' + document.getElementById("name").value + ', меня зовут ' + document.getElementById("speaker").value+'!', {
+					speaker: document.getElementById("speaker").value,
+					emotion: document.getElementById("emotion").value,
+					robot:document.getElementById("robot").checked
+				})
+			
+			}
+
+
 			
 		})
 	}
@@ -342,13 +398,56 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		)); 
 	} else {
 	
-			Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},'настройки'),'Заголовок')); 
+	
+	Content.style.padding = '8px 20px'
+	
+			Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},crEl('img',{src:'img/settings-material.svg'})),'Заголовок')); 
 		
 
 	
 		var sData = JSON.parse(ls.get('data'));
 		console.info(sData)
 		if(sData){
+		
+		
+			var speakCollection = [];
+			var lastSpeakedIndex = 0;
+			
+			function recursiveSpeak(index, callback){
+				if(speakCollection && speakCollection.length && speakCollection[index]){
+					speak(speakCollection[index],{
+						speaker: sData.speaker,
+						emotion: sData.emotion,
+						robot:sData.robot
+					}, function(){
+						if(speakCollection[index+1]){
+							recursiveSpeak(index+1, callback);
+						} else {
+							callback();
+						}
+					})
+				}
+			}
+		
+		
+			function dayHi(){
+				d = new Date();
+				if(d.getHours()<=22){ return "Добрый вечер";}
+				if(d.getHours()<=16){ return "Добрый день";}
+				if(d.getHours()<=10){ return "Доброе утро";}
+				if(d.getHours()<=5){ return "Доброй ночи";}
+				 return "Привет";
+			}
+		
+		
+			speakCollection.push(dayHi() + ", " + sData.name + "!!!");
+			speakCollection.push("Я смогу рассказать тебе кое што интересное.");
+
+			recursiveSpeak(0, function(){
+				app.msg("Конец")
+			})
+		
+		
 			if(sData.news){
 			//AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY
 			   google.load("feeds", "1");
@@ -357,13 +456,16 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				  var feed = new google.feeds.Feed("https://news.yandex.ru/index.rss");
 				  feed.setNumEntries(5);
 				  feed.load(function(result) {
+				  
+					speakCollection.push("Самые популярные новости");
+					
 					if (!result.error) {
 						var list = crEl('ul')
 					  for (var i = 0; i < result.feed.entries.length; i++) {
 						var entry = result.feed.entries[i];
 						
 						list.appendChild(crEl('li', crEl('a',{target:'_blank', href:entry.link}, entry.title)))
-						
+						speakCollection.push(entry.title);
 						
 					  }
 					  
@@ -385,10 +487,10 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 				function initialize() {
 				  var feed = new google.feeds.Feed("https://www.cbr.ru/scripts/RssCurrency.asp");
-	
+				  
 				  feed.load(function(result) {
 					if (!result.error) {
-						
+						speakCollection.push("Курсы валют");
 						var list = crEl('ul');
 						var a = result.feed.entries[0].content.split('<br>')
 						x = a.map((av)=>{ return av.split(' - '); })
@@ -396,6 +498,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 							
 							if(v[0].indexOf('Евро')>=0 || v[0].indexOf('Доллар США')>=0){
 								list.appendChild(crEl('li', v[0] + ': ', crEl('strong', v[1])))
+								
+								speakCollection.push(v[0] + " сегодня стоит " +  v[1].substr(0,2) + declOfNum(parseFloat(v[1]).toFixed(2), ['рубль', 'рубля', 'рублей'])    );
+								
 							}
 						
 						})
@@ -414,8 +519,14 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					dif = dif/(1000*60*60*24)
 				Content.appendChild(crEl('div',
 					crEl('h3','Событие'),
-					crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() + declOfNum(parseInt(dif), ['день', 'дня', 'дней']):' завтра!')  )
+					crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() +" "+ declOfNum(parseInt(dif), ['день', 'дня', 'дней']):' завтра!')  )
+					
+					
+								
+					
 				))
+				
+				speakCollection.push(  sData.event.name + (dif>1?' через ' +   dif.toFixed() +" "+ declOfNum(parseInt(dif), ['день', 'дня', 'дней']):' завтра!')  );
 			}
 			
 			
@@ -438,8 +549,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						' скорость ветра  ' + veter + ' '+
 						declOfNum(parseInt(veter), ['метр', 'метра', 'метров'])+
 						'  в секунду, ' + "";
-	
-	
+
+	speakCollection.push(  weatherStr  );
+					
 					Content.appendChild(crEl('div',
 						crEl('h3','Погода'),
 						crEl('div', weatherStr )
@@ -477,7 +589,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			}			
 			
 			
-			
+
 			
 			
 		}

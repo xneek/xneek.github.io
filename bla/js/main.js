@@ -354,7 +354,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			
 			if( sData.weather ){
-				fetch("//api.wunderground.com/api/5b9d8c009d00057d/hourly/lang:RU/q/53.2272937,44.9574388.json", function(res){
+				fetch("//api.wunderground.com/api/1badcdefdd22f927/hourly/lang:RU/q/53.2272937,44.9574388.json", function(res){
 					console.log(res)
 				})
 			/* $.getJSON(,function(w){

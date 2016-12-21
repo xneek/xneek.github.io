@@ -306,7 +306,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 			}
 			
-			if(sData.cource){
+			
 				//
 			   google.load("feeds", "1");
 
@@ -336,7 +336,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				  });
 				}
 				google.setOnLoadCallback(initialize);
-			}
+			
 		}
 		Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},'настройки'),'Заголовок')); 
 		

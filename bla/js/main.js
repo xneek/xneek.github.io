@@ -42,11 +42,11 @@ function speak(text, params, callback){
 				
 	if(url && url.length){
 		if(!document.getElementById('audio')){
-			document.body.appendChild(crEl('audio', {id:'audio',s:'display:none'}));
+			document.body.appendChild(crEl('audio', {id:'audio',s:'display:none', autoplay:true}));
 		}
 		let au = document.getElementById('audio');
 			au.src = url;		
-		//	au.load();
+			au.load();
 			au.addEventListener('error' , function() {
 				app.msg('ошибка загрузки файла'+src);
 			}, false);
@@ -58,15 +58,18 @@ function speak(text, params, callback){
 			document.getElementById("pcontrol").onclick = null;
 			
 			
-			
-				au.play();
+			au.oncanplay = function () {
+						if (au.paused && au.currentTime > 0 && !au.ended) {
+							 au.play();
+							 document.getElementById("pcontrol").innerHTML = '||';
+						}
 				
 				document.getElementById("pcontrol").onclick = (function(myAudio){
 					return function(){ 
 
 						if (myAudio.paused && myAudio.currentTime > 0 && !myAudio.ended) {
 							 myAudio.play();
-							 document.getElementById("pcontrol").innerHTML = '❚❚';
+							 document.getElementById("pcontrol").innerHTML = 'II';
 						 } else {
 							 myAudio.pause();
 							 document.getElementById("pcontrol").innerHTML = '▶';
@@ -75,7 +78,7 @@ function speak(text, params, callback){
 					}
 				})(au)
 				
-			
+			};
 
 			au.onended = function(){
 				document.getElementById("pcontrol").remove()

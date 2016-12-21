@@ -18,18 +18,18 @@ if(isLocalStorageAvailable()){
 
 
 function speak(text, params, callback){
-if(!params){params = {};}
-const speakers = ['jane', 'omazh', 'zahar', 'ermil'];
-const emotions = ['good', 'neutral','evil','mixed' ];	
-const key = '16c83422-27bb-416c-9b62-62778fd9dab8';
-params.format = 'mp3';
-params.lang = 'ru‑RU';
+	if(!params){params = {};}
+	const speakers = ['jane', 'omazh', 'zahar', 'ermil'];
+	const emotions = ['good', 'neutral','evil','mixed' ];	
+	const key = '16c83422-27bb-416c-9b62-62778fd9dab8';
+	params.format = 'mp3';
+	params.lang = 'ru‑RU';
 
-params.speaker =  params.speaker  || 'jane';
-params.emotion =  params.emotion  || 'neutral';
-params.robot   =  !!params.robot;
+	params.speaker =  params.speaker  || 'jane';
+	params.emotion =  params.emotion  || 'neutral';
+	params.robot   =  !!params.robot;
 
-let url =	'https://tts.voicetech.yandex.net/generate?'
+	let url =	'https://tts.voicetech.yandex.net/generate?'
 				+ 'text=' + text + '&'
 				+ 'format=' + params.format + '&'
 				+ 'lang=' + params.lang + '&'			
@@ -43,22 +43,39 @@ let url =	'https://tts.voicetech.yandex.net/generate?'
 	if(url && url.length){
 		let au = new Audio(url);
 			au.load();
-			if(!document.getElementById("pcontrol")){Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:16px; bottom:16px'},'P'))}
+			if(!document.getElementById("pcontrol")){
+				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
+			}
 			document.getElementById("pcontrol").onclick = null;
 			
 			
 			au.oncanplay = function () {
 				au.play();
 				
-				document.getElementById("pcontrol").onclick = function(){if(!this.dataset.pause){au.pause(); this.dataset.pause = 1} else {au.play(); this.dataset.pause = null} }
+				document.getElementById("pcontrol").onclick = (function(myAudio){
+					return function(){ 
+
+						if (myAudio.paused && myAudio.currentTime > 0 && !myAudio.ended) {
+							 myAudio.play();
+							 document.getElementById("pcontrol").innerHTML = '❚❚';
+						 } else {
+							 myAudio.pause();
+							 document.getElementById("pcontrol").innerHTML = '▶';
+						 }
+
+					}
+				})(au)
 				
 			};
 
 
 			au.play();
-		if(typeof(callback)==='function'){ 
-			au.onended =  callback
-		}
+			au.onended = function(){
+				document.getElementById("pcontrol").remove()
+				if(typeof(callback)==='function'){ 
+					callback()
+				}
+			}
 	}
 
 };

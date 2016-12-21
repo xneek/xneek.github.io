@@ -358,7 +358,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			if( sData.weather ){
 				$.get("//api.wunderground.com/api/1badcdefdd22f927/hourly/lang:RU/q/53.2272937,44.9574388.json", function(res){
-					w = JSON.parse(res.trim());
+					w = res;
 					console.log(w);
 					if( w && w.hourly_forecast ){
 						data = w.hourly_forecast [0];

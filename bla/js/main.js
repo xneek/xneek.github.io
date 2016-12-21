@@ -15,6 +15,44 @@ if(isLocalStorageAvailable()){
 }
 
 
+
+
+function speak(text, params){
+if(!params){params = {};}
+const speakers = ['jane', 'omazh', 'zahar', 'ermil'];
+const emotions = ['good', 'neutral','evil','mixed' ];	
+const key = '16c83422-27bb-416c-9b62-62778fd9dab8';
+params.format = 'mp3';
+params.lang = 'ru‑RU';
+
+params.speaker =  params.speaker  || 'jane';
+params.emotion =  params.emotion  || 'neutral';
+params.robot   =  !!params.robot;
+
+let url =	'https://tts.voicetech.yandex.net/generate?'
+				+ 'text=' + text + '&'
+				+ 'format=' + params.format + '&'
+				+ 'lang=' + params.lang + '&'			
+				+ 'speaker=' + params.speaker + '&'			
+				+ 'key=' + key + '&'			
+				+ 'emotion=' + params.emotion + '&'			
+				+ 'robot=' + params.robot + ''	
+
+
+				
+	if(url && url.length){
+		let au = new Audio(url);
+			au.play();
+		if(typeof(params.callback)==='function'){ 
+			au.onended =  params.callback
+		}
+	}
+
+};
+
+
+
+
 function declOfNum(number, titles) {  
     cases = [2, 0, 1, 1, 1, 2];  
     return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];  

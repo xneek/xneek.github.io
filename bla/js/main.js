@@ -278,9 +278,26 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		if(sData){
 			if(sData.news){
 			
-				$.get('http://www.lenty.ru/bestnews.js', function(res){
+				$.get('', function(res){
 					console.log(res)
 				})
+				
+				
+
+$.getJSON("//ajax.googleapis.com/ajax/services/feed/load?v=1.0", {
+    num: 10,
+    q: 'https://news.yandex.ru/index.rss'
+}).done(function (data) {
+    console.log(data);
+});
+				
+				
+			fetch('//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+10+'&q=https://news.yandex.ru/index.rss', function(res){
+				console.info('fetch',res)
+			})	
+				
+				
+				
 			/*
 				var parser = new DOMParser();
 				var xmlDoc = parser.parseFromString(txt, "text/xml"); // https://lenta.ru/rss/top7

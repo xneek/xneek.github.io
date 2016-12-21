@@ -278,46 +278,64 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		if(sData){
 			if(sData.news){
 			//AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY
-   google.load("feeds", "1");
+			   google.load("feeds", "1");
 
-    function initialize() {
-      var feed = new google.feeds.Feed("https://news.yandex.ru/index.rss");
-	  feed.setNumEntries(5);
-      feed.load(function(result) {
-        if (!result.error) {
-			var list = crEl('ul')
-          for (var i = 0; i < result.feed.entries.length; i++) {
-            var entry = result.feed.entries[i];
-            console.log(entry);
-			list.appendChild(crEl('li', crEl('a',{target:'_blank', href:entry.link}, entry.title)))
+				function initialize() {
+				  var feed = new google.feeds.Feed("https://news.yandex.ru/index.rss");
+				  feed.setNumEntries(5);
+				  feed.load(function(result) {
+					if (!result.error) {
+						var list = crEl('ul')
+					  for (var i = 0; i < result.feed.entries.length; i++) {
+						var entry = result.feed.entries[i];
+						console.log(entry);
+						list.appendChild(crEl('li', crEl('a',{target:'_blank', href:entry.link}, entry.title)))
+						
+						
+					  }
+					  
+					  Content.appendChild(crEl('div',
+						crEl('h3','Основные новости'),
+						list
+					  ))
+					  
+					}
+				  });
+				}
+				google.setOnLoadCallback(initialize);
+
+			}
 			
-			
-          }
-		  
-		  Content.appendChild(crEl('div',
-			crEl('h3','Основные новости'),
-			list
-		  ))
-		  
-        }
-      });
-    }
-    google.setOnLoadCallback(initialize);
-				
+			if(sData.cource){
+				//
+			   google.load("feeds", "1");
 
-
-				
+				function initialize() {
+				  var feed = new google.feeds.Feed("https://www.cbr.ru/scripts/RssCurrency.asp");
 	
-				
-				
-			/*
-				var parser = new DOMParser();
-				var xmlDoc = parser.parseFromString(txt, "text/xml"); // https://lenta.ru/rss/top7
-				I think nowadays you can also use things like querySelectorAll to quickly iterate over the document, similar to normal DOM. E.g. something like this would work:
-
-				[].forEach.call(xmlDoc.querySelectorAll('item'), function(item) {
-				console.log(item.querySelector('title').textContent);
-				});		*/	
+				  feed.load(function(result) {
+				  
+					console.log(result)
+				  
+					if (!result.error) {
+						var list = crEl('ul')
+					  for (var i = 0; i < result.feed.entries.length; i++) {
+						var entry = result.feed.entries[i];
+						console.log(entry);
+						list.appendChild(crEl('li', crEl('a',{target:'_blank', href:entry.link}, entry.title)))
+						
+						
+					  }
+					  
+					  Content.appendChild(crEl('div',
+						crEl('h3','Основные новости'),
+						list
+					  ))
+					  
+					}
+				  });
+				}
+				google.setOnLoadCallback(initialize);
 			}
 		}
 		Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},'настройки'),'Заголовок')); 

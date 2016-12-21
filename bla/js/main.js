@@ -224,9 +224,36 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 	
 	function settings(){
+	
+		let test = true;
+		
+		tabs = crEl('div', {c: 'tabs'},
+	crEl('input', {checked: '', name: 'tabs', type: 'radio', id: 'tab1'}),
+	crEl('label', {title: 'Вкладка 1', for: 'tab1'}, 'Вкладка 1'),
+	crEl('input', {name: 'tabs', type: 'radio', id: 'tab2'}),
+	crEl('label', {title: 'Вкладка 2', for: 'tab2'}, 'Вкладка 2'),
+	crEl('input', {name: 'tabs', type: 'radio', id: 'tab3'}),
+	crEl('label', {title: 'Вкладка 3', for: 'tab3'}, 'Вкладка 3'),
+	crEl('input', {name: 'tabs', type: 'radio', id: 'tab4'}),
+	crEl('label', {title: 'Вкладка 4', for: 'tab4'}, 'Вкладка 4'),
+	crEl('section', {id: 'content1'},
+		crEl('p', 'Здесь размещаете любое содержание....')
+	),
+	crEl('section', {id: 'content2'}, 
+		crEl('p', 'Здесь размещаете любое содержание....')
+	),
+	crEl('section', {id: 'content3'}, 
+		crEl('p', 'Здесь размещаете любое содержание....')
+	),
+	crEl('section', {id: 'content4'}, 
+		crEl('p', 'Здесь размещаете любое содержание....')
+	)
+)
+	
+	
 		let interface = app.full(crEl('div',
 		
-		crEl('form', {s:'padding:8px 16px', e:{submit: function(event){
+		test?tabs:crEl('form', {s:'padding:8px 16px', e:{submit: function(event){
 			event.preventDefault();
 			let obj = {
 				name: document.getElementById("name").value.trim(),

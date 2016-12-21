@@ -308,7 +308,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			
 				//
-			   google.load("feeds", "1");
+				google.load("feeds", "1");
 
 				function initialize() {
 				  var feed = new google.feeds.Feed("https://www.cbr.ru/scripts/RssCurrency.asp");
@@ -322,7 +322,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						x.forEach((v)=>{
 							
 							if(v[0].indexOf('Евро')>=0 || v[0].indexOf('Доллар США')>=0){
-								list.appendChild(crEl('li', crEl('a',{target:'_blank'}, v[0] + ':', crEl('strong', v[1]))))
+								list.appendChild(crEl('li', v[0] + ': ', crEl('strong', v[1])))
 							}
 						
 						})

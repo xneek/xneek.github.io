@@ -61,9 +61,7 @@ function speak(text, params, callback){
 			//app.msg("Прослушать?").addAction('ок', function(){ au.play() })
 			
 			document.getElementById("pcontrol").onclick = function(){ au.play() }
-			setTimeout(function(){
-			document.getElementById("pcontrol").click();
-			},500)
+
 		};
 
 		au.onended = function(){
@@ -72,6 +70,7 @@ function speak(text, params, callback){
 					callback()
 				}
 		}
+		 window.au = au;
 		
 
 	}
@@ -79,6 +78,10 @@ function speak(text, params, callback){
 };
 
 
+window.addEventListener('load', function(){
+	
+	if(window.au){window.au.play()}
+}, false)
 
 
 function declOfNum(number, titles) {  

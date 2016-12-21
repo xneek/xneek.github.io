@@ -13,30 +13,24 @@
 	<script>
 
 	
+			// ServiceWorker is a progressive technology. Ignore unsupported browsers
+			if ('serviceWorker' in navigator) {
+			     console.log('CLIENT: service worker registration in progress.');
+			  navigator.serviceWorker.register('serviceworker.js').then(function() {
+				 console.log('CLIENT: service worker registration complete.');
+				}, function(a,b) {
+			     console.log('CLIENT: service worker registration failure.',a,b);
+			  });
+			  
+			  
+			  navigator.serviceWorker.ready.then(function(registration) {
+			   console.log('Service Worker Ready');
+			});
+			  
+			} else {
+			   console.log('CLIENT: service worker is not supported.');
+			}
 
-	
-	
-	    this.ontask = function(task) {
-        alert(task.data.message);
-        console.log("Task scheduled at: " + new Date(task.time));
-        // From here on we can write the data to IndexedDB, send it to any open windows,
-        // display a notification, etc.
-		}
-
-		// https://example.com/webapp.js
-		function onTaskAdded(task) {
-			console.log("Task successfully scheduled.");
-		}
-
-		function onError(error) {
-			alert("Sorry, couldn't set the alarm: " + error);
-		}
-
-		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-			serviceWorkerRegistration.taskScheduler.add(Date.now() + (10000), {
-				message: "It's been 10 minutes, your soup is ready!"
-			}).then(onTaskAdded, onError);
-		});
 		
 	</script>
     </body>

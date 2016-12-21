@@ -315,8 +315,8 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	
 				  feed.load(function(result) {
 					if (!result.error) {
-						console.log(result);
-						var a = result.content.split('<br>')
+						console.log(result.feed);
+						var a = result.feed.content.split('<br>')
 						x = a.map((av)=>{ return av.split(' - '); })
 						x.forEach((v)=>{
 							var list = crEl('ul')

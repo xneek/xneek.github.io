@@ -314,24 +314,21 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				  var feed = new google.feeds.Feed("https://www.cbr.ru/scripts/RssCurrency.asp");
 	
 				  feed.load(function(result) {
-				  
-					console.log(result)
-				  
 					if (!result.error) {
-						var list = crEl('ul')
-					  for (var i = 0; i < result.feed.entries.length; i++) {
-						var entry = result.feed.entries[i];
-						console.log(entry);
-						list.appendChild(crEl('li', crEl('a',{target:'_blank', href:entry.link}, entry.title)))
+					
+						var a = result.content.split('<br>')
+						x = a.map((av)=>{ return av.split(' - '); })
+						x.forEach((v)=>{
+							var list = crEl('ul')
+							if(v[0].indexOf('Евро')>=0 || v[0].indexOf('Доллар США')>=0){
+								list.appendChild(crEl('li', crEl('a',{target:'_blank'}, v[0] + ':', crEl('strong', v[1]))))
+							}
 						
-						
-					  }
-					  
-					  Content.appendChild(crEl('div',
-						crEl('h3','Основные новости'),
-						list
-					  ))
-					  
+						})
+					  	  Content.appendChild(crEl('div',
+							crEl('h3','Курсы валют'),
+							list
+						  ))
 					}
 				  });
 				}

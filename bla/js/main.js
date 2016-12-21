@@ -46,25 +46,25 @@ function speak(text, params, callback){
 		}
 		
 		
-		au = document.getElementById('audio');
-			au.src = url;		
-			au.load();
-			au.addEventListener('error' , function() {
+			window.au = document.getElementById('audio');
+			window.au.src = url;		
+			window.au.load();
+			window.au.addEventListener('error' , function() {
 				app.msg('ошибка загрузки файла'+src);
 			}, false);
-			au.addEventListener('loadedmetadata', function() {
-				app.msg("loaded" + au.duration).addAction('play', au.play)
+			window.au.addEventListener('loadedmetadata', function() {
+				app.msg("loaded" + window.au.duration).addAction('play', function(){ window.au.play() })
 			if(!document.getElementById("pcontrol")){
 				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
 			}
 			document.getElementById("pcontrol").onclick = null;
 			
 			
-			au.oncanplay = function () {
+			window.au.oncanplay = function () {
 			
 			app.msg("Can play")
-						if (au.paused && au.currentTime > 0 && !au.ended) {
-							 au.play();
+						if (window.au.paused && window.au.currentTime > 0 && !window.au.ended) {
+							 window.au.play();
 							 document.getElementById("pcontrol").innerHTML = '||';
 						}
 				
@@ -80,11 +80,11 @@ function speak(text, params, callback){
 						 }
 
 					}
-				})(au)
+				})(window.au)
 				
 			};
 
-			au.onended = function(){
+			window.au.onended = function(){
 				document.getElementById("pcontrol").remove()
 				if(typeof(callback)==='function'){ 
 					callback()

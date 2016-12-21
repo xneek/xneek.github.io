@@ -16,8 +16,23 @@
 			// ServiceWorker is a progressive technology. Ignore unsupported browsers
 			if ('serviceWorker' in navigator) {
 			     console.log('CLIENT: service worker registration in progress.');
-			  navigator.serviceWorker.register('serviceworker.js',{ scope: '/alarm/' }).then(function() {
-				 console.log('CLIENT: service worker registration complete.');
+			  navigator.serviceWorker.register('serviceworker.js',{ scope: '/alarm/' }).then(function(serviceWorkerRegistration) {
+				 console.log('CLIENT: service worker registration complete.', serviceWorkerRegistration);
+    function onTaskAdded(task) {
+        console.log("Task successfully scheduled.");
+    }
+
+    function onError(error) {
+        alert("Sorry, couldn't set the alarm: " + error);
+    }
+
+				 
+				         serviceWorkerRegistration.taskScheduler.add(Date.now() + (10 * 60000), {
+            message: "It's been 10 minutes, your soup is ready!"
+        }).then(onTaskAdded, onError);
+				 
+				 
+				 
 				}, function(a,b) {
 			     console.log('CLIENT: service worker registration failure.',a,b);
 			  });

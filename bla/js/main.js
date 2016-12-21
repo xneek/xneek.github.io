@@ -288,7 +288,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						var list = crEl('ul')
 					  for (var i = 0; i < result.feed.entries.length; i++) {
 						var entry = result.feed.entries[i];
-						console.log(entry);
+						
 						list.appendChild(crEl('li', crEl('a',{target:'_blank', href:entry.link}, entry.title)))
 						
 						
@@ -315,7 +315,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	
 				  feed.load(function(result) {
 					if (!result.error) {
-						console.log(result.feed);
+						
 						var list = crEl('ul');
 						var a = result.feed.entries[0].content.split('<br>')
 						x = a.map((av)=>{ return av.split(' - '); })

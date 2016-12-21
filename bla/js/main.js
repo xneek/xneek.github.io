@@ -282,13 +282,23 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
     function initialize() {
       var feed = new google.feeds.Feed("https://news.yandex.ru/index.rss");
+	  feed.setNumEntries(5);
       feed.load(function(result) {
         if (!result.error) {
-        
+			var list = crEl('ul')
           for (var i = 0; i < result.feed.entries.length; i++) {
             var entry = result.feed.entries[i];
             console.log(entry);
+			list.appendChild(crEl('li', entry.title))
+			
+			
           }
+		  
+		  content.appendChild(crEl('div',
+			crEl('h3','Основные новости'),
+			list
+		  ))
+		  
         }
       });
     }

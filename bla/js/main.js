@@ -52,7 +52,7 @@ function speak(text, params, callback){
 		au.onloadedmetadata = function() {
 			
 			if(!document.getElementById("pcontrol")){
-				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
+				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},	'>')) //❚❚
 			}
 			document.getElementById("pcontrol").onclick = null;
 		}	
@@ -61,6 +61,9 @@ function speak(text, params, callback){
 			//app.msg("Прослушать?").addAction('ок', function(){ au.play() })
 			
 			document.getElementById("pcontrol").onclick = function(){ au.play() }
+			setTimeout(function(){
+			document.getElementById("pcontrol").click();
+			},500)
 		};
 
 		au.onended = function(){

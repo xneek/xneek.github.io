@@ -45,7 +45,7 @@ function speak(text, params, callback){
 			document.body.appendChild(crEl('audio', {id:'audio',s:'display:none', autoplay:true}));
 		}
 		
-		app.msg(src)
+		app.msg(url)
 		au = document.getElementById('audio');
 			au.src = url;		
 			au.load();

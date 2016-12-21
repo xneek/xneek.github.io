@@ -59,7 +59,7 @@ function speak(text, params, callback){
 			
 		au.oncanplay = function () {
 			app.msg("Прослушать?").addAction('ок', function(){ au.play() })
-			au.play();
+			setTimeout( function(){ au.play(); },500);
 			document.getElementById("pcontrol").innerHTML = '||';
 			document.getElementById("pcontrol").onclick = (function(myAudio){
 					return function(){ 

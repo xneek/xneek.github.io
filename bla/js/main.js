@@ -314,7 +314,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		), function(){
 			
 			let sData = JSON.parse( ls.get('data') ) || {};
-			if(sData && sData.name){
+		/*	if(sData && sData.name){
 				document.getElementById("name").value = sData.name;
 				document.getElementById("news").checked =  sData.news;
 				document.getElementById("weather").checked =  sData.weather;
@@ -324,7 +324,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					document.getElementById("event_date").value = new Date(sData.event.uts*1000).toISOString().substr(0,10);
 				}
 			}
-			
+			*/
 			
 		})
 	}

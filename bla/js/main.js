@@ -341,7 +341,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					dif = dif/(1000*60*60*24)
 				Content.appendChild(crEl('div',
 					crEl('h3','Событие'),
-					crEl('div', 'До наступления события ' + sData.event.name + ' осталось ' +  ( dif ).toString() )
+					crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() + ' дн':' сегодня!')  )
 				))
 			}
 		}

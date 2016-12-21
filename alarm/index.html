@@ -18,7 +18,7 @@
 			     console.log('CLIENT: service worker registration in progress.');
 			  navigator.serviceWorker.register('service-worker.js',{ scope: '/alarm/' }).then(function(serviceWorkerRegistration) {
 				 console.log('CLIENT: service worker registration complete.', serviceWorkerRegistration);
-
+				console.info(serviceWorkerRegistration.taskScheduler)
 				 
 				}, function(a,b) {
 			     console.log('CLIENT: service worker registration failure.',a,b);

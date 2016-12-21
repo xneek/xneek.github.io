@@ -466,10 +466,10 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		
 			function dayHi(){
 				d = new Date();
-				if(d.getHours()<=22){ return "Добрый вечер";}
-				if(d.getHours()<=16){ return "Добрый день";}
-				if(d.getHours()<=10){ return "Доброе утро";}
 				if(d.getHours()<=5){ return "Доброй ночи";}
+				if(d.getHours()<=10){ return "Доброе утро";}
+				if(d.getHours()<=16){ return "Добрый день";}
+				if(d.getHours()<=22){ return "Добрый вечер";}
 				 return "Привет";
 			}
 		

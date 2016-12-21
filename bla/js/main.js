@@ -455,6 +455,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			function recursiveSpeak(index, callback){
 				if(speakCollection && speakCollection.length && speakCollection[index]){
+					app.msg(speakCollection[index]);
 					speak(speakCollection[index],{
 						speaker: sData.speaker,
 						emotion: sData.emotion,

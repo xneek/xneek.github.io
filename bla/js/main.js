@@ -363,8 +363,12 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					if( w && w.hourly_forecast ){
 						data = w.hourly_forecast [0];
 					var veter = ((data.wspd.metric/60/60)*1000).toFixed();
-					console.info(
-						"Прогноз погоды.  " + " В " + 
+
+	
+	
+					Content.appendChild(crEl('div',
+						crEl('h3','Погода'),
+						crEl('div', 						"Прогноз погоды.  " + " В " + 
 						data.FCTTIME.hour_padded + '  '+
 						declOfNum(parseInt(data.FCTTIME.hour_padded), ['час', 'часа', 'часов'])+ ". " +
 						data.condition + '.' +
@@ -374,13 +378,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						'  цэльсия.' +
 						' скорость ветра  ' + veter + ' '+
 						declOfNum(parseInt(veter), ['метр', 'метра', 'метров'])+
-						'  в секунду, ' + ""
-					);
-	
-	
-					Content.appendChild(crEl('div',
-						crEl('h3','Событие'),
-						crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() + ' дн':' завтра!')  )
+						'  в секунду, ' + ""  )
 					))
 	
 	

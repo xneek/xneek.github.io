@@ -46,7 +46,8 @@ function speak(text, params, callback){
 		}
 		
 		au = document.getElementById('audio');
-		au.src = url;		
+		au.src = url;	
+		au.preload = 'auto';
 		au.load();
 		au.onerror = function() { app.msg('ошибка загрузки файла'+url);}
 		au.onloadedmetadata = function() {

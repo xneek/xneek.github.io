@@ -338,7 +338,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			if( sData.event && sData.event.date && ( new Date(sData.event.date)>new Date() ) ){
 				let dif = new Date(sData.event.date).getTime()-new Date().getTime();
-					dif = div/(1000*60*60*24)
+					dif = dif/(1000*60*60*24)
 				Content.appendChild(crEl('div',
 					crEl('h3','Событие'),
 					crEl('div', 'До наступления события ' + sData.event.name + ' осталось ' +  ( dif ).toString() )

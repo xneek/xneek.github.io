@@ -278,21 +278,19 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		if(sData){
 			if(sData.news){
 			
-				$.get('', function(res){
-					console.log(res)
-				})
-				
+
 				
 
 $.getJSON("//ajax.googleapis.com/ajax/services/feed/load?v=1.0", {
     num: 10,
-    q: 'https://news.yandex.ru/index.rss'
+    q: 'https://news.yandex.ru/index.rss',
+	key: 'AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY'
 }).done(function (data) {
     console.log(data);
 });
 				
 				
-			fetch('//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+10+'&q=https://news.yandex.ru/index.rss', function(res){
+			fetch('//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+10+'&q=https://news.yandex.ru/index.rss&key='+'AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY', function(res){
 				console.info('fetch',res)
 			})	
 				

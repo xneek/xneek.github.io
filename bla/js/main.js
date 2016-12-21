@@ -362,21 +362,28 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					console.log(w);
 					if( w && w.hourly_forecast ){
 						data = w.hourly_forecast [0];
-	var veter = ((data.wspd.metric/60/60)*1000).toFixed();
-	console.info(
-		"Прогноз погоды на " + data.FCTTIME.mday + " " +
-		data.FCTTIME.month_name + " в " + 
-		data.FCTTIME.hour_padded + '  '+
-		declOfNum(parseInt(data.FCTTIME.hour_padded), ['час', 'часа', 'часов'])+
-		data.condition + '.' +
-		'Температура ' + data.temp.metric+' ' + 
-		(declOfNum( Math.abs(+(data.temp.metric)), ['градус', 'градуса', 'градусов']) || ' градусов ')+', а ощущается как ' + data.feelslike.metric+ " "+
-		(declOfNum(Math.abs(+(data.feelslike.metric)), ['градус', 'градуса', 'градусов']) || 'градусов' )+
-		'  цэльсия.' +
-		' скорость ветра  ' + veter + ' '+
-		declOfNum(parseInt(veter), ['метр', 'метра', 'метров'])+
-		'  в секунду, ' + ""
-	);
+					var veter = ((data.wspd.metric/60/60)*1000).toFixed();
+					console.info(
+						"Прогноз погоды.  " + " В " + 
+						data.FCTTIME.hour_padded + '  '+
+						declOfNum(parseInt(data.FCTTIME.hour_padded), ['час', 'часа', 'часов'])+ ". " +
+						data.condition + '.' +
+						'Температура ' + data.temp.metric+' ' + 
+						(declOfNum( Math.abs(+(data.temp.metric)), ['градус', 'градуса', 'градусов']) || ' градусов ')+', а ощущается как ' + data.feelslike.metric+ " "+
+						(declOfNum(Math.abs(+(data.feelslike.metric)), ['градус', 'градуса', 'градусов']) || 'градусов' )+
+						'  цэльсия.' +
+						' скорость ветра  ' + veter + ' '+
+						declOfNum(parseInt(veter), ['метр', 'метра', 'метров'])+
+						'  в секунду, ' + ""
+					);
+	
+	
+					Content.appendChild(crEl('div',
+						crEl('h3','Событие'),
+						crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() + ' дн':' завтра!')  )
+					))
+	
+	
 					}
 				})
 			/* $.getJSON(,function(w){

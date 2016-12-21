@@ -273,6 +273,11 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			)
 		)); 
 	} else {
+	
+			Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},'настройки'),'Заголовок')); 
+		
+
+	
 		var sData = JSON.parse(ls.get('data'));
 		console.info(sData)
 		if(sData){
@@ -344,9 +349,47 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() + ' дн':' завтра!')  )
 				))
 			}
+			
+			
+			
+			
+			if( sData.weather ){
+				fetch("//api.wunderground.com/api/5b9d8c009d00057d/hourly/lang:RU/q/53.2272937,44.9574388.json", function(res){
+					console.log(res)
+				})
+			/* $.getJSON(,function(w){
+						
+
+						
+							if( w && w.hourly_forecast ){
+								
+								var slider = crEl('div',{id:'tempusCarousel',c:'carousel carousel-slider center', d:{indicators:true}});
+								
+								var cData = [], minD=null, maxD=null;
+								w.hourly_forecast.forEach(function(hp){
+									slider.appendChild(new ColItem(hp));
+									//var d = hp.FCTTIME.mday + ' ' + hp.FCTTIME.month_name_abbrev+' ' + hp.FCTTIME.hour_padded + ':' + hp.FCTTIME.min;
+									if(!minD || minD>hp.FCTTIME.epoch){minD = hp.FCTTIME.epoch}
+									if(!maxD || maxD<hp.FCTTIME.epoch){maxD = hp.FCTTIME.epoch}
+									cData.push([new Date(hp.FCTTIME.epoch*1000), +hp.temp.metric, +hp.feelslike.metric])
+								});
+								
+								slider.appendChild(crEl('div',{c:'carousel-item', s:'padding:20px',id:'firstSl'}));
+								
+								
+								Content.appendChild(slider)
+								$(slider).carousel({full_width: true});
+								//l37 r39*/
+			
+			
+			
+			}			
+			
+			
+			
+			
+			
 		}
-		Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},'настройки'),'Заголовок')); 
-		
 
 		
 		

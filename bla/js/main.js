@@ -30,7 +30,7 @@ function speak(text, params, callback){
 	params.robot   =  !!params.robot;
 
 	let url =	'https://tts.voicetech.yandex.net/generate?'
-				+ 'text=' + text + '&'
+				+ 'text=' + encodeURIComponent(text) + '&'
 				+ 'format=' + params.format + '&'
 				+ 'lang=' + params.lang + '&'			
 				+ 'speaker=' + params.speaker + '&'			
@@ -45,7 +45,7 @@ function speak(text, params, callback){
 			document.body.appendChild(crEl('audio', {id:'audio',s:'display:none', autoplay:true}));
 		}
 		
-		app.msg(url)
+		
 		au = document.getElementById('audio');
 			au.src = url;		
 			au.load();
@@ -53,7 +53,7 @@ function speak(text, params, callback){
 				app.msg('ошибка загрузки файла'+src);
 			}, false);
 			au.addEventListener('loadedmetadata', function() {
-				
+				app.msg("loaded")
 			if(!document.getElementById("pcontrol")){
 				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
 			}
@@ -61,6 +61,8 @@ function speak(text, params, callback){
 			
 			
 			au.oncanplay = function () {
+			
+			app.msg("Can play")
 						if (au.paused && au.currentTime > 0 && !au.ended) {
 							 au.play();
 							 document.getElementById("pcontrol").innerHTML = '||';

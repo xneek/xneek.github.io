@@ -294,7 +294,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
           }
 		  
-		  content.appendChild(crEl('div',
+		  Content.appendChild(crEl('div',
 			crEl('h3','Основные новости'),
 			list
 		  ))

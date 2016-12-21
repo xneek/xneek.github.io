@@ -44,7 +44,9 @@ function speak(text, params, callback){
 		if(!document.getElementById('audio')){
 			document.body.appendChild(crEl('audio', {id:'audio',s:'display:none', autoplay:true}));
 		}
-		let au = document.getElementById('audio');
+		
+		app.msg(src)
+		au = document.getElementById('audio');
 			au.src = url;		
 			au.load();
 			au.addEventListener('error' , function() {

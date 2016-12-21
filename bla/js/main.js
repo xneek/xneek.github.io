@@ -46,20 +46,19 @@ function speak(text, params, callback){
 		}
 		let au = document.getElementById('audio');
 			au.src = url;		
-			au.load();
+		//	au.load();
 			au.addEventListener('error' , function() {
 				app.msg('ошибка загрузки файла'+src);
 			}, false);
 			au.addEventListener('loadedmetadata', function() {
-				time = audio.duration;
-			
+				
 			if(!document.getElementById("pcontrol")){
 				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
 			}
 			document.getElementById("pcontrol").onclick = null;
 			
 			
-			au.oncanplay = function () {
+			
 				au.play();
 				
 				document.getElementById("pcontrol").onclick = (function(myAudio){
@@ -76,7 +75,7 @@ function speak(text, params, callback){
 					}
 				})(au)
 				
-			};
+			
 
 			au.onended = function(){
 				document.getElementById("pcontrol").remove()

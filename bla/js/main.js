@@ -53,7 +53,7 @@ function speak(text, params, callback){
 				app.msg('ошибка загрузки файла'+src);
 			}, false);
 			window.au.addEventListener('loadedmetadata', function() {
-				app.msg("loaded" + window.au.duration).addAction('play', function(){ window.au.play() })
+				app.msg("Прослушать?").addAction('ок', function(){ window.au.play() })
 			if(!document.getElementById("pcontrol")){
 				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
 			}
@@ -62,7 +62,7 @@ function speak(text, params, callback){
 			
 			window.au.oncanplay = function () {
 			
-			app.msg("Can play")
+			//app.msg("Can play")
 						if (window.au.paused && window.au.currentTime > 0 && !window.au.ended) {
 							 window.au.play();
 							 document.getElementById("pcontrol").innerHTML = '||';
@@ -461,7 +461,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			function recursiveSpeak(index, callback){
 				if(speakCollection && speakCollection.length && speakCollection[index]){
-					app.msg(speakCollection[index]);
+					//app.msg(speakCollection[index]);
 					speak(speakCollection[index],{
 						speaker: sData.speaker,
 						emotion: sData.emotion,

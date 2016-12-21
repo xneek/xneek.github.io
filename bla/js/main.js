@@ -41,8 +41,18 @@ function speak(text, params, callback){
 
 				
 	if(url && url.length){
-		let au = new Audio(url);
+		if(!document.getElementById('audio')){
+			document.body.appendChild(crEl('audio', {id:'audio',s:'display:none'}));
+		}
+		let au = document.getElementById('audio');
+			au.src = url;		
 			au.load();
+			au.addEventListener('error' , function() {
+				app.msg('ошибка загрузки файла'+src);
+			}, false);
+			au.addEventListener('loadedmetadata', function() {
+				time = audio.duration;
+			
 			if(!document.getElementById("pcontrol")){
 				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
 			}
@@ -76,6 +86,8 @@ function speak(text, params, callback){
 					callback()
 				}
 			}
+			});
+
 	}
 
 };

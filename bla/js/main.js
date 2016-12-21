@@ -414,7 +414,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	
 	Content.style.padding = '8px 20px'
 	
-			Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},crEl('img',{src:'img/settings-material.svg'})),'Заголовок')); 
+			Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},crEl('img',{src:'img/settings-material.svg'})),'Болталка')); 
 		
 
 	

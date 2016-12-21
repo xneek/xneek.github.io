@@ -58,22 +58,9 @@ function speak(text, params, callback){
 		}	
 			
 		au.oncanplay = function () {
-			app.msg("Прослушать?").addAction('ок', function(){ au.play() })
-			setTimeout( function(){ au.play(); },500);
-			document.getElementById("pcontrol").innerHTML = '||';
-			document.getElementById("pcontrol").onclick = (function(myAudio){
-					return function(){ 
-
-						if (myAudio.paused && myAudio.currentTime > 0 && !myAudio.ended) {
-							 myAudio.play();
-							 document.getElementById("pcontrol").innerHTML = 'II';
-						 } else {
-							 myAudio.pause();
-							 document.getElementById("pcontrol").innerHTML = '▶';
-						 }
-
-					}
-				})(au)	
+			//app.msg("Прослушать?").addAction('ок', function(){ au.play() })
+			
+			document.getElementById("pcontrol").onclick = function(){ au.play() }
 		};
 
 		au.onended = function(){

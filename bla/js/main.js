@@ -316,10 +316,11 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				  feed.load(function(result) {
 					if (!result.error) {
 						console.log(result.feed);
+						var list = crEl('ul');
 						var a = result.feed.entries[0].content.split('<br>')
 						x = a.map((av)=>{ return av.split(' - '); })
 						x.forEach((v)=>{
-							var list = crEl('ul')
+							
 							if(v[0].indexOf('Евро')>=0 || v[0].indexOf('Доллар США')>=0){
 								list.appendChild(crEl('li', crEl('a',{target:'_blank'}, v[0] + ':', crEl('strong', v[1]))))
 							}

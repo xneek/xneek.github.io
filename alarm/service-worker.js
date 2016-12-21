@@ -14,9 +14,10 @@
         alert("Sorry, couldn't set the alarm: " + error);
     }
 
-    navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+	if(navigator.serviceWorker){
+navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
         serviceWorkerRegistration.taskScheduler.add(Date.now() + (10 * 60000), {
             message: "It's been 10 minutes, your soup is ready!"
         }).then(onTaskAdded, onError);
     });
-        
+       }

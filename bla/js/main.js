@@ -349,7 +349,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					dif = dif/(1000*60*60*24)
 				Content.appendChild(crEl('div',
 					crEl('h3','Событие'),
-					crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() + ' дн':' завтра!')  )
+					crEl('div', sData.event.name + (dif>1?' через ' +   dif.toFixed() + declOfNum(parseInt(dif), ['день', 'дня', 'дней']):' завтра!')  )
 				))
 			}
 			
@@ -367,10 +367,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						data.FCTTIME.hour_padded + '  '+
 						declOfNum(parseInt(data.FCTTIME.hour_padded), ['час', 'часа', 'часов'])+ ". " +
 						data.condition + '.' +
-						'Температура ' + data.temp.metric+' ' + 
-						(declOfNum( Math.abs(+(data.temp.metric)), ['градус', 'градуса', 'градусов']) || ' градусов ')+', а ощущается как ' + data.feelslike.metric+ " "+
+						'Температура ' + data.temp.metric+' ' + ', а ощущается как ' + data.feelslike.metric+ " "+
 						(declOfNum(Math.abs(+(data.feelslike.metric)), ['градус', 'градуса', 'градусов']) || 'градусов' )+
-						'  цэльсия.' +
+						'  цельсия.' +
 						' скорость ветра  ' + veter + ' '+
 						declOfNum(parseInt(veter), ['метр', 'метра', 'метров'])+
 						'  в секунду, ' + "";

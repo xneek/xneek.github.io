@@ -42,6 +42,19 @@ let url =	'https://tts.voicetech.yandex.net/generate?'
 				
 	if(url && url.length){
 		let au = new Audio(url);
+			au.load();
+			if(!document.getElementById("pcontrol")){Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:16px; bottom:16px'},'P'))}
+			document.getElementById("pcontrol").onclick = null;
+			
+			
+			au.oncanplay = function () {
+				au.play();
+				
+				document.getElementById("pcontrol").onclick = function(){if(!this.dataset.pause){au.pause(); this.dataset.pause = 1} else {au.play(); this.dataset.pause = null} }
+				
+			};
+
+
 			au.play();
 		if(typeof(callback)==='function'){ 
 			au.onended =  callback
@@ -445,7 +458,6 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 			recursiveSpeak(0, function(){
 				app.msg("Конец");
-				app.speak('У меня всё')
 			})
 		
 		

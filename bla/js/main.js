@@ -467,6 +467,8 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 							callback();
 						}
 					})
+				} else {
+					app.msg("Нет данных")
 				}
 			}
 		
@@ -484,9 +486,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			speakCollection.push(dayHi() + ", " + sData.name + "!!!");
 			speakCollection.push("Я смогу рассказать тебе кое што интересное.");
 
-			recursiveSpeak(0, function(){
-				app.msg("Конец");
-			})
+
 		
 		
 			if(sData.news){
@@ -631,7 +631,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			
 
-			
+			recursiveSpeak(0, function(){
+				app.msg("Конец");
+			})
 			
 		}
 

@@ -15,7 +15,10 @@ if(isLocalStorageAvailable()){
 }
 
 
-
+function declOfNum(number, titles) {  
+    cases = [2, 0, 1, 1, 1, 2];  
+    return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];  
+}
 
 function fetch(address, callback, method ='GET') {
 	 var XHR = window.XDomainRequest || window.XMLHttpRequest
@@ -355,7 +358,25 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			if( sData.weather ){
 				$.get("//api.wunderground.com/api/1badcdefdd22f927/hourly/lang:RU/q/53.2272937,44.9574388.json", function(res){
-					console.log(res)
+					w = JSON.parse(res);
+					if( w && w.hourly_forecast ){
+						data = w.hourly_forecast [0];
+	var veter = ((data.wspd.metric/60/60)*1000).toFixed();
+	console.info(
+		"Прогноз погоды на " + data.FCTTIME.mday + " " +
+		data.FCTTIME.month_name + " в " + 
+		data.FCTTIME.hour_padded + '  '+
+		declOfNum(parseInt(data.FCTTIME.hour_padded), ['час', 'часа', 'часов'])+
+		data.condition + '.' +
+		'Температура ' + data.temp.metric+' ' + 
+		(declOfNum( Math.abs(+(data.temp.metric)), ['градус', 'градуса', 'градусов']) || ' градусов ')+', а ощущается как ' + data.feelslike.metric+ " "+
+		(declOfNum(Math.abs(+(data.feelslike.metric)), ['градус', 'градуса', 'градусов']) || 'градусов' )+
+		'  цэльсия.' +
+		' скорость ветра  ' + veter + ' '+
+		declOfNum(parseInt(veter), ['метр', 'метра', 'метров'])+
+		'  в секунду, ' + ""
+	);
+					}
 				})
 			/* $.getJSON(,function(w){
 						

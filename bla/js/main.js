@@ -45,30 +45,23 @@ function speak(text, params, callback){
 			document.body.appendChild(crEl('audio', {id:'audio',s:'display:none', autoplay:true}));
 		}
 		
-		
-			window.au = document.getElementById('audio');
-			window.au.src = url;		
-			window.au.load();
-			window.au.addEventListener('error' , function() {
-				app.msg('ошибка загрузки файла'+src);
-			}, false);
-			window.au.addEventListener('loadedmetadata', function() {
-				app.msg("Прослушать?").addAction('ок', function(){ window.au.play() })
+		au = document.getElementById('audio');
+		au.src = url;		
+		au.load();
+		au.onerror = function() { app.msg('ошибка загрузки файла'+url);}
+		au.onloadedmetadata = function() {
+			
 			if(!document.getElementById("pcontrol")){
 				Content.appendChild(crEl('button',{c:'btn-floating', id:'pcontrol', s:'position:fixed; right:24px; bottom:24px; border:none'},'❚❚'))
 			}
 			document.getElementById("pcontrol").onclick = null;
+		}	
 			
-			
-			window.au.oncanplay = function () {
-			
-			//app.msg("Can play")
-						if (window.au.paused && window.au.currentTime > 0 && !window.au.ended) {
-							 window.au.play();
-							 document.getElementById("pcontrol").innerHTML = '||';
-						}
-				
-				document.getElementById("pcontrol").onclick = (function(myAudio){
+		au.oncanplay = function () {
+			app.msg("Прослушать?").addAction('ок', function(){ au.play() })
+			au.play();
+			document.getElementById("pcontrol").innerHTML = '||';
+			document.getElementById("pcontrol").onclick = (function(myAudio){
 					return function(){ 
 
 						if (myAudio.paused && myAudio.currentTime > 0 && !myAudio.ended) {
@@ -80,17 +73,16 @@ function speak(text, params, callback){
 						 }
 
 					}
-				})(window.au)
-				
-			};
+				})(au)	
+		};
 
-			window.au.onended = function(){
+		au.onended = function(){
 				document.getElementById("pcontrol").remove()
 				if(typeof(callback)==='function'){ 
 					callback()
 				}
-			}
-			});
+		}
+		
 
 	}
 

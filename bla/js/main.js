@@ -289,7 +289,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
           for (var i = 0; i < result.feed.entries.length; i++) {
             var entry = result.feed.entries[i];
             console.log(entry);
-			list.appendChild(crEl('li', entry.title))
+			list.appendChild(crEl('li', crEl('a',{target:'_blank', href:entry.link}, entry.title)))
 			
 			
           }
@@ -320,7 +320,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				});		*/	
 			}
 		}
-		Content.appendChild(crEl('h1','hi1', crEl('a',{e:{click:settings}},'настройки'))); 
+		Content.appendChild(crEl('h1',crEl('a',{e:{click:settings}, s:'float:right'},'настройки'),'Заголовок')); 
 		
 
 		

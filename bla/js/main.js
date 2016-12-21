@@ -277,23 +277,27 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 		console.info(sData)
 		if(sData){
 			if(sData.news){
-			
+			//AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY
+   google.load("feeds", "1");
+
+    function initialize() {
+      var feed = new google.feeds.Feed("https://news.yandex.ru/index.rss");
+      feed.load(function(result) {
+        if (!result.error) {
+        
+          for (var i = 0; i < result.feed.entries.length; i++) {
+            var entry = result.feed.entries[i];
+            console.log(entry);
+          }
+        }
+      });
+    }
+    google.setOnLoadCallback(initialize);
+				
+
 
 				
-
-$.getJSON("//ajax.googleapis.com/ajax/services/feed/load?v=1.0", {
-    num: 10,
-    q: 'https://news.yandex.ru/index.rss',
-	key: 'AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY'
-}).done(function (data) {
-    console.log(data);
-});
-				
-				
-			fetch('//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+10+'&q=https://news.yandex.ru/index.rss&key='+'AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY', function(res){
-				console.info('fetch',res)
-			})	
-				
+	
 				
 				
 			/*

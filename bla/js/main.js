@@ -15,9 +15,74 @@ if(isLocalStorageAvailable()){
 }
 
 
+function Speaker(){
+	th = this;
+	this.voices = [];
+	synth = window.speechSynthesis;
+	this._getVoices = function(cb){
+		th.voices = synth.getVoices();
+		if( typeof cb === 'function' )cb.call(this)
+	} 
+	this._getVoice = function(lang){
+		for(i = 0; i < this.voices.length ; i++){
+			if(this.voices[i].lang == lang){ return this.voices[i]; }
+		}
+		return false;
+	} 
+
+	this.speak = function(text, callback){
+		if(!this.voices.length){ setTimeout(function(){th.speak.apply(th, [text,callback])},1000); return false;}
+			var utterThis = new SpeechSynthesisUtterance(text);
+				utterThis.pitch = 1;
+				utterThis.lang = 'ru-RU';
+				utterThis.rate = 1;
+				utterThis.voice = th._getVoice('ru-RU');
+				
+				console.info(text, callback)
+				
+			synth.speak(utterThis);
+			  utterThis.onpause = function(event) {
+				var char = event.utterance.text.charAt(event.charIndex);
+				console.log('Speech paused at character ' + event.charIndex + ' of "' +
+				event.utterance.text + '", which is "' + char + '".');
+			  }
+			  utterThis.addEventListener('end', function(){ 
+					if(typeof callback === 'function'){
+					callback() 
+					}
+					console.log('endddddddd')
+				}, false);
+	}	
+	
+	
+	if (synth.onvoiceschanged !== undefined) {
+	   synth.onvoiceschanged = this._getVoices;
+	} else {
+		this._getVoices();
+	}
+}
+
+
+
+
+  
+ 
+
+
+
+
+
+
+
 
 
 function speak(text, params, callback){
+	
+	var s = new Speaker();
+        s.speak( text, ()=>{app.msg('ololo')});
+		return;
+	
+	
 	if(!params){params = {};}
 	const speakers = ['jane', 'omazh', 'zahar', 'ermil'];
 	const emotions = ['good', 'neutral','evil','mixed' ];	

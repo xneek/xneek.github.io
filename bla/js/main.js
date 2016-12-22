@@ -31,27 +31,31 @@ function Speaker(){
 	} 
 
 	this.speak = function(text, callback){
+	console.info('Speak', text)//synth.cancel();
 		if(!this.voices.length){ setTimeout(function(){th.speak.apply(th, [text,callback])},1000); return false;}
 			var utterThis = new SpeechSynthesisUtterance(text);
 				utterThis.pitch = 1;
 				utterThis.lang = 'ru-RU';
 				utterThis.rate = 1;
 				utterThis.voice = th._getVoice('ru-RU');
-				
-				console.info(text, callback)
-				
 			synth.speak(utterThis);
+
+  function _wait() {
+    if ( ! synth.speaking ) {
+		if(typeof callback === 'function'){ callback()}
+      return;
+    }
+    window.setTimeout( _wait, 200 );
+  }
+  _wait();
+			
+			
 			  utterThis.onpause = function(event) {
 				var char = event.utterance.text.charAt(event.charIndex);
 				console.log('Speech paused at character ' + event.charIndex + ' of "' +
 				event.utterance.text + '", which is "' + char + '".');
 			  }
-			  utterThis.addEventListener('end', function(){ 
-					if(typeof callback === 'function'){
-					callback() 
-					}
-					console.log('endddddddd')
-				}, false);
+
 	}	
 	
 	
@@ -71,15 +75,15 @@ function Speaker(){
 
 
 
-
+var s = new Speaker();
 
 
 
 
 function speak(text, params, callback){
 	
-	var s = new Speaker();
-        s.speak( text, ()=>{app.msg('ololo')});
+	
+        s.speak( text, callback);
 		return;
 	
 	

@@ -31,7 +31,7 @@ function Speaker(){
 	} 
 
 	this.speak = function(text, callback){
-	console.info('Speak', text)//synth.cancel();
+	//console.info('Speak', text)//synth.cancel();
 		if(!this.voices.length){ setTimeout(function(){th.speak.apply(th, [text,callback])},1000); return false;}
 			var utterThis = new SpeechSynthesisUtterance(text);
 				utterThis.pitch = 1;
@@ -693,7 +693,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 
 			recursiveSpeak(0, function(){
-				app.msg("Конец");
+				speak("У меня всё!");
 			})
 			
 		}

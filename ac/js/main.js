@@ -165,8 +165,24 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');*/
 					}
 					if(data.data.task){
+						let mm = crEl('div', {c:'full-centred', id:'task_modal'},
+							crEl('div',{s:'margin-bottom:24px;'},
+								crEl('p',{}, data.data.task.text)
+							),
+							crEl('button',{c:'btn btn-primary', e:{click: function(){
+								window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}));
+								let el = document.getElementById("modal");
+								el.animate('bounceOut', function(){
+									el.remove();
+								})
+							}}},'Выполнено')
+						);
+						app.full(mm, function(){
+							document.getElementById("modal").animate('flipInX')
+						})
+						
 						app.msg(data.data.task.text,2,60000).addAction('Выполнено', function(){
-							window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}))
+							
 						});
 						if(data.data.task.music){app.msg('Музыка '+data.data.task.music).addAction('Воспроизвести', function(){
 							if(!this.dataset.play){
@@ -194,7 +210,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 							crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Петя'), crEl('div',{c:'fishka', s:'left:33%; background-color:pink;'},'35'))*/
 						}
 						
-						function moveUser(id_user, to){
+						function moveUser(id_user, to, from){
 							let el = document.getElementById('player_id_' + id_user);
 							if(el){
 								let fshk = el.querySelector('.fishka');
@@ -209,7 +225,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						if(!document.getElementById('player_id_' + mov.id_user)){
 							plrs.appendChild(new Player(mov.id_user, mov.user));
 						}
-						moveUser(mov.id_user, mov.to)
+						moveUser(mov.id_user, mov.to, mov.from)
 
 
 						

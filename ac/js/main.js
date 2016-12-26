@@ -188,7 +188,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						let mov = data.data.move;
 						
 						function Player(id_user, dt){
-							return crEl('div',{c:'player', id:'player_id_' + id_user}, crEl('div',{c:'player-name'}, dt.name + '\u00a0' + dt.surname), crEl('div',{c:'fishka', s:'background-color:'+dt.color}, dt.position.toString()));
+							return crEl('div',{c:'player', id:'player_id_' + id_user}, crEl('div',{c:'player-name', s:'color:'+dt.color}, dt.name + '\u00a0' + dt.surname), crEl('div',{c:'fishka', s:'background-color:'+dt.color}, dt.position.toString()));
 							/*,
 							crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Даша Кукушкина'), crEl('div',{c:'fishka'},'12')),
 							crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Петя'), crEl('div',{c:'fishka', s:'left:33%; background-color:pink;'},'35'))*/

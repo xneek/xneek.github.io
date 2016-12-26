@@ -204,8 +204,9 @@ transition:all 0.3s ease-in;
 .players { display:block;
 padding:8px; margin:8px; background:#f8f8f8; box-shadow: 0 1px 8px rgba(0,0,0,0.33333);}
 
-.players:empty {
-	content:'Ждем игроков'
+.players:empty:before {
+	content:'Ждем игроков';
+	opecity:0.5;
 } 
 
 .players .player {

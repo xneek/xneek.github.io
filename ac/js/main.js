@@ -161,8 +161,8 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				if(data.data){
 					console.log("Данные", data)
 					if(data.data.move){
-						app.msg('Выпало ' + data.data.move.dice);
-						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');
+					/*	app.msg('Выпало ' + data.data.move.dice);
+						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');*/
 					}
 					if(data.data.task){
 						app.msg(data.data.task.text,2,60000).addAction('Выполнено', function(){

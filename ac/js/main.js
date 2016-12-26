@@ -178,9 +178,6 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 										let el = document.getElementById("modal");
 										el.animate('bounceOut', function(){
 											el.remove();
-											setTimeout(function(){
-												document.getElementById("completeButton").disabled = false;
-											},10000)
 										})
 									}}},'Выполнено')								
 								)
@@ -189,7 +186,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						);
 						app.full(mm, function(){
 							document.getElementById("modal").animate('flipInX');
-							
+							setTimeout(function(){
+								document.getElementById("completeButton").disabled = false;
+							},15000)
 						})
 						
 

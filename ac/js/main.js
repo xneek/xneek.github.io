@@ -173,7 +173,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 									(data.data.task.music?crEl('button',{c:'btn', s:'margin-right:10px', e:{click: function(){
 										window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
 									}}},'Включить музыку'):null),
-									crEl('button',{c:'btn btn-primary', id:'completeButton', disabled:true, e:{click: function(){
+									crEl('button',{c:'btn btn-primary', d:{timer:'*'},id:'completeButton', disabled:true, e:{click: function(){
 										window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}));
 										let el = document.getElementById("modal");
 										el.animate('bounceOut', function(){

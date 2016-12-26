@@ -184,7 +184,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						})
 					}	
 
-					if(data.data && data.data.move){
+					if(data.data && data.data.move && data.data.move.user){
 						let mov = data.data.move;
 						
 						function Player(id_user, dt){

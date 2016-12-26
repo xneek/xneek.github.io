@@ -182,7 +182,39 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						app.msg('Бросай кубик').addAction('Бросить', function(){
 							window.ws.send( JSON.stringify({toS:app.server, data: {dice:true}}))
 						})
-					}			
+					}	
+
+					if(data.data && data.data.move){
+						let mov = data.data.move;
+						
+						function Player(id_user, dt){
+							return crEl('div',{c:'player', id:'player_id_' + id_user}, crEl('div',{c:'player-name'}, dt.name + '\u00a0' + dt.surname), crEl('div',{c:'fishka', s:'background-color:'+dt.color}, dt.position.toString()));
+							/*,
+							crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Даша Кукушкина'), crEl('div',{c:'fishka'},'12')),
+							crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Петя'), crEl('div',{c:'fishka', s:'left:33%; background-color:pink;'},'35'))*/
+						}
+						
+						function moveUser(id_user, to){
+							let el = document.getElementById('player_id_' + id_user);
+							if(el){
+								let fshk = el.querySelector('.fishka');
+								if(fshk){
+									fshk.style.left = to+'%';
+									fshk.innerHTML = to.toString();
+								}
+							}
+						}
+						
+						let plrs = document.getElementById("players")
+						if(!document.getElementById('player_id_' + mov.id_user)){
+							plrs.appendChild(new Player(mov.id_user, mov.user));
+						}
+						moveUser(mov.id_user, mov.to)
+
+
+						
+					}
+					
 				}
 			
 
@@ -282,16 +314,15 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			window.ws.send( JSON.stringify({toS:app.server, data: {connected:user}}))
 			Content.innerHTML = '';
 
+			window.Players = [];
+			
+			
 			Content.appendChild(crEl('div', {c:'full-centred'},
 			
 					crEl('div', {s:'background:#fff; width:100%; height:100%; margin:0; float:left;'},
 						crEl('div', {c:'text-center'},
 							crEl('h5','Игра началась'),
-							crEl('div',{c:'players'},
-								crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Вася иванов'), crEl('div',{c:'fishka'})),
-								crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Даша Кукушкина'), crEl('div',{c:'fishka'},'12')),
-								crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Петя'), crEl('div',{c:'fishka', s:'left:33%; background-color:pink;'},'35'))
-							)
+							crEl('div',{c:'players', id:'players'})
 						)
 					)
 
@@ -303,8 +334,8 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	}
 	
 	if(location.hash && location.hash.length){
-
-
+		document.getElementById("idenTyContainer").hide()
+		document.getElementById("name").focus();
 	}
 
 

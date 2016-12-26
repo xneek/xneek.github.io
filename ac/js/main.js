@@ -165,33 +165,35 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');*/
 					}
 					if(data.data.task){
+						let pressButtonTimer, closeTimer;
 						let mm = crEl('div', {c:'full-centred', id:'task_modal'},
-							crEl('div',{s:'margin-bottom:24px;'},
-								crEl('p',{}, data.data.task.text)
-							),
-							crEl('button',{c:'btn btn-primary', e:{click: function(){
-								window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}));
-								let el = document.getElementById("modal");
-								el.animate('bounceOut', function(){
-									el.remove();
-								})
-							}}},'Выполнено')
+							crEl('div',{,
+								crEl('p',{s:'margin-bottom:24px; font-size:1.5em;'}}, data.data.task.text),
+								crEl('div',{c:'text-center'},
+									data.data.task.music?crEl('button',{c:'btn', s:'margin-right:10px', e:{click: function(){
+										window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
+									}}},'Включить музыку'):null,
+									crEl('button',{c:'btn btn-primary', id:'completeButton', disabled:true, e:{click: function(){
+										window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}));
+										let el = document.getElementById("modal");
+										el.animate('bounceOut', function(){
+											el.remove();
+											setTimeout(function(){
+												document.getElementById("completeButton").disabled = false;
+											},10000)
+										})
+									}}},'Выполнено')								
+								)
+								
+							)
+
 						);
 						app.full(mm, function(){
-							document.getElementById("modal").animate('flipInX')
+							document.getElementById("modal").animate('flipInX');
+							
 						})
 						
-						app.msg(data.data.task.text,2,60000).addAction('Выполнено', function(){
-							
-						});
-						if(data.data.task.music){app.msg('Музыка '+data.data.task.music).addAction('Воспроизвести', function(){
-							if(!this.dataset.play){
-								window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
-							} else {
-								//pauseMusic
-							}
-							
-						}, false);}
+
 					}						
 					
 					if(data.data.dropDice){

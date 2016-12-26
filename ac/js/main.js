@@ -170,9 +170,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 							crEl('div',
 								crEl('p',{s:'margin-bottom:24px; font-size:1.5em;'}, data.data.task.text),
 								crEl('div',{c:'text-center'},
-									data.data.task.music?crEl('button',{c:'btn', s:'margin-right:10px', e:{click: function(){
+									(data.data.task.music?crEl('button',{c:'btn', s:'margin-right:10px', e:{click: function(){
 										window.ws.send( JSON.stringify({toS:app.server, data: {playMusic:true}}))
-									}}},'Включить музыку'):null,
+									}}},'Включить музыку'):null),
 									crEl('button',{c:'btn btn-primary', id:'completeButton', disabled:true, e:{click: function(){
 										window.ws.send( JSON.stringify({toS:app.server, data: {complete:true}}));
 										let el = document.getElementById("modal");

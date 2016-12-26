@@ -167,7 +167,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					if(data.data.task){
 						let pressButtonTimer, closeTimer;
 						let mm = crEl('div', {c:'full-centred', id:'task_modal'},
-							crEl('div',{,
+							crEl('div',
 								crEl('p',{s:'margin-bottom:24px; font-size:1.5em;'}}, data.data.task.text),
 								crEl('div',{c:'text-center'},
 									data.data.task.music?crEl('button',{c:'btn', s:'margin-right:10px', e:{click: function(){

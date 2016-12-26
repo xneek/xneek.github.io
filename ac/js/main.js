@@ -184,7 +184,6 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 										})
 									}}},'Выполнено')								
 								)
-								
 							)
 
 						);

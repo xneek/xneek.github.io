@@ -159,7 +159,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				}						
 			
 				if(data.data){
-				
+					console.log("Данные", data)
 					if(data.data.move){
 						app.msg('Выпало ' + data.data.move.dice);
 						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');
@@ -283,10 +283,18 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			Content.innerHTML = '';
 
 			Content.appendChild(crEl('div', {c:'full-centred'},
-				crEl('div', {c:'text-center'},
-					crEl('h5','Игра началась'),
-					crEl('img', {src:photo})
-				)
+			
+					crEl('div', {s:'background:#fff; width:100%; height:100%; margin:0; float:left;'},
+						crEl('div', {c:'text-center'},
+							crEl('h5','Игра началась'),
+							crEl('div',{c:'players'},
+								crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Вася иванов'), crEl('div',{c:'fishka'})),
+								crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Даша Кукушкина'), crEl('div',{c:'fishka'},'12')),
+								crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Петя'), crEl('div',{c:'fishka', s:'left:33%; background-color:pink;'},'35'))
+							)
+						)
+					)
+
 			))
 				
 						
@@ -295,22 +303,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 	}
 	
 	if(location.hash && location.hash.length){
-		document.getElementById("idenTyContainer").hide()
-		document.getElementById("name").focus();
-		if(location.hash=='#game'){
-			Content.innerHTML = '';
 
-			Content.appendChild(crEl('div', {s:'background:#fff; width:100%; height:100%; margin:0; float:left;'},
-				crEl('div', {c:'text-center'},
-					crEl('h5','Игра началась'),
-					crEl('div',{c:'players'},
-						crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Вася иванов'), crEl('div',{c:'fishka'})),
-						crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Даша Кукушкина'), crEl('div',{c:'fishka'},'12')),
-						crEl('div',{c:'player'}, crEl('div',{c:'player-name'},'Петя'), crEl('div',{c:'fishka', s:'left:33%; background-color:pink;'},'35'))
-					)
-				)
-			))
-		}
 
 	}
 

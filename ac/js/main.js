@@ -160,6 +160,15 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 				if(data.data){
 					console.log("Данные", data)
+					
+					let el = document.getElementById("modal");
+					if(el){
+						el.animate('bounceOut', function(){
+							el.remove();
+						})
+					}
+					
+					
 					if(data.data.move){
 					/*	app.msg('Выпало ' + data.data.move.dice);
 						app.msg('Поехал с ' + data.data.move.from + ' на ' + data.data.move.to +  ' клетку');*/
@@ -188,6 +197,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 							document.getElementById("modal").animate('flipInX');
 							setTimeout(function(){
 								document.getElementById("completeButton").disabled = false;
+								document.getElementById("completeButton").animate('bounceIn')
 							},15000)
 						})
 						

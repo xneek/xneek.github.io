@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grav</title>
+	<style>
+body, html {
+  font-family: 'Roboto', 'Open Sans', sans-serif;
+  width:100%; height:100%; margin:0; padding:0;
+  background:#000;
+  color:#ccc;
+}
+
+#result { padding: 24px;}
+#btn { background:#FFFF00; width:56px; height:56px; position:fixed; bottom:24px; right:24px; border:none; border-radius:56px; font-size:24px; text-align:center; color:#0091EA; line-height:56px; }
+#btn2 { background:#FFFF00; width:40px; height:40px; position:fixed; bottom:96px; right:32px; border:none; border-radius:40px; font-size:24px; text-align:center; color:#0091EA; line-height:40px;
+	
+}
+#btn.play:before {
+	position:absolute;
+	content:'►';
+	top:0;
+	left:18px;
+	font-size:26px;
+}
+
+#btn.pause:before {
+	position:absolute;
+	content:'❚❚';
+	top:0;
+	left:17px;
+	font-size:26px;
+}
+
+
+#btn2:before {
+	position:absolute;
+	content:' ';
+	top:11px; left:11px;
+	background:#D50000;
+	width:18px;
+	height:18px;
+}
+
+.hidden {display:none;}
+
+	</style>
+  </head>
+  <body>
+	<div id="result">Нажми на конопку ► чтобы начать запись </div>
+	<button id="btn2" class="hidden"></button>
+	<button id="btn" class="play"></button>
+	<script>
+		var interval;
+		var pointsCount = 0;
+		document.getElementById("btn").onclick = function(){
+			document.getElementById("btn2").classList.remove('hidden');
+			document.getElementById("result").innerHTML = 'Запись начата: '+ new Date().toLocaleDateString() + ' в \u00a0' + new Date().toLocaleTimeString().substr(0,5)+'<br>'
+														+ 'Записано точек: <strong id="pointsCount">0</strong><br>';
+			if(this.classList.contains('play')){
+				this.classList.remove('play')
+				this.classList.add('pause')
+			} else {
+				this.classList.add('play')
+				this.classList.remove('pause')
+			}
+			
+			
+			var pointsCountEl = document.getElementById("pointsCount");
+			interval = setInterval(function(){pointsCount++; pointsCountEl.innerText = pointsCount;},1)
+			
+		}
+	
+	</script>
+
+  </body>
+</html>

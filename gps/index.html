@@ -49,16 +49,38 @@ body, html {
 	</style>
   </head>
   <body>
+	<div id="error"></div>
 	<div id="result">Нажми на конопку ► чтобы начать запись </div>
 	<button id="btn2" class="hidden"></button>
 	<button id="btn" class="play"></button>
 	<script>
+		
+		var ResStr = "";
+		
+function showError(error) {
+	var x = document.getElementById("error");
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
+}
 		var interval;
 		var pointsCount = 0;
 		document.getElementById("btn").onclick = function(){
 			document.getElementById("btn2").classList.remove('hidden');
 			document.getElementById("result").innerHTML = 'Запись начата: '+ new Date().toLocaleDateString() + ' в \u00a0' + new Date().toLocaleTimeString().substr(0,5)+'<br>'
-														+ 'Записано точек: <strong id="pointsCount">0</strong><br>';
+														+ 'Записано точек: <strong id="pointsCount">0</strong><br>'
+														+ '<div id="curGps"></div><br>';
 			if(this.classList.contains('play')){
 				this.classList.remove('play')
 				this.classList.add('pause')
@@ -69,7 +91,62 @@ body, html {
 			
 			
 			var pointsCountEl = document.getElementById("pointsCount");
-			interval = setInterval(function(){pointsCount++; pointsCountEl.innerText = pointsCount;},1)
+function download(data, filename, type) {
+    var a = document.createElement("a"),
+        file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
+}
+	
+document.getElementById("btn2").onclick = function(){
+
+	alert(ResStr);
+	download(ResStr, 'gps_' + new Date().getTime()+'.txt', 'plain/text');
+
+}
+			
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition);
+    } else {
+        document.getElementById("error").innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    document.getElementById("curGps").innerHTML = "Долгота: " + position.coords.latitude + 
+    "<br>Широта: " + position.coords.longitude+ 
+    "<br>Погрешность: " + position.coords.accuracy+ 
+    "<br>Высота: " + (position.coords.altitude || 'хз') + 
+"<br>Погрешность высоты: " + (position.coords.altitudeAccuracy || 'хз') + 
+"<br>Направление: " + (position.coords.heading || 'хз') + '°' + 	    
+"<br>Скорость: " + (position.coords.speed || 'хз') + 'м/с'+	    
+    "<br>"; 
+	
+	ResStr+= [
+			position.coords.latitude,
+   position.coords.longitude,
+    position.coords.accuracy,
+    position.coords.altitude,
+position.coords.altitudeAccuracy,
+position.coords.heading,
+position.coords.speed,
+	].join('|')+'\r\n';
+	pointsCount++; pointsCountEl.innerText = pointsCount;
+	
+}
+
+		getLocation()	
 			
 		}
 	

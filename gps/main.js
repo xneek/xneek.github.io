@@ -104,22 +104,22 @@ if (window.DeviceMotionEvent != undefined) {
 	
 	window.ondevicemotion = function(e) {
 	
-		var str = '';
+		
 	
 		accelerationX = e.accelerationIncludingGravity.x;
 		accelerationY = e.accelerationIncludingGravity.y;
 		accelerationZ = e.accelerationIncludingGravity.z;
 		
-		str+= 'X:'+ +accelerationX +'; ' + 'Y:'+ +accelerationY +'; ' + 'Z:'+ +accelerationZ +'; |||  '
+		
 		
 		if ( e.rotationRate ) {
 			rotationAlpha = e.rotationRate.alpha;
 			rotationBeta = e.rotationRate.beta;
 			rotationGamma = e.rotationRate.gamma;
-			str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; '
+			
 		}
-	
-		document.getElementById("grav").innerText = str;
+		
+
 		
 	}
 } 
@@ -160,7 +160,11 @@ function showPosition(position) {
 	if(pointsCountEl){ pointsCountEl.innerText = pointsCount; }
 	
 	
-	
+			var str = '';
+		
+		str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; 'str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; '
+	str+= 'X:'+ +accelerationX +'; ' + 'Y:'+ +accelerationY +'; ' + 'Z:'+ +accelerationZ +'; |||  '
+		document.getElementById("grav").innerText = str;
 	
 	
 	

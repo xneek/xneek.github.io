@@ -7,6 +7,9 @@ var GEOOPTIONS = {
   maximumAge        : 30000, 
   timeout           : 27000
 }
+
+
+EverySec = 3;
 	var pointsCountEl 	
 function showError(error) {
 	var x = document.getElementById("error");
@@ -60,6 +63,7 @@ function download(data, filename, type) {
 		}
 		document.getElementById("btn2").classList.remove('hidden');
 		document.getElementById("map").classList.remove('hidden');
+		document.getElementById("grav").classList.remove('hidden');
 		document.getElementById("result").innerHTML = 'Запись начата: '+ new Date().toLocaleDateString() + ' в \u00a0' + new Date().toLocaleTimeString().substr(0,5)+'<br>'
 														+ 'Записано точек: <strong id="pointsCount">0</strong><br>'
 														+ '<div id="curGps"></div><br>';
@@ -70,10 +74,12 @@ function download(data, filename, type) {
 	
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition, showError, GEOOPTIONS);
+        navigator.geolocation.getCurrentPosition(showPosition, showError, GEOOPTIONS);
     } else {
         document.getElementById("error").innerHTML = "Geolocation is not supported by this browser.";
     }
+	
+	setTimeout(function(){getLocation()}, EverySec*1000)
 }		
 		
 document.getElementById("btn2").onclick = function(){
@@ -88,6 +94,38 @@ document.getElementById("btn2").onclick = function(){
 	download('<?xml version="1.0" encoding="UTF-8"?>'+res.outerHTML, 'gps_' + new Date().getTime()+'.gpx', 'application/gpx+xml');
 
 }	
+
+
+
+
+var accelerationX=0, accelerationY=0 , accelerationZ=0, rotationAlpha=0, rotationBeta=0, rotationGamma=0;
+
+if (window.DeviceMotionEvent != undefined) {
+	var str = '';
+	window.ondevicemotion = function(e) {
+		accelerationX = e.accelerationIncludingGravity.x;
+		accelerationY = e.accelerationIncludingGravity.y;
+		accelerationZ = e.accelerationIncludingGravity.z;
+		
+		str+= 'X:'+ +accelerationX +'; ' + 'Y:'+ +accelerationY +'; ' + 'Z:'+ +accelerationZ +'; |||  '
+		
+		if ( e.rotationRate ) {
+			rotationAlpha = e.rotationRate.alpha;
+			rotationBeta = e.rotationRate.beta;
+			rotationGamma = e.rotationRate.gamma;
+			str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; '
+		}
+	
+		document.getElementById("grav").innerText = str;
+		
+	}
+} 
+
+
+
+
+
+
 	
 function showPosition(position) {
 	var str = ""; var arr = [];
@@ -149,7 +187,7 @@ function showPosition(position) {
 			gpsCoords.forEach(function(x){
 				var X = ((x[0]-minX)/(maxX-minX));
 				var Y = ((x[1]-minY)/(maxY-minY));
-				data.push([Math.round(width*X), Math.round(height*Y)])
+				if(X>0 && Y>0){ data.push([Math.round(width*X), Math.round(height*Y)]) }
 			})
 		
 

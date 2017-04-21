@@ -101,8 +101,11 @@ document.getElementById("btn2").onclick = function(){
 var accelerationX=0, accelerationY=0 , accelerationZ=0, rotationAlpha=0, rotationBeta=0, rotationGamma=0;
 
 if (window.DeviceMotionEvent != undefined) {
-	var str = '';
+	
 	window.ondevicemotion = function(e) {
+	
+		var str = '';
+	
 		accelerationX = e.accelerationIncludingGravity.x;
 		accelerationY = e.accelerationIncludingGravity.y;
 		accelerationZ = e.accelerationIncludingGravity.z;

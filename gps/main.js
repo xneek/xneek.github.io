@@ -9,7 +9,7 @@ var GEOOPTIONS = {
 }
 
 var accelerationX=0, accelerationY=0 , accelerationZ=0, rotationAlpha=0, rotationBeta=0, rotationGamma=0;
-EverySec = 3;
+var EverySec = 1;
 	var pointsCountEl 	
 function showError(error) {
 	var x = document.getElementById("error");

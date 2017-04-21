@@ -8,7 +8,7 @@ var GEOOPTIONS = {
   timeout           : 27000
 }
 
-
+var accelerationX=0, accelerationY=0 , accelerationZ=0, rotationAlpha=0, rotationBeta=0, rotationGamma=0;
 EverySec = 3;
 	var pointsCountEl 	
 function showError(error) {
@@ -98,7 +98,7 @@ document.getElementById("btn2").onclick = function(){
 
 
 
-var accelerationX=0, accelerationY=0 , accelerationZ=0, rotationAlpha=0, rotationBeta=0, rotationGamma=0;
+
 
 if (window.DeviceMotionEvent != undefined) {
 	
@@ -162,7 +162,7 @@ function showPosition(position) {
 	
 			var str = '';
 		
-		str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; 'str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; '
+		str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; ';
 	str+= 'X:'+ +accelerationX +'; ' + 'Y:'+ +accelerationY +'; ' + 'Z:'+ +accelerationZ +'; |||  '
 		document.getElementById("grav").innerText = str;
 	

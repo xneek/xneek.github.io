@@ -154,17 +154,18 @@ function showPosition(position) {
 	if(position.coords && position.coords.heading && position.coords.heading>0){
 		trkpt.appendChild(crEl('magvar',position.coords.heading.toString()));
 	}	
-	//trkpt.appendChild(crEl('cmt','Olololo'));*/
+	*/
+	trkpt.appendChild(crEl('cmt', accelerationX +', ' + accelerationY +', ' + accelerationZ +'|' +rotationAlpha +', '  +rotationBeta +', ' +rotationGamma +''));
 	trkseg.appendChild(trkpt);
 	pointsCount++; 
 	if(pointsCountEl){ pointsCountEl.innerText = pointsCount; }
 	
 	
-			var str = '';
-		
+		var str = '';
+		str+= 'X:'+ +accelerationX +'; ' + 'Y:'+ +accelerationY +'; ' + 'Z:'+ +accelerationZ +';<br>';
 		str+= 'A:'+ +rotationAlpha +'; ' + 'B:'+ +rotationBeta +'; ' + 'G:'+ +rotationGamma +'; ';
-	str+= 'X:'+ +accelerationX +'; ' + 'Y:'+ +accelerationY +'; ' + 'Z:'+ +accelerationZ +'; |||  '
-		document.getElementById("grav").innerText = str;
+		
+		document.getElementById("grav").innerHTML = str;
 	
 	
 	

@@ -8,25 +8,23 @@
 	<link rel="stylesheet" href="main.css">
   </head>
   <body>
-	<div id="error"></div>
-	<div id="result">Нажми на конопку ► чтобы начать запись </div>
-	<button id="btn2" class="hidden"></button>
-	<button id="btn" class="play"></button>
-	
-	<div id="map" class="hidden">
-<svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="graph chart" aria-labelledby="title" role="img">
-	  <polyline  id="poly"
-		 fill="none"
-		 stroke="#0074d9"
-		 stroke-width="2"
-		 points=""
-	   />
+ <svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="graph chart" aria-labelledby="title" role="img">
+	  <polyline  id="poly" fill="none" stroke="#0074d9"  stroke-width="2" points=""/>
 </svg>
+
+	<div id="main">
+		<div id="error"></div>
+		<div id="result">Нажми на конопку ► чтобы начать запись </div>
+		<button id="btn2" class="hidden"></button>
+		<button id="btn" class="play"></button>
+		
+		<div id="map" class="hidden">
+	</div>
 
 
 
 	</div>
-	<video autoplay="autoplay" loop="loop" controls="controls" tabindex="0" src="black.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+	<video  loop="loop" id="video" tabindex="0" src="black.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 	
 	<script src="main.js"></script>
   </body>

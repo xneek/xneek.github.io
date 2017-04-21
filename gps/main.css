@@ -5,9 +5,9 @@ body, html {
   color:#ccc;
 }
 
-#result { padding: 24px;}
-#btn { background:#FFFF00; width:56px; height:56px; position:fixed; bottom:24px; right:24px; border:none; border-radius:56px; font-size:24px; text-align:center; color:#0091EA; line-height:56px; }
-#btn2 { background:#FFFF00; width:40px; height:40px; position:fixed; bottom:96px; right:32px; border:none; border-radius:40px; font-size:24px; text-align:center; color:#0091EA; line-height:40px;
+#result { z-index:5;padding: 24px;}
+#btn { z-index:5;background:#FFFF00; width:56px; height:56px; position:fixed; bottom:24px; right:24px; border:none; border-radius:56px; font-size:24px; text-align:center; color:#0091EA; line-height:56px; }
+#btn2 { z-index:5;background:#FFFF00; width:40px; height:40px; position:fixed; bottom:96px; right:32px; border:none; border-radius:40px; font-size:24px; text-align:center; color:#0091EA; line-height:40px;
 	
 }
 #btn.play:before {
@@ -16,6 +16,7 @@ body, html {
 	top:0;
 	left:18px;
 	font-size:26px;
+	z-index:5;
 }
 
 #btn.pause:before {
@@ -24,6 +25,7 @@ body, html {
 	top:0;
 	left:17px;
 	font-size:26px;
+	z-index:5;
 }
 
 
@@ -34,10 +36,16 @@ body, html {
 	background:#D50000;
 	width:18px;
 	height:18px;
+	z-index:5;
 }
 
 .hidden {display:none;}
 .graph {
-  height: 50%;
+  height: 100%;
   width: 100%;
+  position:absolute; top:0; left:0;
+  z-index:0;
+  opaity:0.8
 }
+
+#main {z-index:10; position:absolute; top:0; left:0; width:100%; height:100%}

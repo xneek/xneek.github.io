@@ -4,153 +4,27 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Grav</title>
-	<style>
-body, html {
-  font-family: 'Roboto', 'Open Sans', sans-serif;
-  width:100%; height:100%; margin:0; padding:0;
-  background:#000;
-  color:#ccc;
-}
-
-#result { padding: 24px;}
-#btn { background:#FFFF00; width:56px; height:56px; position:fixed; bottom:24px; right:24px; border:none; border-radius:56px; font-size:24px; text-align:center; color:#0091EA; line-height:56px; }
-#btn2 { background:#FFFF00; width:40px; height:40px; position:fixed; bottom:96px; right:32px; border:none; border-radius:40px; font-size:24px; text-align:center; color:#0091EA; line-height:40px;
-	
-}
-#btn.play:before {
-	position:absolute;
-	content:'►';
-	top:0;
-	left:18px;
-	font-size:26px;
-}
-
-#btn.pause:before {
-	position:absolute;
-	content:'❚❚';
-	top:0;
-	left:17px;
-	font-size:26px;
-}
-
-
-#btn2:before {
-	position:absolute;
-	content:' ';
-	top:11px; left:11px;
-	background:#D50000;
-	width:18px;
-	height:18px;
-}
-
-.hidden {display:none;}
-
-	</style>
+    <title>GPS</title>
+	<link rel="stylesheet" href="main.css">
   </head>
   <body>
 	<div id="error"></div>
 	<div id="result">Нажми на конопку ► чтобы начать запись </div>
 	<button id="btn2" class="hidden"></button>
 	<button id="btn" class="play"></button>
-	<script>
-		
-		var ResStr = "";
-		
-function showError(error) {
-	var x = document.getElementById("error");
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            x.innerHTML = "User denied the request for Geolocation."
-            break;
-        case error.POSITION_UNAVAILABLE:
-            x.innerHTML = "Location information is unavailable."
-            break;
-        case error.TIMEOUT:
-            x.innerHTML = "The request to get user location timed out."
-            break;
-        case error.UNKNOWN_ERROR:
-            x.innerHTML = "An unknown error occurred."
-            break;
-    }
-}
-		var interval;
-		var pointsCount = 0;
-		document.getElementById("btn").onclick = function(){
-			document.getElementById("btn2").classList.remove('hidden');
-			document.getElementById("result").innerHTML = 'Запись начата: '+ new Date().toLocaleDateString() + ' в \u00a0' + new Date().toLocaleTimeString().substr(0,5)+'<br>'
-														+ 'Записано точек: <strong id="pointsCount">0</strong><br>'
-														+ '<div id="curGps"></div><br>';
-			if(this.classList.contains('play')){
-				this.classList.remove('play')
-				this.classList.add('pause')
-			} else {
-				this.classList.add('play')
-				this.classList.remove('pause')
-			}
-			
-			
-			var pointsCountEl = document.getElementById("pointsCount");
-function download(data, filename, type) {
-    var a = document.createElement("a"),
-        file = new Blob([data], {type: type});
-    if (window.navigator.msSaveOrOpenBlob) // IE10+
-        window.navigator.msSaveOrOpenBlob(file, filename);
-    else { // Others
-        var url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function() {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);  
-        }, 0); 
-    }
-}
 	
-document.getElementById("btn2").onclick = function(){
-
-	alert(ResStr);
-	download(ResStr, 'gps_' + new Date().getTime()+'.txt', 'plain/text');
-
-}
-			
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition);
-    } else {
-        document.getElementById("error").innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-function showPosition(position) {
-    document.getElementById("curGps").innerHTML = "Долгота: " + position.coords.latitude + 
-    "<br>Широта: " + position.coords.longitude+ 
-    "<br>Погрешность: " + position.coords.accuracy+ 
-    "<br>Высота: " + (position.coords.altitude || 'хз') + 
-"<br>Погрешность высоты: " + (position.coords.altitudeAccuracy || 'хз') + 
-"<br>Направление: " + (position.coords.heading || 'хз') + '°' + 	    
-"<br>Скорость: " + (position.coords.speed || 'хз') + 'м/с'+	    
-    "<br>"; 
+	<div id="map" class="hidden">
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="graph chart" aria-labelledby="title" role="img">
+	  <polyline  id="poly"
+		 fill="none"
+		 stroke="#0074d9"
+		 stroke-width="2"
+		 points=""
+	   />
+</svg>
+	</div>
 	
-	ResStr+= [
-			position.coords.latitude,
-   position.coords.longitude,
-    position.coords.accuracy,
-    position.coords.altitude,
-position.coords.altitudeAccuracy,
-position.coords.heading,
-position.coords.speed,
-	].join('|')+'\r\n';
-	pointsCount++; pointsCountEl.innerText = pointsCount;
 	
-}
-
-		getLocation()	
-			
-		}
-	
-	</script>
-
+	<script src="main.js"></script>
   </body>
 </html>

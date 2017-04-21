@@ -163,9 +163,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 					
 					let el = document.getElementById("modal");
 					if(el){
-						el.animate('bounceOut', function(){
+						
 							el.remove();
-						})
+						
 					}
 					
 					
@@ -197,7 +197,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 							document.getElementById("modal").animate('flipInX');
 							setTimeout(function(){
 								document.getElementById("completeButton").disabled = false;
-								document.getElementById("completeButton").animate('bounceIn')
+								document.getElementById("completeButton").animate('tada')
 							},15000)
 						})
 						

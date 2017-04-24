@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GPS</title>
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+	<div style="padding:24px">
+		<table width="100%" border="1">
+		
+			<tr><td>accelerationX</td><td id="accelerationX"></td></tr>
+			<tr><td>accelerationY</td><td id="accelerationY"></td></tr>
+			<tr><td>accelerationZ</td><td id="accelerationZ"></td></tr>
+			<tr><td>rotationAlpha</td><td id="rotationAlpha"></td></tr>
+			<tr><td>rotationBeta</td><td id="rotationBeta"></td></tr>
+			<tr><td>rotationGamma</td><td id="rotationGamma"></td></tr>
+		<table>
+	</div>
+	<script>
+		var accelerationX = document.getElementById("accelerationX"),
+			accelerationY = document.getElementById("accelerationY"),
+			accelerationZ = document.getElementById("accelerationZ"),
+			rotationAlpha = document.getElementById("rotationAlpha"),
+			rotationBeta = document.getElementById("rotationBeta"),
+			rotationGamma = document.getElementById("rotationGamma");
+			if (window.DeviceMotionEvent != undefined) {
+				
+				window.ondevicemotion = function(e) {
+				
+					
+				
+					accelerationX.innerText = e.accelerationIncludingGravity.x*10;
+					accelerationY.innerText = e.accelerationIncludingGravity.y*10;
+					accelerationZ.innerText = e.accelerationIncludingGravity.z*10;
+					
+					
+					
+					if ( e.rotationRate ) {
+						rotationAlpha.innerText = e.rotationRate.alpha*10;
+						rotationBeta.innerText = e.rotationRate.beta*10;
+						rotationGamma.innerText = e.rotationRate.gamma*10;
+						
+					}
+					
+
+					
+				}
+			} 
+	
+	</script>
+  </body>
+</html>

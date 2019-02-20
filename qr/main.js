@@ -1,3 +1,6 @@
+function debug(str){
+    document.getElementById('debug').textContent = str.toString();
+}
 window.addEventListener('DOMContentLoaded', function () {
     if (!('mediaDevices' in navigator &&
         'getUserMedia' in navigator.mediaDevices &&
@@ -36,7 +39,9 @@ window.addEventListener('DOMContentLoaded', function () {
         console.log(imageData);
         const code = jsQR(imageData, snapshotSquare.size, snapshotSquare.size, {inversionAttempts: false});
         if(code){
-            document.title = code.data;
+            debug('Прочитано'+code.data)
+        } else {
+            debug('Ничего не прочитано')
         }
     }
 

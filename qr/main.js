@@ -14,7 +14,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const video = document.getElementById('camera');
     const flipCameraButton = document.getElementById("flipCamera");
     const overlay = document.getElementById('snapshotLimitOverlay');
-    
+
     let snapshotSquare;
     function calculateSquare() {
         const snapshotSize = overlay.offsetWidth;
@@ -28,8 +28,8 @@ window.addEventListener('DOMContentLoaded', function () {
         snapshotCanvas.height = snapshotSquare.size;
     }
 
-    snapshotCanvas.width = snapshotSize.size;
-    snapshotCanvas.height = snapshotSize.size;
+    snapshotCanvas.width = snapshotSquare.size;
+    snapshotCanvas.height = snapshotSquare.size;
 
     function scanCode(){
         snapshotContext.drawImage(

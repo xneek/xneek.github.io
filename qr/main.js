@@ -1,4 +1,3 @@
-import jsQR from "jsqr";
 window.addEventListener('DOMContentLoaded', function () {
     if (!('mediaDevices' in navigator &&
         'getUserMedia' in navigator.mediaDevices &&

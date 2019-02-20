@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>QR scaner</title>
     <style>
         body {
+            background: #f8f8f8;
             margin: 0;
             padding: 0;
         }
@@ -34,6 +37,7 @@
 <canvas id="snapshot"></canvas>
 <button id="flipCamera" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Flip Camera</button>
 
+<script src="node_modules/jsqr/dist/jsQR.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

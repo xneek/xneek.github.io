@@ -10,11 +10,11 @@ window.addEventListener('DOMContentLoaded', function () {
     const snapshotContext = snapshotCanvas.getContext('2d');
     const video = document.getElementById('camera');
     const flipCameraButton = document.getElementById("flipCamera");
-
+    const snapshotSize = 300;
     const snapshotSquare = {
         x: +((video.videoWidth - snapshotSize)/2),
         y: +((video.videoHeight - snapshotSize)/2),
-        size: 300
+        size: snapshotSize
     };
 
     snapshotCanvas.width = snapshotSquare.size;

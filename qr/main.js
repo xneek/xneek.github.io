@@ -36,8 +36,7 @@ window.addEventListener('DOMContentLoaded', function () {
             snapshotSquare.size
         );
         const imageData = snapshotContext.getImageData(0, 0, snapshotSquare.size, snapshotSquare.size);
-        console.log(imageData);
-        const code = jsQR(imageData, snapshotSquare.size, snapshotSquare.size, {inversionAttempts: false});
+        const code = jsQR(imageData.data, snapshotSquare.size, snapshotSquare.size, {inversionAttempts: false});
         if(code){
             debug('Прочитано'+code.data)
         } else {

@@ -41,11 +41,22 @@ window.addEventListener('DOMContentLoaded', function () {
             snapshotSquare.size
         );
         const imageData = snapshotContext.getImageData(0, 0, snapshotSquare.size, snapshotSquare.size);
-        const code = jsQR(imageData.data, snapshotSquare.size, snapshotSquare.size, {inversionAttempts: false});
+
+
+        qrcode.width = snapshotSquare.size;
+        qrcode.height = snapshotSquare.size;
+        qrcode.imagedata = imageData;
+
+        let result = false;
+        try {
+            result = qrcode.process();
+        } catch (e) {}
+
+
         if(code){
-            debug('Прочитано'+code.data)
+            debug('Прочитано'+result)
         } else {
-            debug('Ничего не прочитано')
+            debug('Ничего не  '+result)
         }
     }
 

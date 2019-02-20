@@ -1,0 +1,17 @@
+{
+  "name": "qr",
+  "description": "test qr",
+  "main": "index.html",
+  "authors": [
+    "Nikolay Fedoseev"
+  ],
+  "license": "ISC",
+  "homepage": "https://xneek.github.io/qr",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

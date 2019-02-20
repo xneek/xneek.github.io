@@ -8,7 +8,6 @@
   },
   "author": "Nikolay Fedoseev",
   "license": "ISC",
-  "dependencies": {
-    "jsqr": "^1.2.0"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

@@ -47,8 +47,11 @@ window.addEventListener('DOMContentLoaded', function () {
         qrcode.width = snapshotSquare.size;
         qrcode.height = snapshotSquare.size;
         qrcode.imagedata = imageData;
+        qrcode.callback = function(s){
+            alert('qrCallback\n'+s)
+        }
 
-        let result = false;
+            let result = false;
         try {
             result = qrcode.process();
         } catch (e) {}

@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', function () {
         } catch (e) {}
 
 
-        if(code){
+        if(result){
             debug('Прочитано'+result)
         } else {
             debug('Ничего не  '+result)

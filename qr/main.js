@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', function () {
         snapshotCanvas.height = snapshotSquare.size;
     }
 
-    function scanCode(){
+    function scanCode(long){
         setTimeout(function(){
         snapshotContext.drawImage(
             video,
@@ -47,21 +47,21 @@ window.addEventListener('DOMContentLoaded', function () {
         qrcode.width = snapshotSquare.size;
         qrcode.height = snapshotSquare.size;
         qrcode.imagedata = imageData;
-        qrcode.callback = function(s){
-            alert('qrCallback\n'+s)
-        }
+        let result = false;
 
-            let result = false;
         try {
             result = qrcode.process();
-        } catch (e) {}
+        } catch (e) {
+
+        }
 
 
         if(result){
             debug('Прочитано'+result)
         } else {
             debug('Ничего не  '+result)
-        }},2000)
+            scanCode();
+        }},long?2000:200)
     }
 
 

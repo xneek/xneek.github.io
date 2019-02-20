@@ -28,8 +28,8 @@ window.addEventListener('DOMContentLoaded', function () {
         snapshotCanvas.height = snapshotSquare.size;
     }
 
-    snapshotCanvas.width = snapshotSquare.size;
-    snapshotCanvas.height = snapshotSquare.size;
+    snapshotCanvas.width = snapshotSize.size;
+    snapshotCanvas.height = snapshotSize.size;
 
     function scanCode(){
         snapshotContext.drawImage(

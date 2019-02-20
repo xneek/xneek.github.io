@@ -13,12 +13,21 @@ window.addEventListener('DOMContentLoaded', function () {
     const snapshotContext = snapshotCanvas.getContext('2d');
     const video = document.getElementById('camera');
     const flipCameraButton = document.getElementById("flipCamera");
+    const overlay = document.getElementById('snapshotLimitOverlay');
     const snapshotSize = 300;
-    const snapshotSquare = {
-        x: +((video.videoWidth - snapshotSize)/2),
-        y: +((video.videoHeight - snapshotSize)/2),
-        size: snapshotSize
-    };
+
+    let snapshotSquare;
+    function calculateSquare() {
+        let snapshotSize = overlay.offsetWidth;
+        snapshotSquare = {
+            x: +((video.videoWidth - snapshotSize)/2),
+            y: +((video.videoHeight - snapshotSize)/2),
+            size: +(snapshotSize)
+        };
+
+        snapshotCanvas.width = snapshotSquare.size;
+        snapshotCanvas.height = snapshotSquare.size;
+    }
 
     snapshotCanvas.width = snapshotSquare.size;
     snapshotCanvas.height = snapshotSquare.size;
@@ -56,7 +65,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
         navigator.mediaDevices.getUserMedia(config).then(function (stream) {
             video.srcObject = stream;
-            video.oncanplay = scanCode;
+            video.oncanplay = function(){
+                calculateSquare();
+                scanCode();
+            }
+
 
         }).catch(function (error) {
             alert(error.name + ": " + error.message);

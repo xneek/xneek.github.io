@@ -14,11 +14,10 @@ window.addEventListener('DOMContentLoaded', function () {
     const video = document.getElementById('camera');
     const flipCameraButton = document.getElementById("flipCamera");
     const overlay = document.getElementById('snapshotLimitOverlay');
-    const snapshotSize = 300;
-
+    
     let snapshotSquare;
     function calculateSquare() {
-        snapshotSize = overlay.offsetWidth;
+        const snapshotSize = overlay.offsetWidth;
         snapshotSquare = {
             x: +((video.videoWidth - snapshotSize)/2),
             y: +((video.videoHeight - snapshotSize)/2),

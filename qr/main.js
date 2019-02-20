@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     let snapshotSquare;
     function calculateSquare() {
-        let snapshotSize = overlay.offsetWidth;
+        snapshotSize = overlay.offsetWidth;
         snapshotSquare = {
             x: +((video.videoWidth - snapshotSize)/2),
             y: +((video.videoHeight - snapshotSize)/2),
@@ -29,8 +29,8 @@ window.addEventListener('DOMContentLoaded', function () {
         snapshotCanvas.height = snapshotSquare.size;
     }
 
-    snapshotCanvas.width = snapshotSquare.size;
-    snapshotCanvas.height = snapshotSquare.size;
+    snapshotCanvas.width = snapshotSize.size;
+    snapshotCanvas.height = snapshotSize.size;
 
     function scanCode(){
         snapshotContext.drawImage(

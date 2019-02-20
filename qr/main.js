@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     function scanCode(){
+        setTimeout(function(){
         snapshotContext.drawImage(
             video,
             snapshotSquare.x,
@@ -57,7 +58,7 @@ window.addEventListener('DOMContentLoaded', function () {
             debug('Прочитано'+result)
         } else {
             debug('Ничего не  '+result)
-        }
+        }},2000)
     }
 
 

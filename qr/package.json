@@ -9,6 +9,6 @@
   "author": "Nikolay Fedoseev",
   "license": "ISC",
   "dependencies": {
-    "instascan": "^1.0.0"
+    "jsqr": "^1.2.0"
   }
 }

@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/qr-dev" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/qr/webpack-starter" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/qr3" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/scan" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/webpack-starter" vcs="Git" />
   </component>

@@ -1,0 +1,49 @@
+html, body {
+    margin: 0;
+    padding: 0;
+
+}
+
+#chart {
+    background: #f8f8f8;
+    height: 82vh;
+    overflow: hidden;
+}
+
+#chartNav {
+    background: #fff;
+    height: 18vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#chartNavMarker {
+    position: absolute;
+    border: 3px solid red;
+    top: -3px;
+    height: 100%;
+    width: 100px;
+    top: 0;
+    box-sizing: content-box;
+}
+
+#chartNavMarker:before, #chartNavMarker:after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.13333);
+}
+
+#chartNavMarker:before {
+    left: -100vw;
+}
+
+#chartNavMarker:after {
+    left: 100%;
+}
+
+svg {
+    margin: 0;
+    padding: 0;
+}

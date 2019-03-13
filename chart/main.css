@@ -6,9 +6,11 @@ html, body {
 
 #chart {
     background: #f8f8f8;
-    height: 82vh;
+    height: 72vh;
     overflow: hidden;
+    position: relative;
 }
+#chart {}
 
 #chartNav {
     background: #fff;
@@ -16,15 +18,17 @@ html, body {
     overflow: hidden;
     position: relative;
 }
+#chartNav polyline {stroke-width: 3; fill: none;}
+#chart polyline {stroke-width: 1;  fill: none; stroke-linejoin: round}
 
 #chartNavMarker {
     position: absolute;
-    border: 3px solid red;
+    border: 3px solid #757575;
     top: -3px;
     height: 100%;
     width: 100px;
     top: 0;
-    box-sizing: content-box;
+    box-sizing: border-box;
 }
 
 #chartNavMarker:before, #chartNavMarker:after {

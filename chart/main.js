@@ -30,6 +30,26 @@ const data = [{
 		y0: '#cb513a', y1: '#73c03a', y2: '#65b9ac', y3: '#4682b4',
 	},
 }];
+function getTransform(trasformStr){
+	const rxps = {
+		scaleX:/scaleX\((-?\d+\.?\d*)/,
+		scaleY:/scaleY\((-?\d+\.?\d*)/,
+		translateX:/translateX\((-?\d+\.?\d*)/,
+		translateY:/translateY\((-?\d+\.?\d*)/,
+	}
+	const res = {};
+	Object.keys(rxps).forEach(k=>{
+		const f = trasformStr.match(rxps[k]);
+		if(f && f[1]){
+			res[k] = parseFloat(f[1]);
+		}
+	})
+	return res;
+}
+
+function setTransform(obj, unit = 'px'){
+	return Object.keys(obj).map(k=>`${k}(${obj[k]}${k.indexOf('scale')===0?'':unit})`).join(' ');
+}
 
 function drawAChart({
 	                    columns, types, names, colors,
@@ -66,16 +86,16 @@ function drawAChart({
 	});
 }
 
-function getTotalSvg({
-	                     minX, maxX, minY, maxY, vectors, types, names, colors,
-                     }) {
+function getTotalSvg({ minX, maxX, minY, maxY, vectors, types, names, colors }) {
+
 	const chartNav = document.getElementById('chartNav');
+
 	const clientWidth = chartNav.offsetWidth;
-	const
-		clientHeight = chartNav.offsetHeight;
+	const clientHeight = chartNav.offsetHeight;
+
 	const difX = maxX - minX;
-	const
-		difY = maxY - minY;
+	const difY = maxY - minY;
+
 	const coeff = {
 		cX: clientWidth / difX,
 		cY: clientHeight / difY,
@@ -84,21 +104,32 @@ function getTotalSvg({
 
 	chartNavMarker.style.right = `0`;
 	chartNavMarker.style.width = (clientHeight * (chart.offsetWidth / chart.offsetHeight)) + 'px';
-
-
+	const toolbar = document.getElementById('toolbar');
+	toolbar.innerHTML = '';
 	const previewPolylines = Object.keys(types)
 		.filter(k => types[k] === 'line')
 		.map((key) => {
+			toolbar.innerHTML += `<label class="toolbarLabel">
+<input type="checkbox" checked>
+<span style="background: ${colors[key]}">(0)</span>
+${names[key]}</label>`;
 			const points = vectors.x.map((x, i) => [
 				Math.floor((x - minX) * coeff.cX),
 				Math.floor(clientHeight - ((vectors[key][i] - minY) * coeff.cY)),
 			].join(','));
-			return `<polyline fill="none" stroke="${colors[key] || '#0074d9'}" stroke-width="3" points="${points.join(' ')}" />`;
+			return `<polyline stroke="${colors[key] || '#0074d9'}" points="${points.join(' ')}" />`;
 		});
 
+	const coeffSc = chart.offsetHeight / clientHeight;
 	chartNavPreview.innerHTML = `<svg viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
-	chart.innerHTML = `<svg viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
-	chart.childNodes[0].style.transform = `scale(2)`
+	chart.innerHTML = `<svg id="mainChart" viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
+
+	console.log(`scale(1, ${coeffSc})`);
+	chart.childNodes[0].style.transformOrigin = `100% 0 0`;
+	chart.childNodes[0].childNodes[0].style.strokeWidth = 1;
+	chart.childNodes[0].style.transform = ` scaleY(${coeffSc}) scaleX(${coeffSc})`
+	console.log(chart.childNodes[0].style)
+
 }
 
 if (location.hash && location.hash.length) {
@@ -106,37 +137,39 @@ if (location.hash && location.hash.length) {
 }
 
 
-chart.appendChild((() => {
-	const el = document.createElement('div');
-	const chartWidth = chart.clientWidth;
-	const chartHeight = chart.clientHeight;
-	el.innerHTML = `<svg viewBox="0 0 ${chartWidth} ${chartHeight}" class="chart">
-    </svg>`;
-	return el;
-})());
 
-chartNavMarker.onmousedown = function (e) {
-	this.dragstart = parseInt(chartNavMarker.style.right);
-	this.startX = e.clientX;
-}
-chartNavMarker.onmouseup = function (e) {
-	this.dragstart = false;
+let dragstart, startX, startTransforms;
+function start(e) {
+	dragstart = parseInt(chartNavMarker.style.right);
+	startX = e.clientX;
+	startTransforms = getTransform(chart.childNodes[0].style.transform);
 }
 
-chartNavMarker.onmouseleave = function (e) {
-	this.dragstart = false;
-}
+chartNavMarker.onmousedown = start;
+chartNavMarker.ondragstart = start;
 
-chartNavMarker.onmousemove = function (e) {
-	if (this.dragstart || this.dragstart === 0) {
-		const dif = this.startX - e.clientX;
-		if ((this.dragstart + dif) < 0) {
+chartNavMarker.onmouseup = end;
+chartNavMarker.ondragend = end;
+
+
+	function end(e) {
+		dragstart = false;
+	}
+function move(e) {
+	if (dragstart || dragstart === 0) {
+		const dif = startX - e.clientX;
+		if ((dragstart + dif) < 0) {
 			return;
 		}
-		if ((this.dragstart + dif) >= (chartNav.offsetWidth - e.target.clientWidth)) {
+		if ((dragstart + dif) >= (chartNav.offsetWidth - e.target.clientWidth)) {
 			return;
 		}
-		chartNavMarker.style.right = (this.dragstart + dif) + 'px';
-		chart.childNodes[0].style.transform = `translateX(${(this.dragstart + dif) + 'px'})`;
+		chartNavMarker.style.right = (dragstart + dif) + 'px';
+		chart.childNodes[0].style.transform = setTransform(Object.assign(startTransforms, {
+			translateX:(dragstart + dif)
+		}));
 	}
 }
+
+document.onmousemove = move;
+document.ontouchmove = move;

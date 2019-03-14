@@ -59,38 +59,62 @@ ${names[key]}</label>`;
 				Math.floor((x - minX) * coeff.cX),
 				Math.floor(clientHeight - ((vectors[key][i] - minY) * coeff.cY)),
 			].join(','));
-			return `<polyline stroke="${colors[key] || '#0074d9'}" points="${points.join(' ')}" />`;
+			return `<polyline vector-effect="non-scaling-stroke" stroke="${colors[key] || '#0074d9'}" points="${points.join(' ')}" />`;
 		});
 
 	const coeffSc = chart.offsetHeight / clientHeight;
 	chartNavPreview.innerHTML = `<svg viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
-	chart.innerHTML = `<svg id="mainChart" viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
+	chart.innerHTML = `<svg  vector-effect="non-scaling-stroke" id="mainChart" viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
 
 	console.log(`scale(1, ${coeffSc})`);
 	chart.childNodes[0].style.transformOrigin = `100% 0 0`;
-	chart.childNodes[0].childNodes[0].style.strokeWidth = 1;
 	chart.childNodes[0].style.transform = ` scaleY(${coeffSc}) scaleX(${coeffSc})`
 	console.log(chart.childNodes[0].style)
 
 }
 
-let dragstart, startX, startTransforms;
+let dragstart, startX, startTransforms, leftResize, rightResize;
 
 function start(e) {
-	e = e.changedTouches ? e.changedTouches[0] : e;
-	dragstart = parseInt(chartNavMarker.style.right);
+	e = e.targetTouches ? e.targetTouches[0] : e;
 	startX = e.clientX;
+	dragstart = parseInt(chartNavMarker.style.right);
 	startTransforms = getTransform(chart.childNodes[0].style.transform);
+	if(e.offsetX>-5 && e.offsetX<5){
+		leftResize = parseInt(chartNavMarker.style.width);
+	} else {
+		if(e.offsetX > e.target.clientWidth-5 && e.offsetX < e.target.clientWidth+5 ) {
+			rightResize = parseInt(chartNavMarker.style.width);
+			dragstart = parseInt(chartNavMarker.style.right);
+		} else {
+			this.style.cursor = 'grabbing';
+		}
+	}
+	chartNavMarker.removeEventListener('mousedown',start);
 }
 
 function end(e) {
-	dragstart = false;
+	dragstart = leftResize = rightResize = null;
+	this.style.cursor = '';
+	chartNavMarker.addEventListener('mousedown',start);
 }
 
 function move(e) {
-	e = e.changedTouches ? e.changedTouches[0] : e;
-	if (dragstart || dragstart === 0) {
-		const dif = startX - e.clientX;
+	e = e.targetTouches ? e.targetTouches[0] : e;
+	const dif = startX - e.clientX;
+	if(leftResize){
+		chartNavMarker.style.width = (leftResize +  dif)+'px';
+	} else if (rightResize) {
+		chartNavMarker.style.width = (rightResize +  dif*-1)+'px';
+		chartNavMarker.style.right = (dragstart + dif) + 'px';
+
+		const rsd = dif/rightResize;
+		chart.childNodes[0].style.transform = setTransform(Object.assign({},startTransforms, {
+			translateX:(dragstart + dif),
+			scaleX: startTransforms.scaleX * (1+(rsd))
+		}));
+	} else if (dragstart || dragstart === 0) {
+
 		if ((dragstart + dif) < 0) {
 			return;
 		}
@@ -98,13 +122,14 @@ function move(e) {
 			return;
 		}
 		chartNavMarker.style.right = (dragstart + dif) + 'px';
-		chart.childNodes[0].style.transform = setTransform(Object.assign(startTransforms, {
+		chart.childNodes[0].style.transform = setTransform(Object.assign({},startTransforms, {
 			translateX:(dragstart + dif)
 		}));
 	}
 }
 
-chartNavMarker.onmousedown = start;
+
+chartNavMarker.addEventListener('mousedown',start);
 chartNavMarker.ondragstart = start;
 
 chartNavMarker.onmouseup = end;
@@ -114,5 +139,5 @@ document.onmousemove = move;
 document.ontouchmove = move;
 
 if (location.hash && location.hash.length) {
-	drawAChart(data[parseInt(location.hash.substr(1))]);
+	drawAChart(data[parseInt(location.hash.substr(1)) || 0]);
 }

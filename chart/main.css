@@ -10,7 +10,7 @@ html, body {
     overflow: hidden;
     position: relative;
 }
-#chart {}
+#chart {vector-effect: non-scaling-stroke;}
 
 #chartNav {
     background: #fff;
@@ -18,33 +18,47 @@ html, body {
     overflow: hidden;
     position: relative;
 }
-#chartNav polyline {stroke-width: 3; fill: none;}
-#chart polyline {stroke-width: 1;  fill: none; stroke-linejoin: round}
+#chartNav polyline {
+    stroke-width: 3;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+}
+#chart polyline {
+    stroke-width: 1;
+    fill: none;
+    stroke-linejoin: round;
+}
 
 #chartNavMarker {
     position: absolute;
-    border: 3px solid #757575;
-    top: -3px;
+    border-top: 1px solid #757575;
+    border-bottom: 1px solid #757575;
+    top: -1px;
     height: 100%;
     width: 100px;
     top: 0;
     box-sizing: border-box;
+    box-shadow: 0 0 0 999em rgba(0,0,0,0.23);
+    cursor: grab;
 }
 
 #chartNavMarker:before, #chartNavMarker:after {
     content: '';
     position: absolute;
     height: 100%;
-    width: 100vw;
+    width: 10px;
+    cursor: pointer;
     background: rgba(0, 0, 0, 0.13333);
+    cursor: ew-resize;
 }
 
 #chartNavMarker:before {
-    left: -100vw;
+    left: -5px;
 }
 
 #chartNavMarker:after {
     left: 100%;
+    margin-left: -5px;
 }
 
 svg {

@@ -51,10 +51,13 @@ function getTotalSvg({ minX, maxX, minY, maxY, vectors, types, names, colors }) 
 	const previewPolylines = Object.keys(types)
 		.filter(k => types[k] === 'line')
 		.map((key) => {
-			toolbar.innerHTML += `<label class="toolbarLabel">
-<input type="checkbox" checked>
-<span style="background: ${colors[key]}">(0)</span>
-${names[key]}</label>`;
+			toolbar.innerHTML += `
+				<label class="toolbarLabel">
+					<input type="checkbox" checked>
+					<span style="border-color: ${colors[key]}"></span>
+					${names[key]}
+				</label>
+			`;
 			const points = vectors.x.map((x, i) => [
 				Math.floor((x - minX) * coeff.cX),
 				Math.floor(clientHeight - ((vectors[key][i] - minY) * coeff.cY)),
@@ -64,7 +67,8 @@ ${names[key]}</label>`;
 
 	const coeffSc = chart.offsetHeight / clientHeight;
 	chartNavPreview.innerHTML = `<svg viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
-	chart.innerHTML = `<svg  vector-effect="non-scaling-stroke" id="mainChart" viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
+	chart.innerHTML = `<svg  vector-effect="non-scaling-stroke" stroke-width="${3*coeff.cX}" id="mainChart" 
+viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>` + getGrids([10,11,12,13,14,15], [1,2,3,4,5,6,7,8,9]);
 
 	console.log(`scale(1, ${coeffSc})`);
 	chart.childNodes[0].style.transformOrigin = `100% 0 0`;
@@ -104,6 +108,10 @@ function move(e) {
 	const dif = startX - e.clientX;
 	if(leftResize){
 		chartNavMarker.style.width = (leftResize +  dif)+'px';
+		const rsd = dif/leftResize;
+		chart.childNodes[0].style.transform = setTransform(Object.assign({},startTransforms, {
+			scaleX: startTransforms.scaleX * (1-(rsd))
+		}));
 	} else if (rightResize) {
 		chartNavMarker.style.width = (rightResize +  dif*-1)+'px';
 		chartNavMarker.style.right = (dragstart + dif) + 'px';
@@ -128,16 +136,26 @@ function move(e) {
 	}
 }
 
+function getGrids(xData, yData){
+	yData = yData.reverse()
+	let tbl = '<table>';
+	tbl+='<tr>'+yData.map((tr,i,tra)=>{
+		return '<td>'+xData.map((td,j)=>{
+			return i===tra.length-1?td:j===0?tr:'';
+		}).join('</td><td>')+'</td>'
+	}).join('</tr><tr>')+'</tr>'
+	tbl += '</table>';
+	return tbl;
+}
 
 chartNavMarker.addEventListener('mousedown',start);
-chartNavMarker.ondragstart = start;
+chartNavMarker.ontouchstart = start;
 
 chartNavMarker.onmouseup = end;
-chartNavMarker.ondragend = end;
+chartNavMarker.ontouchend = end;
 
 document.onmousemove = move;
 document.ontouchmove = move;
 
-if (location.hash && location.hash.length) {
-	drawAChart(data[parseInt(location.hash.substr(1)) || 0]);
-}
+const indexOfData = location.hash && location.hash.length ? parseInt(location.hash.substr(1)) || 0: 0;
+drawAChart(data[indexOfData]);

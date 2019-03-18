@@ -6,15 +6,44 @@ html, body {
 
 #chart {
     background: #f8f8f8;
-    height: 72vh;
-    overflow: hidden;
+    height: 82vh;
+    overflow-x: hidden;
     position: relative;
+    margin-bottom: 16px;
 }
 #chart {vector-effect: non-scaling-stroke;}
+#chart table {
+    position: absolute;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+#chart svg {
+    position: absolute;
+    z-index: 2;
+}
+
+#chart table tr td {
+    border-bottom: 1px solid #989898;
+}
+
+#chart table tr:last-child td {
+    text-align: right;
+
+    vertical-align: bottom;
+    border-right: 1px solid red;
+}
+#chart table tr td:first-child {
+    vertical-align: bottom;
+}
 
 #chartNav {
     background: #fff;
-    height: 18vh;
+    height: 8vh;
     overflow: hidden;
     position: relative;
 }
@@ -27,6 +56,7 @@ html, body {
     stroke-width: 1;
     fill: none;
     stroke-linejoin: round;
+    animation:transform 1.5s linear forwards;
 }
 
 #chartNavMarker {
@@ -59,6 +89,58 @@ html, body {
 #chartNavMarker:after {
     left: 100%;
     margin-left: -5px;
+}
+
+.toolbarLabel  {
+
+    display: inline-block;
+    line-height: 24px;
+    margin: 8px 16px 8px 0;
+    user-select: none;
+    cursor: pointer;
+}
+
+.toolbarLabel input {
+    position: absolute;
+    left:-9999em;
+}
+
+.toolbarLabel span {
+    margin-right: 8px;
+    width: 24px;
+    height:24px;
+    box-sizing: border-box;
+    display: inline-block;
+    border-width: 12px;
+    border-style: solid;
+    border-radius: 50%;
+    position: relative;
+    transition: border-width .25s linear;
+    float: left;
+}
+
+
+.toolbarLabel span:after {
+    position: absolute;
+    width: 0.5em;
+    height: 0.3em;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -0.3em 0 0 -0.3em;
+    content: ' ';
+}
+
+.toolbarLabel input:not(:checked)+span {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    position: relative;
 }
 
 svg {

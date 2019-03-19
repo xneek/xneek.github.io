@@ -67,12 +67,23 @@ function getTotalSvg({ minX, maxX, minY, maxY, vectors, types, names, colors }) 
 
 	const coeffSc = chart.offsetHeight / clientHeight;
 	chartNavPreview.innerHTML = `<svg viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>`;
-	chart.innerHTML = `<svg  vector-effect="non-scaling-stroke" stroke-width="${3*coeff.cX}" id="mainChart" 
-viewBox="0 0 ${clientWidth} ${clientHeight}">${previewPolylines.join()}</svg>` + getGrids([10,11,12,13,14,15], [1,2,3,4,5,6,7,8,9]);
+	chart.innerHTML = `<svg id="mainSVGChart"
+							vector-effect="non-scaling-stroke"
+							stroke-width="${3/coeffSc}"
+							id="mainChart" 
+							viewBox="0 0 ${clientWidth} ${clientHeight}"
+							>
+								${previewPolylines.join()}
+							</svg>
+						${getGridX([10,11,12,13,14,15])}
+						${getGridY([1,2,3,4,5,6,7,8,9])}
+						<div id="current"></div>
+						`;
 
+	const svg = document.getElementById('mainSVGChart');
 	console.log(`scale(1, ${coeffSc})`);
-	chart.childNodes[0].style.transformOrigin = `100% 0 0`;
-	chart.childNodes[0].style.transform = ` scaleY(${coeffSc}) scaleX(${coeffSc})`
+	svg.style.transformOrigin = `100% 0 0`;
+	svg.style.transform = ` scaleY(${coeffSc}) scaleX(${coeffSc})`
 	console.log(chart.childNodes[0].style)
 
 }
@@ -136,13 +147,17 @@ function move(e) {
 	}
 }
 
-function getGrids(xData, yData){
+function getGridX(xData){
+	let tbl = `<table class="table-x"><tr><td colspan="${xData.length}"></td></tr><tr>`;
+	tbl+= '<td>' + xData.map((td) =>{ return td;}).join('</td><td>') + '</td>';
+	tbl += '</tr></table>';
+	return tbl;
+}
+function getGridY(yData){
 	yData = yData.reverse()
-	let tbl = '<table>';
+	let tbl = '<table class="table-y">';
 	tbl+='<tr>'+yData.map((tr,i,tra)=>{
-		return '<td>'+xData.map((td,j)=>{
-			return i===tra.length-1?td:j===0?tr:'';
-		}).join('</td><td>')+'</td>'
+		return '<td>' + tr + '</td>'
 	}).join('</tr><tr>')+'</tr>'
 	tbl += '</table>';
 	return tbl;
@@ -156,6 +171,15 @@ chartNavMarker.ontouchend = end;
 
 document.onmousemove = move;
 document.ontouchmove = move;
+
+chart.onmousemove = function(e){
+	current.style.left = e.clientX+'px';
+	current.dataset.x = e.clientX;
+}
+chart.onmouseleave = function(e){
+	current.style.left = '-10em';
+}
+
 
 const indexOfData = location.hash && location.hash.length ? parseInt(location.hash.substr(1)) || 0: 0;
 drawAChart(data[indexOfData]);

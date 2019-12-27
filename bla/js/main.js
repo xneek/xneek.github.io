@@ -549,7 +549,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 
 
 		
-		
+		/*
 			if(sData.news){
 			//AIzaSyBRUdnVCkdYxsl8AHejnU45nK1XHa1gFIY
 			   google.load("feeds", "1");
@@ -615,7 +615,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 				}
 				google.setOnLoadCallback(initialize);
 			}
-			
+		*/	
 			if( sData.event && sData.event.date && ( new Date(sData.event.date)>new Date() ) ){
 				let dif = new Date(sData.event.date).getTime()-new Date().getTime();
 					dif = dif/(1000*60*60*24)
@@ -632,7 +632,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			}
 			
 			
-			
+		/*	
 			
 			if( sData.weather ){
 				$.get("//api.wunderground.com/api/1badcdefdd22f927/hourly/lang:RU/q/53.2272937,44.9574388.json", function(res){
@@ -690,7 +690,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			}			
 			
-			
+			*/
 
 			recursiveSpeak(0, function(){
 				speak("У меня всё!");

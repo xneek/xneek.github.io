@@ -632,9 +632,9 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			}
 			
 			
-		/*	
 			
-			if( sData.weather ){
+			
+			if(false && sData.weather ){
 				$.get("//api.wunderground.com/api/1badcdefdd22f927/hourly/lang:RU/q/53.2272937,44.9574388.json", function(res){
 					w = res;
 					console.log(w);
@@ -690,7 +690,7 @@ Element.prototype.animate = function(className, callback){ // dep. Animate.css
 			
 			}			
 			
-			*/
+			
 
 			recursiveSpeak(0, function(){
 				speak("У меня всё!");

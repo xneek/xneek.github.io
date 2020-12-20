@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>xneek gpx</title>
+    <link rel="stylesheet" href="gpx.css">
+</head>
+<body>
+    <table border="0" width="100%" cellpadding="12">
+        <tr>
+            <td width="50%" height="50">
+                <h3>Данные температуры</h3>
+            </td>
+            <td width="50%">
+                <h3>*.gpx файл</h3>
+            </td>
+        </tr>
+        <tr>
+            <td width="50%">
+                <textarea id="temp" placeholder="2020-11-29 00:00:38	24,2"></textarea>
+            </td>
+            <td width="50%">
+                <input type="file" accept="*.gpx" id="gpxFile">
+                <a id="dwnload" download="trackWithAtemp.gpx"></a>
+            </td>
+        </tr>
+    </table>
+    <script src="gpx.js"></script>
+</body>
+</html>

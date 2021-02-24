@@ -3,7 +3,6 @@ var tempEl = document.getElementById('temp');
 var a = document.getElementById('dwnload');
 var loader = new FileReader();
 
-var tz = 3600000 * 3; // смещение времени
 var presision = 60000;
 
 loader.onload = function (loadEvent) {
@@ -30,7 +29,7 @@ loader.onload = function (loadEvent) {
         .split('\n')
         .map(function(row) {
             var cols = row.trim().split('\t');
-            var date = Date.parse(cols[0]) - tz;
+            var date = Date.parse(cols[0]);
             var temp = parseFloat(cols[1].replace(',','.'));
 
             return [date, temp];

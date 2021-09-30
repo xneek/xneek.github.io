@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>xneek gpx</title>
+    <link rel="stylesheet" href="gpx.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
+</head>
+<body>
+<table border="0" width="100%" cellpadding="12">
+    <tr>
+        <th width="50%">
+            <strong>
+                *.gpx файл
+                <input type="file" accept="*.gpx" id="gpxFile">
+            </strong>
+        </th>
+        <th width="50%" height="50">
+            <strong style="display: flex; align-items: center">
+
+                На протяжении &nbsp; <input type="number" min="1" step="1" max="60" id="timeR" value="8">&nbsp;мин
+                &nbsp;
+                прошли не больше
+                &nbsp;
+                <input type="number" min="0" step="10" max="500" id="distR" value="100">&nbsp;м
+
+            </strong>
+        </th>
+
+    </tr>
+    <tr>
+        <td width="50%">
+            <div id="log"></div>
+        </td>
+        <td width="50%">
+            <div id="mapid"></div>
+        </td>
+    </tr>
+</table>
+
+
+    <script src="../crel.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="gpx.js"></script>
+</body>
+</html>

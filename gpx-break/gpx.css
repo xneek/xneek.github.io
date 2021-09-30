@@ -1,0 +1,35 @@
+html, body {
+    font-family: -apple-system, system, Roboto, Arial, SansSerif;
+    background: #f8f8f8;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    font-family: monospace;height: 100vh;
+}
+
+td {
+    text-align: right;
+    vertical-align: top;
+}
+ th {
+     height: 1px;
+ }
+
+
+
+.speed td {
+    background-color: lightgreen;
+}
+
+#log {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#mapid {
+    height: 80vh;
+    outline: 1px solid red;
+}

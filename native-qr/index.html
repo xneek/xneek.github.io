@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="module">
+// WICG Shape Detection API
+// - https://wicg.github.io/shape-detection-api/
+try {
+  const start = document.getElementById("start");
+  const video = document.getElementById("video");
+  const result = document.getElementById("result");
+  
+  const bd = new BarcodeDetector();
+  (async () => {
+    // It works on chrome on Android (chrome://flags Experimental Web Platform features)
+    //NOTE: Not implemented yet: chrome canary 84 on macos
+    result.textContent = (await BarcodeDetector.getSupportedFormats()).join("\n");
+  })().catch(err => {
+    result.textContent = err;
+  });
+
+  const capture = async () => {
+    try {
+      const barcodes = await bd.detect(video);
+      const log = barcodes.map(({format, rawValue}) => `- ${format}: ${rawValue}`).join("\n");
+      if (log) result.textContent = log;
+      requestAnimationFrame(capture);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+  video.addEventListener("play", () => capture());
+  
+  start.addEventListener("click", () => {
+    start.disabled = true;
+    (async () => {
+      const media = await navigator.mediaDevices.getUserMedia(
+        {auido: false, video: {
+          //NOTE: crash on android  chrome when specified the size
+          //width: {ideal: 800}, height: {ideal: 800},
+          facingMode: "environment"}});
+      //console.log(media);
+      video.srcObject = media;
+      video.autoplay = true;
+    })().catch(console.error);
+  }, {once: true});
+} catch (err) {
+  document.getElementById("result").textContent = err;
+}
+    </script>
+  </head>
+  <body>
+    BarcodeDetector demo: <button id="start">start</button>
+    <div><video id="video" autoplay></div>
+    <pre id="result"></pre>
+  </body>
+</html>

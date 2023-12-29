@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ws</title>
+</head>
+<body>
+    <h1 id="h1"></h1>
+
+    <form id="f1">
+        <input required id="dataInp" placeholder="data">
+        <input type="submit">
+    </form>
+
+    <script>
+        (() => {
+			const hubName = window.location.hash?.substr(1);
+            let name = localStorage.getItem('ws-user');
+			
+			if (!name) {
+				name = prompt('Имя')
+				localStorage.setItem('ws-user', name)
+			}
+
+            if (!name) {
+                h1.innerText = "add #username to url";
+                return;
+            }
+
+            ws = new WebSocket('wss://ws.achex.ca/');		
+            ws.onmessage = function(evt){
+                if(evt && evt.data){
+                    data = JSON.parse(evt.data);
+                    console.info(data);
+                }
+            }
+
+            ws.onopen = function() {
+                ws.send( JSON.stringify({"auth":name,"passwd":'111'}));
+				hubName && ws.send( JSON.stringify({"joinHub":hubName}));
+            };
+            
+
+
+            f1.onsubmit = e => {
+                e.preventDefault()
+                ws.send(JSON.stringify({
+                    toH: hubName, 
+                    data: dataInp.value
+                }))
+            }
+
+        })()
+    </script>
+</body>
+</html>

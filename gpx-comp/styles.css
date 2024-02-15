@@ -29,16 +29,16 @@ footer {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	height: var(--footer-height);
 	z-index: 100400;
 	padding: 8px 16px;
+	background: rgba(255, 255, 255, 0.5);
 }
 
 footer label {
 
 }
 
-.routepoint-div-icon {
+.routepoint-div-icon, .routelog-div-icon {
 	display: block;
 	width: 24px;
 	height: 24px;
@@ -68,6 +68,30 @@ footer label {
 	border-radius: 2px;
 	padding: 0 2px;
 	font-size: 0.7rem;
+}
+
+.routelog-div-icon:after {
+	content: '';
+	display: block;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	background: rgba(0,0,0,0.5);
+}
+
+.routelog-div-icon div:before {
+	content: attr(data-name);
+	color: grey;
+	text-shadow: 1px 1px 1px #fff;
+	position: absolute;
+	transform: translateY(-50%);
+	left: 100%;
+	white-space: nowrap;
+	padding: 0 2px;
+	font-size: 0.7rem;
+	background: rgba(243, 203, 0, 0.58);
 }
 
 #fab {

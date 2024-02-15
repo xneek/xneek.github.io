@@ -52,17 +52,25 @@ const footerElement = document.getElementById('footer');
 const init = () => {
 	const trackDataLSKey = 'track-data';
 	const pointsDataLSKey = 'points-data';
+	const logsDataLSKey = 'logs-data';
+
 	const trackDataStr = localStorage.getItem(trackDataLSKey);
 	const pointsDataStr = localStorage.getItem(pointsDataLSKey);
+	const logsDataStr = localStorage.getItem(logsDataLSKey);
 	
 	const points = JSON.parse(pointsDataStr || '[]');
 	const track = JSON.parse(trackDataStr || '[]');
-	
+	const logs = JSON.parse(logsDataStr || '[]');
+
 	let currentPositionMarker;
 	let polylineForNearest;
-	
+	let logMarkersGroup;
+
 	let polylinePassed;
 	let polylineFutured;
+
+	let lastSpeedKmH;
+	let avgSpeedKmH;
 
 	if (!track.length) {
 		footerElement.innerHTML = '';
@@ -75,7 +83,9 @@ const init = () => {
 			const parser = new DOMParser();
 			const doc = parser.parseFromString(fileContent, "text/xml");
 			const points = Array.from(doc.getElementsByTagName('trkpt'));
+			const wpts = Array.from(doc.getElementsByTagName('wpt'));
 			const data = []; // [lat, lon, alt*]
+			const pointsData = []; // [lat, lon, alt*]
 			points.forEach((p) => {
 				const d = [
 					parseFloat(p.getAttribute('lat')),
@@ -89,6 +99,34 @@ const init = () => {
 
 				data.push(d);
 			});
+
+			wpts.forEach((p, i) => {
+				let d = [
+					parseFloat(p.getAttribute('lat')),
+					parseFloat(p.getAttribute('lon'))
+				];
+
+				const eleEl = p.querySelector('ele');
+				if (eleEl) {
+					d.push(parseFloat(eleEl.textContent))
+				}
+
+
+
+				const name = p.querySelector('name')?.textContent ?? `Point #${i}`;
+
+				let trackIndex = data.findIndex(([lat, lon]) => d[0] == lat && d[1] == lon);
+
+				if (trackIndex < 0) {
+					const [nearPoint, nearDist, nearInd] = getNearestPointInfo(d, data);
+					trackIndex = nearInd;
+					d = nearPoint;
+				}
+
+				pointsData.push({ name, coords: d, trackIndex });
+			});
+
+			localStorage.setItem(pointsDataLSKey, JSON.stringify(pointsData));
 			localStorage.setItem(trackDataLSKey, JSON.stringify(data));
 			init();
 		}
@@ -106,7 +144,7 @@ const init = () => {
 			computeFromCurrentPosition()
 		}
 
-		const polyline = L.polyline(track.map(([a, b]) => ([a,b])), {color: 'yellow', weight: 6, opacity: 0.5})
+		const polyline = L.polyline(track.map(([a, b]) => ([a,b])), {color: 'grey', weight: 6, opacity: 0.5})
 		polyline.addTo(map)
 		map.fitBounds(polyline.getBounds());
 		
@@ -153,7 +191,26 @@ const init = () => {
 		
 	}
 	
+	function drawLogs(lo) {
+		logMarkersGroup && map.removeLayer(logMarkersGroup)
+		logMarkersGroup = L.featureGroup();
+		logMarkersGroup.addTo(map);
 
+		lo.forEach((log) => {
+			const icon = L.divIcon({
+				className: 'routelog-div-icon',
+				html: "<div data-name='" + new Date(log.date).toLocaleTimeString().substr(0,5) + "'></div>",
+				iconSize: [4, 4],
+				iconAnchor: [2, 2]
+			})
+			const marker = L.marker(log.coords, { icon });
+			const popup = L.popup().setContent(log.date);
+
+			marker.bindPopup(popup).openPopup();
+			marker.addTo(logMarkersGroup);
+		})
+
+	}
 
 	function computeFromCurrentPosition() {
 		navigator.geolocation.getCurrentPosition(function (position) {
@@ -163,6 +220,48 @@ const init = () => {
 			currentPositionMarker.addTo(map);
 			map.panTo(coords);
 			const [nearPoint, nearDist, nearInd] = getNearestPointInfo(coords, track);
+
+			if (nearDist < 100) {
+				const now = new Date();
+				let lasLog = logs.length ? logs[logs.length - 1] : null;
+				if (lasLog && (now - new Date(lasLog.date) < 60000 || lasLog.trackIndex === nearInd)) {
+					if(confirm('Вы слишком близко к предудущей зафиксированной точке. \nПерезаписать?')) {
+						logs.pop();
+
+						localStorage.setItem(logsDataLSKey, JSON.stringify(logs));
+						lasLog = logs.length ? logs[logs.length - 1] : null;
+					}
+				}
+
+				if (lasLog) {
+					const diffMs = now - new Date(lasLog.date);
+					const diffMeters = getDistanceForTrack(track.slice(lasLog.trackIndex, nearInd + 1));
+
+
+					const speedKmH = (diffMeters / 1000) / (diffMs / 1000 / 60 / 60);
+
+					lastSpeedKmH = speedKmH;
+
+					if ((now - new Date(lasLog.date) < 60000 || lasLog.trackIndex === nearInd)) {
+						console.log('Skip')
+					} else {
+						logs.push({ date: now.toISOString(), coords: nearPoint, trackIndex: nearInd, speed: speedKmH });
+
+						localStorage.setItem(logsDataLSKey, JSON.stringify(logs));
+
+					}
+
+					drawLogs(logs)
+					console.log({diffMs, diffMeters, lastSpeedKmH});
+
+				} else {
+					logs.push({ date: now.toISOString(), coords: nearPoint, trackIndex: nearInd, speed: 0 });
+
+					localStorage.setItem(logsDataLSKey, JSON.stringify(logs));
+				}
+
+
+			}
 			
 			polylineForNearest && map.removeLayer(polylineForNearest);
 			polylineForNearest = L.polyline([coords, nearPoint], {weight: 5, color: 'gray', dashArray: '8, 8'})
@@ -186,7 +285,7 @@ const init = () => {
 			const futurePoints = points.filter((p) => p.trackIndex >= nearInd).sort((a, b) =>  a.trackIndex - b.trackIndex);
 			
 			
-			const nextPointTrack = futuredTrackPart.slice(0, (futurePoints[0].trackIndex - passedTrackPart.length) + 1);
+			const nextPointTrack = futuredTrackPart.slice(0, (futurePoints[0].trackIndex - passedTrackPart.length) + 2);
 			if (futurePoints.length) {
 				nearestPoint = futurePoints[0];
 				nearestPointDist = getDistanceForTrack(nextPointTrack)
@@ -198,15 +297,26 @@ const init = () => {
 			const row1 = document.createElement('div');
 			const row2 = document.createElement('div');
 			const row3 = document.createElement('div');
-			
+			const row4 = document.createElement('div');
+
 			row1.textContent = 'Пройдено: ' + (passDist / 1000).toFixed(2) + ' км.  из ' + (totalDist / 1000).toFixed(2) + ' (' + Math.round((passDist / totalDist) * 100) + '%)';
-			row2.textContent = 'Осталось: ' + (futureDist / 1000).toFixed(2) + ' км.';
-			row3.textContent = 'Ближайшая точка: ' + nearestPoint.name + ' ' + getDistanceForTrack(track.slice(nearInd, nearestPoint.trackIndex)).toFixed(2) + 'м от вас';
-			
+			row2.textContent = [
+				'Осталось: ' + (futureDist / 1000).toFixed(2) + ' км.',
+				lastSpeedKmH && `(${ ((futureDist/1000) / lastSpeedKmH).toFixed(1)} ч.)`,
+				lastSpeedKmH && `Прогноз финиша: ${new Date(new Date().getTime() + ((futureDist/1000) / lastSpeedKmH) *60 * 60 * 1000).toLocaleString()}`
+			].filter(Boolean).join(' ');
+
+			const distanceForNear = getDistanceForTrack(track.slice(nearInd, nearestPoint.trackIndex));
+			row3.textContent = [
+				'Ближайшая точка: ' + nearestPoint.name,
+				Math.round(distanceForNear) + 'м от вас',
+				lastSpeedKmH && `${(((distanceForNear/1000) / lastSpeedKmH) * 60).toFixed(2)} минут, при скорости ${lastSpeedKmH.toFixed(2)} км/ч`
+			].filter(Boolean).join(' ');
 			stat.appendChild(row1);
 			stat.appendChild(row2);
 			stat.appendChild(row3);
-			
+			stat.appendChild(row4);
+
 			footerElement.appendChild(stat);
 			
 			polylinePassed = L.polyline(passedTrackPart, {color: 'green', opacity: 1})
@@ -222,7 +332,7 @@ const init = () => {
 		});
 	}
 
-
+	drawLogs(logs);
 }
 
 init();

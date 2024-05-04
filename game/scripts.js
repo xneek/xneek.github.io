@@ -29,10 +29,11 @@ class Level {
 
 const levels = [
   new Level(1, 9, ['+', '-'], false),
-  new Level(1, 99, ['+', '-'], false),
-  new Level(1, 999, ['+', '-'], false),
+  new Level(10, 99, ['+', '-'], false),
+  new Level(100, 999, ['+', '-'], false),
   new Level(1, 9, ['+', '-', '*'], false),
-  new Level(1, 9, ['+', '-', '*', '/'], true),
+  new Level(1, 99, ['+', '-', '*'], false),
+  //new Level(1, 9, ['+', '-', '*', '/'], true),
 ];
 
 const levelSize = 10;
@@ -42,6 +43,7 @@ let cur = -1;
 let ms = 0;
 let startTime = 0;
 let dateStart;
+let to;
 
 const run = () => {
   cur += 1;
@@ -56,6 +58,7 @@ const run = () => {
   startTime = performance.now();
   if (!dateStart) {
     dateStart = new Date();
+
   }
 }
 
@@ -66,10 +69,11 @@ frm.addEventListener('submit', (e) => {
   res.textContent = time;
 
   if (cur + 1 === levels.length * levelSize) {
+    clearTimeout(to);
     const oldResults = JSON.parse(localStorage.getItem('mathGameResults') || '[]');
     const alertText = 'Done with result\n' + time + '\n================================\n' + oldResults.map((r) => r.join(' ')).join('\n');
     oldResults.push([dateStart, new Date(), time, Math.round(ms)]);
-    localStorage.setItem('mathGameResults', JSON.stringify(oldResults));
+    localStorage.setItem('mathGameResults', JSON.stringify(oldResults));11
 
     alert(alertText);
 
@@ -81,8 +85,15 @@ frm.addEventListener('submit', (e) => {
   run();
 })
 
+const updateTime = () => {
+  const time = new Date(new Date(new Date() - dateStart).getTime() + (new Date().getTimezoneOffset() * 60 * 1000)).toLocaleTimeString();
+        res.textContent = time;
+}
+
 btn.addEventListener('click', () => {
   inp.disabled = false;
   inp.value = '';
   run();
+  updateTime();
+  to = setInterval(updateTime, 1000);
 })

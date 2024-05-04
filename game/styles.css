@@ -6,12 +6,17 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: 'Courier New', Courier, monospace;
 }
 
-#inf {
-  height: 50px;
+#inf, #res {
   margin: 8px 0;
 }
+
+#res {
+  color: cadetblue;
+}
+
 #qwr {
   margin: 8px 0;
   font-size: 3rem;

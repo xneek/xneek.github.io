@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,11 +16,9 @@
       margin: 0;
       padding: 0;
       scroll-snap-type: y mandatory;
-
-  font-family: "Source Sans Pro", sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-
+      font-family: "Source Sans Pro", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
     }
 
 @media (prefers-color-scheme: dark) {
@@ -56,23 +54,90 @@
 
   <script>
 
+    document.body.oncontextmenu = () => {
+      if (confirm('scroll to top?')) {
+        document.body.scrollTo({ top: 0, behavior:'smooth' });
+      } else {
+        document.body.style.scrollSnapType = 'y proximity'
+      }
+    }
 
-const random = function(range = 'animals_nature') {
-  const min = 0;
-  const max = emoji[range].length
-  const i = Math.floor(Math.random() * (max - min) + min);
-  return {
-    emoji: String.fromCodePoint(parseInt(emoji[range][i].u, 16)),
-    name: emoji[range][i].n.join(', '),
-  };
+    let category = 'all';
+
+    switch (location.hash) {
+      case "#food":
+      case "#drink":
+        category = 'food_drink';
+        break;
+      case "#animals":
+      case "#nature":
+        category = 'animals_nature';
+        break;
+      
+      case "#travel":
+      case "#places":
+        category = 'travel_places';
+        break;
+      case "#activities":
+        category = 'activities';
+        break;    
+      case "#people":
+        category = 'smileys_people';
+        break;            
+      case "#objects":
+        category = 'objects';
+        break;            
+      default:
+        category = 'all';
+        break;
+    }
+
+
+
+const allFromCategory = function(range = 'animals_nature') {
+  console.log(range);
+  
+  return emoji[range].map((e) => {
+    return ({
+      emoji: String.fromCodePoint(parseInt(e.u, 16)),
+      name: e.n.join(', '),
+    });
+  }) 
 };
-      const a = random();
-      div.innerHTML += `<div class="one">
-        <div>
-          <span class="emoji">${a.emoji}</span>
-          <div class="name">${a.name}</span>
-        </div>
-      </div>`;
+
+const all = () => {
+  return Object.keys(emoji).reduce((acc, key) => {
+    return acc.concat(allFromCategory(key));
+  }, [])
+}
+
+const randomFromCategory = function(range = 'animals_nature') {
+  const all = allFromCategory(range);
+  const min = 0;
+  const max = all.length
+  const i = Math.floor(Math.random() * (max - min) + min);
+  return all[i];
+};
+
+const oneEmojiRender = ({ emoji, name }) => {
+  return `<section class="one">
+    <div>
+      <span class="emoji">${emoji}</span>
+      <div class="name">${name}</div>
+    </div>
+  </section>`
+}
+
+if (category === 'all') {
+  const a = all();
+  console.log(a);
+  
+  const div = document.getElementById('div');
+  div.innerHTML = a.map(oneEmojiRender).join('');
+} else {
+  const div = document.getElementById('div');
+  div.innerHTML = allFromCategory(category).map(oneEmojiRender).join('');
+}
   
   </script>
   

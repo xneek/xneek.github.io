@@ -6374,6 +6374,10 @@ const emoji = {
 		}
 	],
 	"animals_nature": [
+    {
+      "n": ["Moose"],
+      "u": "1face"
+    },
 		{
 			"n": [
 				"monkey face"

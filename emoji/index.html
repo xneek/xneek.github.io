@@ -53,6 +53,11 @@
   <script src="emoji.js"></script>
 
   <script>
+    window.onhashchange = () => {
+      window.location.reload();
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
 
     document.body.oncontextmenu = (e) => {
       
@@ -63,6 +68,14 @@
       } else {
         document.body.style.scrollSnapType = 'y proximity'
       }
+    }
+
+    window.speak = (text) => {
+       const utterance = new SpeechSynthesisUtterance(text);
+       utterance.lang = "en-US";
+       const voices = speechSynthesis.getVoices();
+       utterance.voice = voices[0]; // Choose a specific voice
+       speechSynthesis.speak(utterance);
     }
 
     let category = 'all';
@@ -126,7 +139,7 @@ const oneEmojiRender = ({ emoji, name }) => {
   return `<section class="one">
     <div>
       <span class="emoji">${emoji}</span>
-      <div class="name">${name}</div>
+      <div class="name" onclick="speak('${name}')">${name}</div>
     </div>
   </section>`
 }

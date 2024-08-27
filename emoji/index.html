@@ -54,9 +54,12 @@
 
   <script>
 
-    document.body.oncontextmenu = () => {
+    document.body.oncontextmenu = (e) => {
+      
       if (confirm('scroll to top?')) {
-        document.body.scrollTo({ top: 0, behavior:'smooth' });
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        e.preventDefault();
       } else {
         document.body.style.scrollSnapType = 'y proximity'
       }

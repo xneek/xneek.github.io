@@ -1,0 +1,37 @@
+{
+    "lang": "ru-ru",
+    "name": "xneek gpx",
+    "short_name": "xneek-gpx",
+    "description": "Xneek GPS tracks editor",
+    "scope": "/gpx/",
+    "start_url": "/gpx/index.html",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "orientation": "any",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/gpx/gpx-editor.png",
+            "sizes": "512x512"
+        }
+    ],
+    "file_handlers": [
+        {
+            "action": "/gpx/",
+            "accept": {
+                "text/xml": [
+                    ".gpx"
+                ]
+            }
+        }
+    ],
+    "display_override": ["window-controls-overlay"],
+    "shortcuts" : [
+        {
+          "name": "Show all tracks",
+          "url": "/gpx/?show_all=true",
+          "description": "Show all of my tracks",
+          "icons": [{ "src": "/mytracks/media/show192.png", "sizes": "192x192" }]
+        }
+    ]
+}

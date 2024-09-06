@@ -1,0 +1,63 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+  text-align: center;
+}
+
+#map {
+  width: 100vw;
+  height: 100vh;
+}
+
+#aside {
+  position: fixed;
+  z-index: 100500;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.87);
+  padding: 8px;
+  width: 100%;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+#list {
+text-align: left
+}
+
+.custom-div-icon {
+  border: none;
+  background: transparent;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff0000;
+  text-shadow: 0 1px #fff;
+}
+
+.point-menu button {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+}

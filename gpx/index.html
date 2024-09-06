@@ -1,30 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>xneek gpx</title>
-    <link rel="stylesheet" href="gpx.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-contextmenu/1.0.0/leaflet.contextmenu.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="gpx-editor.png" />
+  <meta name="theme-color" content="black">
+  <title>gpx-editor</title>
 </head>
 <body>
-    <table border="0" width="100%" cellpadding="12">
-        <tr>
-            <td width="50%" height="50">
-                <h3>Данные температуры</h3>
-            </td>
-            <td width="50%">
-                <h3>*.gpx файл</h3>
-            </td>
-        </tr>
-        <tr>
-            <td width="50%">
-                <textarea id="temp" placeholder="2020-11-29 00:00:38	24,2"></textarea>
-            </td>
-            <td width="50%">
-                <input type="file" accept="*.gpx" id="gpxFile">
-                <a id="dwnload" download="trackWithAtemp.gpx"></a>
-            </td>
-        </tr>
-    </table>
-    <script src="gpx.js"></script>
+  <div id="map"></div>
+  <aside id="aside">
+    <ul id="list"></ul>
+    <input type="file" multiple accept=".gpx" id="fileinput">
+  </aside>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-contextmenu/1.0.0/leaflet.contextmenu.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="crEl.js"></script>
+  <script src="scripts.js"></script>
 </body>
 </html>

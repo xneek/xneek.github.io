@@ -22,11 +22,12 @@
 
 window.checkRight = (a, b) => {
   const  o = ['Умница', 'Молодец', 'Умничка', 'Молодчинка', 'Здорово', 'Классно', 'Замечательно', 'Великолепно', ''][Math.round(Math.random()* 3)];
- 
+ Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = true);
   if (a == b) {
     speak(`${o}, да это ${a}`);
     setTimeout(() => {
-      res.innerHTML = renderGame([all.pop(), all.pop(), all.pop()])
+      res.innerHTML = renderGame([all.pop(), all.pop(), all.pop()]);
+      Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = false);
     }, 3000);
   } else {
     speak(`Нет, это ${b} а не ${a}. Попробуй еще раз`);
@@ -41,10 +42,11 @@ const renderGame = (all) => {
 
   return `<section class="one">
     <div>
+      
       <div class="name" onclick="speak('${right.name}')">Покажи где «${right.name}»<br><br><br></div>
       <div class="emojiVariants">
       ${all.map(({ emoji, name }) => {
-        return `<button class="emojiButton" onclick="checkRight('${right.name}', '${name}')">${emoji}</button>`;
+        return `<button class="emojiButton" onclick="checkRight('${right.name}', '${name}')">${emoji}<div class="hide" style="transform:rotate(${Math.round(Math.random()* 360)}deg)"></div></button>`;
       }).join('')}
       </div>
       

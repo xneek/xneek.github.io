@@ -65,4 +65,21 @@
     border-radius: 50%;
  
     border: 1px solid #000;
+
+    position: relative;
+  }
+
+
+  .emojiButton .hide {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    top:0;
+
+    background: rgba(0,0,0,0.98);
+    border-top-right-radius: 12vh;
+    border-bottom-right-radius: 12vh;
+    transform-origin: left;
+    border: 1px solid #333
   }

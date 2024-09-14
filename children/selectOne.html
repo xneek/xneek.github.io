@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div id="res"></div>
+  <script src="assets/scripts.js"></script>
+  <script src="assets/abc.js"></script>
+  <script>
+
+    window.speak = (text) => {
+       const utterance = new SpeechSynthesisUtterance(text);
+       utterance.onstart = () => {
+        Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = true);
+       };
+       utterance.onend  = () => {
+        Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = false);
+       };
+
+       utterance.lang = "ru-RU";
+       const voices = speechSynthesis.getVoices();
+       utterance.voice = voices[0]; // Choose a specific voice
+       speechSynthesis.speak(utterance);
+    }
+
+
+const urlParams = new URLSearchParams(window.location.search);
+const isHalf = !!urlParams.get('half');
+const count = urlParams.get('count') ? urlParams.get('count') : 3;
+const isFirstLetter = !!urlParams.get('firstLetter');
+
+    const all = Object.entries(abc).reduce((acc, [letter, emojisArr]) => {
+      acc.push(...emojisArr.map((obj) => {
+        const [emoji, name] = Object.entries(obj)[0]
+        return { emoji, name }
+      }).filter(({emoji, name}) => !!emoji && !!name))
+      return acc;
+    }, []).sort(() => Math.random() - 0.5)
+
+
+    function start() {
+      const right = all.pop();
+      const arr = [right, ...Array(count - 1).fill(0).map(a => all[Math.floor(Math.random() * all.length)])]
+      res.innerHTML = renderGame(right, arr.sort(() => Math.random() - 0.5))
+    }
+
+
+    window.checkRight = (a, b) => {
+  const  o = ['Умница', 'Молодец', 'Умничка', 'Молодчинка', 'Здорово', 'Классно', 'Замечательно', 'Великолепно', ''][Math.round(Math.random()* 3)];
+// Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = true);
+  if (isFirstLetter ? a[0] == b[0] : a == b) {
+    speak(isFirstLetter ?`${o}, ${b} подходит` : `${o}, это ${a}`);
+    setTimeout(() => {
+      start();
+     // Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = false);
+    }, 3000);
+  } else {
+    speak(isFirstLetter ? `Нет, ${b} на букву ${b[0]}, а нужно на ${a[0]}!. Попробуй еще раз` : `Нет, это ${b} а не ${a}. Попробуй еще раз`);
+  }
+}
+
+function renderGame (right, all) {
+const txt = isFirstLetter ? `Выбери что начинается на букву "${right.name[0]}"!` : `Покажи где ${right.name}`;
+ speak(txt);
+ 
+
+  return `<section class="one">
+    <div>
+      ${isFirstLetter ? `<h1 class="oneLetter">${right.name[0]}</h1>`: ''}
+      <div class="name" onclick="speak('${right.name}')">${txt}<br><br><br></div>
+      <div class="emojiVariants">
+      ${all.map(({ emoji, name }) => {
+        const deg = Math.round(Math.random()* 360);
+        return `<button class="emojiButton" onclick="checkRight('${right.name}', '${name}')">
+        ${emoji}
+        ${isHalf ? `<div class="hide" style="transform:rotate(${deg}deg);"></div>`: ''}
+        </button>`;
+      }).join('')}
+      </div>
+      
+    </div>
+  </section>`
+}
+
+//start();
+res.innerHTML = `<section class="one"><button onClick="start()">НАЧАТЬ</button></section>`
+    // res.innerHTML = all.map((obj) => {
+
+    //   return oneEmojiRender(obj);
+    // }).join("\n")
+
+    console.log(all);
+    // res.innerHTML = Object.entries(abc).map(([letter, emojisArr]) => {
+    //   return `<h2>${letter}</h2><ul>${emojisArr.map(emojiObj => {
+    //     const [emoji, description] = Object.entries(emojiObj)[0]
+    //     return `<li>${emoji} - ${description}</li>`
+    //   }).join("")}</ul>`;
+    // }).join("\n");
+  </script>
+</body>
+</html>

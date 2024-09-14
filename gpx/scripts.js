@@ -27,8 +27,8 @@ document.getElementsByClassName('leaflet-control-attribution')[0].style.display 
 
 const fileinput = document.getElementById('fileinput');
 const list = document.getElementById('list');
-var markers = new L.FeatureGroup();
 
+var markers = new L.FeatureGroup();
 var tempGroup = new L.FeatureGroup();
 
 let currentSegment = null;
@@ -36,7 +36,9 @@ let currentSegment = null;
 
 const pointElMap = {};
 const allCoordinates = [];
-const segmentsMap = {}
+const segmentsMap = {};
+
+const tracksState = {};
 
 const addMarker = (coords, globalIndex) => {
   const marker = L.marker(coords, {
@@ -63,8 +65,8 @@ const addMarker = (coords, globalIndex) => {
       marker.addTo(markers);
       marker.on('popupopen', () => {
         tempGroup.clearLayers();
-        const [a, b] = Object.values(segmentsMap).find(([a, b]) => globalIndex <= b && globalIndex>= a);
-        alert(a + ' ' + b)
+        const { indexes: [a, b] } = Object.values(segmentsMap).find(({ indexes: [a, b] }) => globalIndex <= b && globalIndex>= a);
+      
 
     const polyline = new L.polyline(
       allCoordinates.slice(a, globalIndex+1),
@@ -135,18 +137,21 @@ async function getPointsFromGpxFile(file) {
 
   const ul = document.createElement("ul");
 
-  
-
   const segments = Array.from(doc.getElementsByTagName('trkseg'));
 
   segments.forEach((seg, s) => {
     const coordinates = [];
     const randomColor = colors[s][0];
-    const randomColor2 = colors[s][1];
 
     seg.setAttribute('data-segment', s);
+
     const points = Array.from(seg.getElementsByTagName('trkpt'));
-    segmentsMap[s] = [allCoordinates.length]
+    segmentsMap[s] = {
+      index: s,
+      indexes: [allCoordinates.length],
+      color: randomColor,
+      name:`Сегмент ${s+1}`
+    }
     points.forEach((p, i, all) => {
       const d = [
         parseFloat(p.getAttribute('lat')),
@@ -186,7 +191,7 @@ async function getPointsFromGpxFile(file) {
       crEl('button', {e:{click: (e) => { currentSegment = polyline; map.setView(coordinates[coordinates.length - 1], map.getMaxZoom());}}}, 'Конец'),
       crEl('button', {e:{click: (e) => { map.fitBounds(polyline.getBounds(), {paddingBottomRight: [0,list.offsetHeight + 50],}); }}}, 'Вписать'),
     ));
-    segmentsMap[s].push(allCoordinates.length-1)
+    segmentsMap[s].indexes.push(allCoordinates.length-1)
   })
 
   li.appendChild(ul);

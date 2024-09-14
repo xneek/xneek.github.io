@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <div id="res"></div>
+  <script src="assets/scripts.js"></script>
+  <script src="assets/abc.js"></script>
+  <script>
+
+    window.speak = (text) => {
+       const utterance = new SpeechSynthesisUtterance(text);
+       utterance.lang = "ru-RU";
+       const voices = speechSynthesis.getVoices();
+       utterance.voice = voices[0]; // Choose a specific voice
+       speechSynthesis.speak(utterance);
+    }
+
+window.checkRight = (a, b) => {
+  const  o = ['Умница', 'Молодец', 'Умничка', 'Молодчинка', 'Здорово', 'Классно', 'Замечательно', 'Великолепно', ''][Math.round(Math.random()* 3)];
+ 
+  if (a == b) {
+    speak(`${o}, да это ${a}`);
+    setTimeout(() => {
+      res.innerHTML = renderGame([all.pop(), all.pop(), all.pop()])
+    }, 3000);
+  } else {
+    speak(`Нет, это ${b} а не ${a}. Попробуй еще раз`);
+  }
+}
+
+const renderGame = (all) => {
+  const right = all[Math.round(Math.random()* 2)]
+  console.log(right)
+  return `<section class="one">
+    <div>
+      <div class="name" onclick="speak('${right.name}')">Покажи где «${right.name}»<br><br><br></div>
+      <div class="emojiVariants">
+      ${all.map(({ emoji, name }) => {
+        return `<button class="emojiButton" onclick="checkRight('${right.name}', '${name}')">${emoji}</button>`;
+      }).join('')}
+      </div>
+      
+    </div>
+  </section>`
+}
+
+
+    const all = Object.entries(abc).reduce((acc, [letter, emojisArr]) => {
+      acc.push(...emojisArr.map((obj) => {
+        const [emoji, name] = Object.entries(obj)[0]
+        return { emoji, name }
+      }))
+      return acc;
+    }, [])
+
+    all.sort(() => Math.random() - 0.5);
+
+res.innerHTML = renderGame([all.pop(), all.pop(), all.pop()])
+
+    // res.innerHTML = all.map((obj) => {
+
+    //   return oneEmojiRender(obj);
+    // }).join("\n")
+
+    console.log(all);
+    // res.innerHTML = Object.entries(abc).map(([letter, emojisArr]) => {
+    //   return `<h2>${letter}</h2><ul>${emojisArr.map(emojiObj => {
+    //     const [emoji, description] = Object.entries(emojiObj)[0]
+    //     return `<li>${emoji} - ${description}</li>`
+    //   }).join("")}</ul>`;
+    // }).join("\n");
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+
+    :root {
+      --text: #000;
+      --bg: #fff;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      scroll-snap-type: y mandatory;
+      font-family: "Source Sans Pro", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #fff;
+    --bg: #000;
+  }
+}
+
+    .one {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100vw;
+      height: 100vh;
+
+      scroll-snap-align: start;
+    }
+
+    .emoji {
+      font-size: 30vh;
+    }
+
+    .name {
+      opacity: 0.5;
+    }
+
+
+  .oneWithVariants {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+
+    scroll-snap-align: start;
+  }
+
+
+  .emojiButton {
+      font-size: 7vh;
+      width: 12vh;
+      height: 12vh;
+      line-height: 12vh;
+
+      background: linear-gradient(#536976,#292e49);
+
+          margin: 6px;
+    border-radius: 50%;
+ 
+    border: 1px solid #000;
+  }

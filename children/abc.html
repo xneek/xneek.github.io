@@ -36,6 +36,9 @@ window.checkRight = (a, b) => {
 const renderGame = (all) => {
   const right = all[Math.round(Math.random()* 2)]
   console.log(right)
+
+ speak(`Покажи где ${right.name}`);
+
   return `<section class="one">
     <div>
       <div class="name" onclick="speak('${right.name}')">Покажи где «${right.name}»<br><br><br></div>

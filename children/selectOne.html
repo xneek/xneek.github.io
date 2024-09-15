@@ -8,6 +8,7 @@
 </head>
 <body>
   <div id="res"></div>
+  <script src="assets/helpers.js"></script>
   <script src="assets/scripts.js"></script>
   <script src="assets/abc.js"></script>
   <script>
@@ -50,7 +51,7 @@ const isFirstLetter = !!urlParams.get('firstLetter');
 
 
     window.checkRight = (a, b) => {
-  const  o = ['Умница', 'Молодец', 'Умничка', 'Молодчинка', 'Здорово', 'Классно', 'Замечательно', 'Великолепно', ''][Math.round(Math.random()* 3)];
+  const  o = getPraise();
 // Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = true);
   if (isFirstLetter ? a[0] == b[0] : a == b) {
     speak(isFirstLetter ?`${o}, ${b} подходит` : `${o}, это ${a}`);

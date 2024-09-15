@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div id="res"></div>
+  <script src="assets/helpers.js"></script>
+  <script src="assets/scripts.js"></script>
+  <script>
+    function randomInteger(min, max) {
+      let rand = min + Math.random() * (max + 1 - min);
+      return Math.floor(rand);
+    }
+
+    window.speak = (text) => {
+       const utterance = new SpeechSynthesisUtterance(text);
+       utterance.onstart = () => {
+        Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = true);
+       };
+       utterance.onend  = () => {
+        Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = false);
+       };
+
+       utterance.lang = "ru-RU";
+       const voices = speechSynthesis.getVoices();
+       utterance.voice = voices[0]; // Choose a specific voice
+       speechSynthesis.speak(utterance);
+    }
+
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const max = urlParams.get('max') ? urlParams.get('max') : 6;
+    const count = urlParams.get('count') ? urlParams.get('count') : 3;
+
+    function start() {
+      const right = randomInteger(1, max);
+      const arr = [right, ...Array(count - 1).fill(0).map(a => randomInteger(1, max))]
+      res.innerHTML = renderGame(right, arr)
+    }
+
+
+    window.checkRight = (a, b) => {
+      const  o = getPraise();
+
+      if (a == b) {
+        speak(`${o}, правильно`);
+        setTimeout(() => {
+          start();
+        // Array.from(document.querySelectorAll('button')).forEach(button => button.disabled = false);
+        }, 3000);
+      } else {
+        speak( `Нет, это ${b} а не ${a}. Попробуй еще раз`);
+      }
+    }
+const dices = ['','⚀','⚁','⚂','⚃','⚄','⚅']
+    function renderGame (right, all) {
+    const txt = `Выбери кубик на котором ${right}`;
+    speak(txt);
+    
+
+      return `<section class="one">
+        <div>
+          <h1 class="oneLetter">${right}</h1>
+          <div class="name" onclick="speak('${txt}')">${txt}<br><br><br></div>
+          <div class="emojiVariants">
+          ${all.map((n) => {
+          
+            return `<button class="emojiButton" style="color:#fff; font-size: 7rem" onclick="checkRight(${right}, ${n})">
+            ${dices[n]}
+            </button>`;
+          }).join('')}
+          </div>
+          
+        </div>
+      </section>`
+    }
+
+//start();
+res.innerHTML = `<section class="one"><button onClick="start()">НАЧАТЬ</button></section>`
+    // res.innerHTML = all.map((obj) => {
+
+    //   return oneEmojiRender(obj);
+    // }).join("\n")
+
+    console.log(all);
+    // res.innerHTML = Object.entries(abc).map(([letter, emojisArr]) => {
+    //   return `<h2>${letter}</h2><ul>${emojisArr.map(emojiObj => {
+    //     const [emoji, description] = Object.entries(emojiObj)[0]
+    //     return `<li>${emoji} - ${description}</li>`
+    //   }).join("")}</ul>`;
+    // }).join("\n");
+  </script>
+</body>
+</html>

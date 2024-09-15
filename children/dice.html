@@ -70,7 +70,7 @@ const dices = ['','⚀','⚁','⚂','⚃','⚄','⚅']
           <div class="emojiVariants">
           ${all.map((n) => {
           
-            return `<button class="emojiButton" style="color:#fff; font-size: 7rem" onclick="checkRight(${right}, ${n})">
+            return `<button class="emojiButton" onclick="checkRight(${right}, ${n})">
             ${dices[n]}
             </button>`;
           }).join('')}

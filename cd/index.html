@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cd</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 0;
+
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #res {
+      width: 96%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    fieldset {
+      width: 96%;
+      max-width: 96%;
+      border-radius: 6px;
+    }
+    .cd {display: flex;flex-basis: auto; flex-grow: 5; width: 100%; }
+    .one {
+      border: 1px solid currentColor;
+      border-radius: 6px;
+      margin: 3px;
+      text-align: center;
+
+      flex: 1 1 40%;
+
+      padding: 0.8rem 0;
+
+
+      b {
+        font-size: 2rem;
+        line-height: 2rem;
+      }
+      small {
+       
+        font-size: 0.8rem;
+        opacity: 0.6;
+      }
+    }
+
+    button {
+      margin: 1rem;
+    }
+
+    #favDialog label {
+      display: flex;
+
+      input {
+        margin-left: auto;
+      }
+    }
+
+    #favDialog h4 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="res"></div>
+  <dialog id="favDialog">
+    <form>
+      <h4>Добавить дату</h4>
+      <hr>
+      <p>
+        <label>
+          Дата:
+          <input type="datetime-local" required>
+        </label>
+      </p>
+      <p>
+        <label>
+          Название:
+          <input required>
+        </label>
+      </p>
+      <div>
+        <button value="cancel" formmethod="dialog">Cancel</button>
+        <button id="confirmBtn" value="default">Confirm</button>
+      </div>
+    </form>
+  </dialog>
+  <script>
+
+    const rtf = new Intl.RelativeTimeFormat(navigator.language, { numeric:"always", format: "short" })
+    function diffDate(target_date) {
+      const now = new Date();
+      const target = new Date(target_date);
+      const offset = now.getTimezoneOffset() * 60000;
+      return new Date((target - now) + offset);
+    }
+
+   const go  = () => {
+    const d = diffDate('2024-12-31 23:59:59');
+
+res.innerHTML = '<fieldset><legend>Новый год</legend><div class="cd"><div class="one"><b>' + [
+rtf.format(d.getMonth(), 'month'),
+rtf.format(d.getDate()-1, 'day'),
+rtf.format(d.getHours(), 'hour'),
+rtf.format(d.getMinutes(), 'minute'),
+rtf.format(d.getSeconds(), 'second'),
+].map((s) => s.replace('через','')).map((s) => s.trim().replace(/\s/g,'</b><br><small>')).join('</small></div><div class="one"><b>') + '</div></div></fieldset>';
+
+
+   }
+   go();
+   setInterval(go, 1000)
+
+
+
+
+   document.body.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  favDialog.showModal();
+});
+
+  </script>
+</body>
+</html>

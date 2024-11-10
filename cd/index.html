@@ -70,10 +70,11 @@
     const params = new URLSearchParams(location.search);
     const date = params.get('date') ?? `${new Date().getFullYear() + 1}-01-01 00:00:00`;
     const text = params.get('text') ?? `Новый год`;
+    document.title=text + date;
 
    const go  = () => {
     const d = diffDate(date);
-
+    
     res.innerHTML = `<fieldset><legend>${text} через:</legend><div class="cd"><div class="one"><b>` + [
     rtf.format(d.getMonth(), 'month'),
     rtf.format(d.getDate()-1, 'day'),

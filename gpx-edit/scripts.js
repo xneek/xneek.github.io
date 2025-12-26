@@ -58,16 +58,16 @@ function getVisiblePolylinePoints() {
         crEl('button', {
           d: { lat: p.lat, lng: p.lng },
           onclick: (e) => {
-            map.closePopup();
             drawToEnd(+e.target.dataset.lat,+e.target.dataset.lng, true);
+            map.closePopup();
           }
         }, 'Выкинуть конец'),
         crEl('br'),
         crEl('button', {
           d: { lat: p.lat, lng: p.lng },
           onclick: (e) => {
-            map.closePopup();
             drawToEnd(+e.target.dataset.lat,+e.target.dataset.lng);
+            map.closePopup();
           }
         }, 'Перерисовать конец'),
       )
@@ -150,17 +150,19 @@ const drawToEndComplete = async (justCutMode = false) => {
   }, 0);
 
   const lastPointIndex = allCoordinates.findIndex((x) => x[0] === firstPoint[0] && x[1] === firstPoint[1]);
-  if (!lastPointIndex>0) return alert(`Last point not found`)
+  if (lastPointIndex<=0) return alert(`Last point not found`)
+  if (lastPointIndex==allCoordinates.length) return alert(`Last point not found last`)
 
   console.log('xneek', {lastPointIndex});
   
-  const count = 100;
+  const count = 10;
   let sumSec = 0;
   let sumMeters = 0;
   for (let i = lastPointIndex - count; i< lastPointIndex; i++) {
     const p1 = doc.querySelector(`trkpt[lat='${allCoordinates[i-1][0]}'][lon='${allCoordinates[i-1][1]}']`);
     const p2 = doc.querySelector(`trkpt[lat='${allCoordinates[i][0]}'][lon='${allCoordinates[i][1]}']`);
 
+    if (!p1 || !p2) continue;
     const d1 = new Date(p1.getElementsByTagName('time')[0].textContent);
     const d2 = new Date(p2.getElementsByTagName('time')[0].textContent);
 
@@ -169,7 +171,8 @@ const drawToEndComplete = async (justCutMode = false) => {
 
   }
 
-  console.log('xneek', {sumSec, sumMeters})
+  console.log('xneek', {sumSec, sumMeters});
+  
 
   allCoordinates.slice(lastPointIndex + 1).forEach((c) => {
     const el = doc.querySelector(`trkpt[lat='${c[0]}'][lon='${c[1]}']`);

@@ -16,8 +16,13 @@ html, body {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  width: 100dvw;
   z-index: 9999999999999;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  
 }
 
 #footer:not(:empty) {
@@ -28,6 +33,7 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.18); /* Subtle border */
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Depth */
   padding: 16px;
+  box-sizing: border-box;
   text-align: center;
 }
 

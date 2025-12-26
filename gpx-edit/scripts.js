@@ -29,7 +29,7 @@ function getVisiblePolylinePoints() {
   const currentZoom = map.getZoom();
   const maxZoom = map.getMaxZoom();
 
-  if (currentZoom < maxZoom - 4) return;
+  if (currentZoom < maxZoom - 3) return;
 
 
 
@@ -256,6 +256,9 @@ fileName = file.name ?? 'file.gpx'
         parseFloat(p.getAttribute('lat')),
         parseFloat(p.getAttribute('lon'))
       ];
+
+      p.setAttribute('lat', d[0])
+      p.setAttribute('lon', d[1])
       coordinates.push(d);
       allCoordinates.push(d);
     });
@@ -277,7 +280,23 @@ fileName = file.name ?? 'file.gpx'
   map.fitBounds(L.latLngBounds(allCoordinates), {paddingBottomRight: [0,150],});
 
 
-  footer.innerHTML = 'Приблизьте трек и выберите точку от которой начнете редактирование';
+  footer.innerHTML = "";
+  footer.append(crEl('div',
+    crEl('p', `Приблизьте трек и выберите точку от которой начнете редактирование`),
+    crEl('div',
+      crEl('a', {href: 'javascript:void(0)', e: {
+        click: () => {
+          map.setView({lat: allCoordinates[0][0], lon: allCoordinates[0][1]}, map.getMaxZoom());
+        }
+      }}, 'Начало'),
+      ' \u00a0 \u00a0 | \u00a0 \u00a0 ',
+      crEl('a', {href: 'javascript:void(0)', e: {
+        click: () => {
+          map.setView({lat: allCoordinates.at(-1)[0], lon: allCoordinates.at(-1)[1]}, map.getMaxZoom());
+        }
+      }}, 'Конец')
+    )
+  ))
 
   map.on('click', (e) => {
     if (!newPoints.length) {

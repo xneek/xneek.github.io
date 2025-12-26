@@ -1,0 +1,91 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100dvw;
+  height: 100dvh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#map {
+  width: 100dvw;
+  height: 100dvh;
+}
+
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999999999999;
+}
+
+#footer:not(:empty) {
+  background: rgba(255, 255, 255, 0.2); /* Translucent background */
+  backdrop-filter: blur(10px); /* The "frosted" effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+
+  border: 1px solid rgba(255, 255, 255, 0.18); /* Subtle border */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Depth */
+  padding: 16px;
+  text-align: center;
+}
+
+
+#map .leaflet-div-icon {
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,15,255,0.5);
+}
+
+
+
+#map .leaflet-div-icon b {
+  display:inline-block;
+  border-radius: 3px;
+}
+
+.start-icon {
+  background-color: lime;
+  width: 8px;
+  height: 8px;
+    margin: 4px;
+}
+
+.finish-icon {
+  background-color: red;
+  margin: 4px;
+  width: 8px;
+  height: 8px;
+}
+
+.new-div-icon {
+  background-color: yellow;
+  width: 8px;
+  margin: 4px;
+  height: 8px;
+  position: relative;
+
+  &:before {
+    content: attr(title);
+    font-size: 8px;
+    line-height: 8px;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%,-50%);
+  }
+}
+
+
+.menu {
+    /* Core properties for the glass appearance */
+
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    
+  }
+}

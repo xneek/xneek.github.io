@@ -25,6 +25,12 @@ html, body {
   
 }
 
+
+a {
+  text-decoration: none;
+  color: skyblue;
+}
+
 #footer:not(:empty) {
   background: rgba(255, 255, 255, 0.2); /* Translucent background */
   backdrop-filter: blur(10px); /* The "frosted" effect */

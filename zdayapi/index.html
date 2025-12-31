@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Здаяпи</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      box-sizing: border-box;
+      height: 100%;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      h3 {
+        margin: 6px 0;
+      }
+
+      label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 16px;
+      }
+    }
+
+    #inp, #res {
+      display: block;
+      width: 100%;
+      height: 50%;
+      box-sizing: border-box;
+      padding: 0.4rem;
+      border: 1px solid #989898;
+      border-radius: 0.4rem;
+      overflow-y: auto;
+    }
+  
+    #res {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h3>str</h3>
+      <div>
+        <label><input type="radio" onchange="changeType(this)" name="type" value="zdayapi">здаяпи</label>
+        <label><input type="radio" onchange="changeType(this)" name="type" value="abc">абв</label>
+      </div>
+    </header>
+    <textarea name="inp" id="inp"></textarea>
+    <p id="res"></p>
+  </main>
+
+  <script>
+    let type= location.hash.length > 2 ? location.hash.substring(1) : 'abc';
+    const abc = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+
+    function abcNum(s) {
+      let str = s;
+
+      str = str.replaceAll(/\s+/g, '\u2003');
+
+      for (let char of str) {
+        const upperChar = char.toUpperCase();        
+        const position = abc.indexOf(upperChar) + 1;
+        if (position > 0) {
+          str = str.replaceAll(char, `\u200C${position}\u2009`);
+          str = str.replaceAll(char.toLowerCase(), `${position}\u2009`);
+        }
+      }
+
+      return str;
+    }
+
+    function zdayapi(s) {
+      let str = s;
+      const words = str.split(/\s/);
+
+      words.forEach((w) => {
+        const clearW = w.replaceAll(/[^А-яёЁ]+/gi, '');
+        if (clearW.length > 1) {
+          const med = Math.floor(clearW.length / 2);
+
+          const part1 = clearW.substring(0, med);
+          const part2 = clearW.substring(med);
+          let repl = [part2, part1].join(`\u200C`);
+
+          if (clearW[0] === clearW[0].toUpperCase()) {
+            repl = repl.toLocaleLowerCase()
+            repl = repl[0].toUpperCase()+ repl.substring(1)
+          }
+
+
+          console.log('xneek', { clearW, part1, part2, repl })
+          str = str.replaceAll(clearW, repl)
+        }
+        
+      })
+      return str;
+    }
+
+
+    function run() {
+      switch (type) {
+        case 'abc':
+          res.innerText = abcNum(inp.value);
+        break;
+        case 'zdayapi':
+          res.innerText = zdayapi(inp.value);
+        break;
+
+        default:
+          res.textContent = 'wtf?';
+      }
+    }
+
+    
+    
+    inp.oninput = () => {
+      run()
+    }
+
+
+    function changeType(e) {
+      type =  e.value;
+      window.location.hash = type;
+      run();
+    }
+
+    if (window.location.hash?.length < 2) {
+      window.location.hash = 'abc';
+      location.reload()
+    }
+
+    document.querySelector(`input[value='${window.location.hash.substring(1)}']`).checked = true;
+  </script>
+</body>
+</html>

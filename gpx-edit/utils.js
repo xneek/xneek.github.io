@@ -41,26 +41,34 @@ function getInputDate(d) {
   return new Date(d.getTime() - timeOffset * 60000).toISOString().substring(0,16)
 }
 
-function requestDateModal(startDate, distanceInMeters, meterPerSec) {
+function requestDateModal(startDate, distanceInMeters, meterPerSec, direction = 'forward', count = 100) {
+  
   return new Promise((res) => {
     const maxDate = new Date(startDate.getTime() + 86400000);
 
     const secBySpeed = distanceInMeters / meterPerSec;
-    const computedFinishDate = new Date(startDate.getTime() + (secBySpeed * 1000))
+    const mSecBySpeed = secBySpeed * 1000;
+    const computedDate = direction === 'forward'
+    ? new Date(startDate.getTime() + (mSecBySpeed))
+    : new Date(startDate.getTime() - mSecBySpeed)
 
+
+console.log('xneek', {startDate, distanceInMeters, meterPerSec, direction , count, computedDate})
 
     const info = crEl('small', {}, 'Выберите дату');
 
     const updateInfo = () => {
       if (!document.getElementById('finishDate')) return
       const cur = new Date(document.getElementById('finishDate').value);
-      const diffInSec = (cur.getTime() - startDate.getTime() ) / 1000;
+      const diffInSec = direction === 'forward'
+        ?(cur.getTime() - startDate.getTime()) / 1000
+        :(startDate.getTime() - cur.getTime()) / 1000;
       const meterSecSpeed = distanceInMeters / diffInSec;
-      info.textContent = `${distanceInMeters.toFixed(2)}м. со скоростью ${(meterSecSpeed * 3.6).toFixed(1)} км/ч`
+      info.textContent = `${distanceInMeters.toFixed(2)}м.  со скоростью ${(meterSecSpeed * 3.6).toFixed(1)} км/ч`
     }
 
     const di = crEl('dialog',
-      crEl('h5', 'Дата финиша'),
+      crEl('h5', 'Дата'),
        crEl('form', {e: {submit: (e) => {
           e.preventDefault();
 
@@ -70,16 +78,17 @@ function requestDateModal(startDate, distanceInMeters, meterPerSec) {
           di.remove()
         }}},
           crEl('p',
-            `Мы рассчитали дату финиша на основе последних 100 точек`,
+            `Мы рассчитали дату ${direction === 'forward' ? 'финиша 🏁': 'старта 🔰'} на основе ближайших ${count} точек`,
             crEl('br'),
             crEl('small', `(зная среднюю скорость ${(meterPerSec * 3.6).toFixed(1)}км/ч и расстояние ${distanceInMeters.toFixed(2)}м.)`)),
-          crEl('p', `Если вам известна более точная дата финиша, укажите ее в поле ниже:`),
+          crEl('p', `Если вам известна более точная дата ${direction === 'forward' ? 'финиша': 'старта'}, укажите ее в поле ниже:`),
           crEl('input', {
             type:'datetime-local',
             required: true,
-            value: getInputDate(computedFinishDate),
+            value: getInputDate(computedDate),
             min: getInputDate(startDate),
             max: getInputDate(maxDate),
+            step: 1,
             id: 'finishDate',
             e: {change: updateInfo}
           }),

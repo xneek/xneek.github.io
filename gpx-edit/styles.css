@@ -6,6 +6,11 @@ html, body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
 #map {
   width: 100dvw;
   height: 100dvh;
@@ -42,6 +47,7 @@ a {
   box-sizing: border-box;
   text-align: center;
 }
+
 
 
 #map .leaflet-div-icon {
@@ -91,9 +97,6 @@ a {
 
 
 .menu {
-    /* Core properties for the glass appearance */
-
-
   button {
     display: block;
     width: 100%;

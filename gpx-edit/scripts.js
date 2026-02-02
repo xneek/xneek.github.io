@@ -78,7 +78,7 @@ function getVisiblePolylinePoints() {
       bPointTrkPt = doc.querySelector(`trkpt[lat='${bPoint[0]}'][lon='${bPoint[1]}']`);
       if (!bPointTrkPt) return alert(`bPointTrkPt not found trkpt[lat='${bPoint[0]}'][lon='${bPoint[1]}']`);
 
-
+      map.setView(latlng, 16);
       footer.innerHTML = `📌 Нарисуйте точки от зеленой до красной последовательно, соблюдая порядок`;
 
       allMarkersLayer.clearLayers();
@@ -212,7 +212,7 @@ function startDrawNewPoints(lat, lng, justCutMode = false) {
   newPolyline = new L.polyline(
     [[lat, lng], [lat, lng]],
     {
-      color: 'lime',
+      color: 'blue',
       weight: 3,
       opacity: 0.9,
       smoothFactor: 1

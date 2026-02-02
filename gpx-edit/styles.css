@@ -99,8 +99,75 @@ a {
 .menu {
   button {
     display: block;
-    width: 100%;
-    padding: 8px;
-    
+    width: 320px;
+    background: none;
+    border: none;
+    outline: none;
+    &:hover {
+      background-color: lightgray;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
   }
+
+  .action {
+    min-width: 60%;
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    
+    b {
+      width: 2rem;
+      height: 2rem;
+      border: 0.2rem solid currentColor;
+      border-radius: 50%;
+      font-size: 2rem;
+      line-height: 2rem;
+      text-align:center
+    }
+    small {
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 0.2rem solid currentColor;
+      border-radius: 50%;
+    }
+    span {
+      flex-grow: 1;
+      border-top: 0.2rem solid currentColor;
+    }
+    &:hover {
+      color: darkblue
+    }
+    
+    .add {
+      color: green;
+    }
+    
+    .remove {
+      color: red;
+    }
+    
+    .edit {
+      color: orange;
+    }
+    
+    .active {
+      position:relative;
+      &:after {
+        content: '';
+        position:absolute;
+        width: 80%;
+        height: 80%;
+        background-color: currentColor;
+        border-radius: 50%;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        opacity: 80%;
+      }
+    }
+  }
+
 }

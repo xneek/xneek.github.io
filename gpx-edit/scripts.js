@@ -119,7 +119,7 @@ function getVisiblePolylinePoints() {
             startDrawNewPoints(+e.target.dataset.lat,+e.target.dataset.lng, true);
             map.closePopup();
           }
-        }, 'Выкинуть начало'),
+        }, 'Удалить начало', removeStartIcon()),
         crEl('br'),
         crEl('button', {
           d: { lat: p.lat, lng: p.lng },
@@ -128,7 +128,7 @@ function getVisiblePolylinePoints() {
             startDrawNewPoints(+e.target.dataset.lat,+e.target.dataset.lng);
             map.closePopup();
           }
-        }, 'Перерисовать начало'),
+        }, 'Перерисовать начало', addStartIcon()),
         crEl('br'),
 
 
@@ -140,7 +140,7 @@ function getVisiblePolylinePoints() {
             startDrawNewPoints(+e.target.dataset.lat,+e.target.dataset.lng, false, true);
             map.closePopup();
           }
-        }, 'Перерисовать кусок'),
+        }, 'Редактировать кусок', editMiddleIcon()),
         crEl('br'),
 
 
@@ -151,7 +151,7 @@ function getVisiblePolylinePoints() {
             startDrawNewPoints(+e.target.dataset.lat,+e.target.dataset.lng, true);
             map.closePopup();
           }
-        }, 'Выкинуть конец'),
+        }, 'Удалить конец', removeFinishIcon()),
         crEl('br'),
         crEl('button', {
           d: { lat: p.lat, lng: p.lng },
@@ -160,7 +160,7 @@ function getVisiblePolylinePoints() {
             startDrawNewPoints(+e.target.dataset.lat,+e.target.dataset.lng);
             map.closePopup();
           }
-        }, 'Перерисовать конец'),
+        }, 'Перерисовать конец', addFinishIcon()),
         
       )
     ), {className: 'menu'})

@@ -4,6 +4,9 @@ html, body {
   width: 100dvw;
   height: 100dvh;
   font-family: Arial, Helvetica, sans-serif;
+
+  --icon-size: 16px;
+  --icon-middle-size: 12px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -48,33 +51,85 @@ a {
   text-align: center;
 }
 
+.start-icon, .finish-icon, .cursor-icon, .new-div-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  box-sizing: border-box;
+}
 
+.sel-icon {
+  width: var(--icon-middle-size);
+  height: var(--icon-middle-size);
+ border:2px solid rgba(0,15,255,0.5);
+  background-color:  transparent;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+  }
+}
 
 #map .leaflet-div-icon {
   border: none;
   border-radius: 50%;
-  background: rgba(0,15,255,0.5);
+  box-sizing: border-box;
+  background: transparent;
+  margin: 0;
+  padding: 0;
 }
-
 
 
 #map .leaflet-div-icon b {
   display:inline-block;
-  border-radius: 3px;
+  border-radius: 50%;
 }
 
 .start-icon {
-  background-color: lime;
-  width: 8px;
-  height: 8px;
-    margin: 4px;
+  background-color: darkgreen;
+  position: relative;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  &:after {
+    position: absolute;
+    text-align: center;
+    inset: 0;
+    font-size: 0.8em;
+    line-height: var(--icon-size);
+    color: white;
+    content: 'А';
+  }
 }
 
 .finish-icon {
   background-color: red;
-  margin: 4px;
-  width: 8px;
-  height: 8px;
+  
+  position: relative;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  &:after {
+    position: absolute;
+    text-align: center;
+    inset: 0;
+    font-size: 0.8em;
+    line-height: var(--icon-size);
+    color: white;
+    content: 'Б';
+  }
+}
+
+#map .cursor-icon {
+  position: relative;
+  background: transparent;
+  box-sizing: content-box;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top:50%;
+    left:50%;
+    width: 16px;
+    height: 16px;
+    border: 6px dashed red;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
 }
 
 .new-div-icon {

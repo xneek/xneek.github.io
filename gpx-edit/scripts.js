@@ -10,6 +10,7 @@ L.control.scale().addTo(map);
 const allMarkersLayer = L.featureGroup().addTo(map);
 const polylinesLayer = L.featureGroup().addTo(map);
 const newDrawingLayer = L.featureGroup().addTo(map);
+const markerLayer = L.featureGroup().addTo(map);
 let allCoordinates = [];
 let newPoints = [];
 
@@ -29,9 +30,60 @@ let newPolyline;
 let direction; // backward | forward
 let isPiece = false;
 
+const iconSize = 16;
+const middleIconSize = 12;
+
+function setBPoint([lat, lng]) {
+  markerLayer.clearLayers();
+
+  const pointMarker = L.marker([lat, lng], {
+      icon: L.divIcon({
+        iconSize: [iconSize, iconSize],
+        iconAnchor: [iconSize/2, iconSize/2],
+        html: crEl('b', {c: 'finish-icon'})
+      })
+    });
+    pointMarker.addTo(newDrawingLayer);
+
+  bPoint = [lat, lng];
+  bPointIndex = allCoordinates.findIndex((x) => x[0] === lat && x[1] === lng);
+  if (aPointIndex<0) return alert(`bPoint point not found`);
+  bPointTrkPt = doc.querySelector(`trkpt[lat='${bPoint[0]}'][lon='${bPoint[1]}']`);
+  if (!bPointTrkPt) return alert(`bPointTrkPt not found trkpt[lat='${bPoint[0]}'][lon='${bPoint[1]}']`);
+
+
+  footer.innerHTML = `📌 Нарисуйте точки от зеленой до красной последовательно, соблюдая порядок`;
+
+  allMarkersLayer.clearLayers();
+  polylinesLayer.clearLayers();
+
+  polyline1 = new L.polyline(
+    allCoordinates.slice(0, aPointIndex+1),
+    {
+      weight: 3,
+      opacity: 0.9,
+      smoothFactor: 1
+    }
+  );
+
+  polylinesLayer.addLayer(polyline1);
+
+  polyline2 = new L.polyline(
+    allCoordinates.slice(bPointIndex),
+    {
+      weight: 3,
+      opacity: 0.9,
+      smoothFactor: 1
+    }
+  );
+
+  polylinesLayer.addLayer(polyline2);
+
+}
+
 function getVisiblePolylinePoints() {
   if (!polyline) return;
-  if (newPoints.length && (isPiece && bPoint)) return;
+  if ((!isPiece && (aPoint || bPoint)) || (isPiece && bPoint)) return;
   
   allMarkersLayer.clearLayers();
   
@@ -40,7 +92,6 @@ function getVisiblePolylinePoints() {
 
   if (currentZoom < maxZoom - 3) return;
 
-  footer.innerHTML = '🎯 Выберите точку от которой начнете редактирование';
 
   const mapBounds = map.getBounds();
   const polylinePoints = polyline.getLatLngs();
@@ -51,10 +102,11 @@ function getVisiblePolylinePoints() {
   visiblePoints.forEach((p) => {
     const pointMarker = L.marker(p, {
       icon: L.divIcon({
-      iconSize: [16, 16], // Set the size
-      iconAnchor: [8, 8], // Set the anchor to half the size (centered)
+        iconSize: [middleIconSize, middleIconSize],
+        iconAnchor: [iconSize/2, iconSize/2],
       html: crEl('b', {
-        d: { lat: p.lat, lng: p.lng }
+        d: { lat: p.lat, lng: p.lng },
+        c: 'sel-icon'
       })
       })
     });
@@ -62,53 +114,13 @@ function getVisiblePolylinePoints() {
     if (isPiece && !bPoint) {
       pointMarker.on('click', (e) => {
         const latlng = e.latlng;
-        const pointMarker = L.marker([latlng.lat, latlng.lng], {
-        icon: L.divIcon({
-          iconSize: [16, 16], // Set the size
-          iconAnchor: [8, 8], // Set the anchor to half the size (centered)
-          html: crEl('b', {c: 'finish-icon'})
-        })
-      });
 
-      pointMarker.addTo(newDrawingLayer);
-
-      bPoint = [latlng.lat, latlng.lng];
-      bPointIndex = allCoordinates.findIndex((x) => x[0] === latlng.lat && x[1] === latlng.lng);
-      if (aPointIndex<0) return alert(`bPoint point not found`);
-      bPointTrkPt = doc.querySelector(`trkpt[lat='${bPoint[0]}'][lon='${bPoint[1]}']`);
-      if (!bPointTrkPt) return alert(`bPointTrkPt not found trkpt[lat='${bPoint[0]}'][lon='${bPoint[1]}']`);
-
-
-      footer.innerHTML = `📌 Нарисуйте точки от зеленой до красной последовательно, соблюдая порядок`;
-
-      allMarkersLayer.clearLayers();
-      polylinesLayer.clearLayers();
-
-      polyline1 = new L.polyline(
-        allCoordinates.slice(0, aPointIndex+1),
-        {
-          weight: 3,
-          opacity: 0.9,
-          smoothFactor: 1
-        }
-      );
-  
-      polylinesLayer.addLayer(polyline1);
-
-      polyline2 = new L.polyline(
-        allCoordinates.slice(bPointIndex),
-        {
-          weight: 3,
-          opacity: 0.9,
-          smoothFactor: 1
-        }
-      );
-  
-      polylinesLayer.addLayer(polyline2);
-
-    })
+        setBPoint([latlng.lat, latlng.lng])
+      })
 
     } else {
+      footer.innerHTML = '🎯 Выберите точку от которой начнете редактирование';
+
     pointMarker.bindPopup(crEl('div', 
       crEl('div', {}, 
 
@@ -201,8 +213,8 @@ function startDrawNewPoints(lat, lng, justCutMode = false) {
 
   const pointMarker = L.marker([lat, lng], {
     icon: L.divIcon({
-      iconSize: [16, 16], // Set the size
-      iconAnchor: [8, 8], // Set the anchor to half the size (centered)
+      iconSize: [iconSize, iconSize],
+      iconAnchor: [iconSize/2, iconSize/2],
       html: crEl('b', {c: 'start-icon'})
     })
   });
@@ -221,8 +233,46 @@ function startDrawNewPoints(lat, lng, justCutMode = false) {
     
   newDrawingLayer.addLayer(newPolyline); 
 
-  if (isPiece) {
-     footer.innerHTML = `📌 Выберите точку где должен заканчиваться кусок`
+  if (isPiece ) {
+    let i = aPointIndex+1;
+    footer.innerHTML = `📌 Выберите точку где должен заканчиваться кусок`;
+    const cursorMarker = L.marker(allCoordinates[i], {
+      icon: L.divIcon({
+        iconSize: [iconSize, iconSize],
+        iconAnchor: [iconSize/2, iconSize/2],
+      html: crEl('b', {c: 'cursor-icon'})
+      })
+    });
+
+    cursorMarker.addTo(markerLayer);
+    footer.append(
+      crEl('div', {style:'display:flex'},
+        crEl('button', {
+          e:{
+            click: () => {
+              i++;
+              const p = allCoordinates[i]
+              cursorMarker.setLatLng(p);
+              map.panTo(p)
+            }
+          }
+        },
+        'Двигать курсор вперед'
+        ),
+        ' ',
+        crEl('button', {
+          e:{
+            click: () => {
+              i++;
+              const p = allCoordinates[i]
+              setBPoint(p);
+            }
+          }
+        }, 'Сохранить точку Б в позиции курсора')
+      )
+    );
+
+
   } else {
     allMarkersLayer.clearLayers();
     polyline.setLatLngs(allCoordinates.filter((_, i) => direction === 'forward' ? i<= aPointIndex : i>= bPointIndex));
@@ -461,8 +511,8 @@ async function getPointsFromGpxFile(file) {
 
 
     const icon = L.divIcon({
-      iconSize: [16, 16], // Set the size
-      iconAnchor: [8, 8], // Set the anchor to half the size (centered)
+      iconSize: [iconSize, iconSize],
+      iconAnchor: [iconSize/2, iconSize/2],
       html: crEl('b', {
         title: newPoints.length+1,
         c: 'new-div-icon',

@@ -1,0 +1,70 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.step {
+  label, .label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    small {
+      opacity: 0.5;
+      margin-top: -8px;
+    }
+  }
+
+  strong {
+    color: red;
+  }
+}
+
+.hiddenStep {
+  position: absolute;
+  top: -9999px;
+}
+
+.timeLabel {
+  position: absolute;
+  width: 1px;
+  height: 1em;
+  background: orange;
+
+  &:before {
+    font-family: "Courier New", Courier, monospace;
+    content: attr(data-time);
+    font-size: 12px;
+    color: #000;
+  }
+}
+
+.chartWrapper {
+  max-width: 480px;
+  overflow-x: scroll;
+
+  .chartCanvas {
+    display: flex;
+    align-items: end;
+    width: fit-content;
+    position: relative;
+  }
+
+  .chartItem {
+    width: 1px;
+    background: lightcoral;
+
+    &:hover {
+      background-color: orange !important;
+    }
+  }
+}

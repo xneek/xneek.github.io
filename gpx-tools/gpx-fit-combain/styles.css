@@ -1,0 +1,54 @@
+table {
+  border-collapse: collapse;
+
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+}
+
+thead, th, thead>tr {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  /* Crucial: Prevents body text from bleeding through */
+  z-index: 1;
+  box-shadow: 0 1px 0 #000;
+  border: 1px solid #000;
+}
+
+
+
+#map {
+
+  height: 600px;
+  float: right;
+  min-width: 480px;
+
+}
+
+#res {
+  display: flex;
+
+  table {
+    flex-grow: 1;
+  }
+}
+
+
+td.active input {
+  box-shadow: 1px 1px 8px lime;
+}
+
+tr:hover td {
+  background: lightyellow !important;
+}
+
+tr:has(:checked) td {
+  font-weight: bold;
+
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

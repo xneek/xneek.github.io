@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>xneek gpx + fit interpolator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+      integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="step" id="step1">
+      <label>
+        <div id="res0">Йо. Не записался трек, но есть fit файл и трек того же маршрута?</div>
+        <div>Выбери <strong>gpx</strong> файл с треком по тому же маршруту</div>
+
+        <small>Важны только координаты трека, все равно когда он был записан</small>
+
+        <input type="file" id="gpxInput" accept=".gpx" />
+      </label>
+    </div>
+
+    <div class="step hiddenStep" id="step2">
+      <label>
+        <div id="res1"></div>
+        <div>Выбери <strong>fit</strong> файл</div>
+
+        <small>Обычно его пишут часы</small>
+
+        <input type="file" id="fitInput" accept=".fit" />
+      </label>
+    </div>
+
+    <div class="step hiddenStep" id="step3">
+      <div class="label">
+        <div id="res2"></div>
+        <div id="map" style="width: 480px; height: 320px"></div>
+        <div>Если ты ставил трек на паузу, не забудь отметить на треке</div>
+
+        <small>Приближай карту и тыкай в желтую точку, чтобы выбрать для неё время<br>там по пульсу будет видно где ты останавливался</small>
+
+        <button id="saveBtn">Скачать</button>
+        </div>
+    </div>
+
+    <dialog id="bindPointDialog"></dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/xneek-crel@2.4.0/dist/crel.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
+      integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="map.js"></script>
+    <script src="fit.js"></script>
+    <script src="utils.js"></script>
+    <script src="downloadGpx.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

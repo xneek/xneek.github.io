@@ -167,8 +167,15 @@ document.getElementById("gpxInput").addEventListener("change", async (e) => {
   trackName = goodDocDom.querySelector("name").textContent;
   creator = goodDocDom.querySelector('gpx')?.getAttribute('creator') ?? creator;
 
+
+  saveBtn.title = [
+    `C [shift] чтобы переименовать тренировку (${trackName})`,
+    `C [alt] чтобы переименовать источник (${creator})`,
+    'можно оба сразу'
+  ].join('\n')
+
   res1.innerHTML = `<p>
-            Отлично! Твой трек «<strong>${trackName}</strong>» что надо, 
+            Отлично! Твой трек «<strong>${trackName}</strong>» от ${creator} - что надо, 
             <br> в нем аж ${goodDocDom.querySelectorAll("trkpt").length} точек
           </p>
           <p>Сейчас мы наложим на координаты твоего трека данные из fit файла,<br>такие как время, пульс и каденс и все будет пучком)</p>

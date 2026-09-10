@@ -13,29 +13,37 @@
   ...
 ] 
  */
-function downloadGpx(segments, trackName = 'result') {
+function downloadGpx(segments, trackName = 'result', creator = "xneek gpx tools") {
   const trkseg = segments.map((segment) => {
     return `<trkseg>
       ${segment.map((row) => {
-    return `<trkpt lat="${row.latitude}" lon="${row.longitude}">
+      return `<trkpt lat="${row.latitude}" lon="${row.longitude}">
         <time>${row.timestamp}</time>
-        ${row.altitude ? `<ele>${row.altitude}</ele>`: ''}
+        ${row.altitude ? `<ele>${row.altitude}</ele>` : ''}
         ${[row.temperature, row.heart_rate, row.cadence].some(Boolean) ? `<extensions>
           <ns3:TrackPointExtension>
-            ${row.temperature ? `<ns3:atemp>${row.temperature}</ns3:atemp>`: ''}
-            ${row.heart_rate ? `<ns3:hr>${row.heart_rate}</ns3:hr>`: ''}
-            ${row.cadence ? `<ns3:cad>${row.cadence}</ns3:cad>`: ''}
+            ${row.temperature ? `<ns3:atemp>${row.temperature}</ns3:atemp>` : ''}
+            ${row.heart_rate ? `<ns3:hr>${row.heart_rate}</ns3:hr>` : ''}
+            ${row.cadence ? `<ns3:cad>${row.cadence}</ns3:cad>` : ''}
           </ns3:TrackPointExtension>
         </extensions>` : ''}
       </trkpt>`
-  }).join('\n')}
+    }).join('\n')}
     </trkseg>`
   })
 
-  const gpxString = `<gpx xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://www.garmin.com/xmlschemas/GpxExtensions/v3" creator="Garmin Connect" version="1.1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/11.xsd">
+  const gpxString = `<gpx
+    xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+    xmlns="http://www.topografix.com/GPX/1/1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ns2="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
+    creator="${creator}"
+    version="1.1"
+    xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/11.xsd"
+  >
   <metadata>
-    <link href="connect.garmin.com">
-      <text>Garmin Connect with xneek gpx + fit interpolator</text>
+    <link href="xneek.github.io/gpx-tools/gpx-fit-interpolator/">
+      <text>xneek gpx + fit interpolator</text>
     </link>
     <time>${segments[0][0].timestamp}</time>
   </metadata>
@@ -48,7 +56,7 @@ function downloadGpx(segments, trackName = 'result') {
 
   const blob = new Blob([gpxString], { type: 'application/gpx+xml' });
   const url = URL.createObjectURL(blob);
- const link = document.createElement('a');
+  const link = document.createElement('a');
   link.href = url;
   link.download = trackName + '.gpx';
   document.body.appendChild(link);

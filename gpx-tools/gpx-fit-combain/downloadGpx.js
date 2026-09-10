@@ -12,7 +12,7 @@
   ...
 ] 
  */
-function downloadGpx(rows) {
+function downloadGpx(rows, trackName = 'result', creator = "xneek gpx tools") {
   const trkpts = rows.map((row) => {
     return `<trkpt lat="${row.latitude}" lon="${row.longitude}">
         <time>${row.timestamp}</time>
@@ -26,15 +26,23 @@ function downloadGpx(rows) {
         </extensions>` : ''}
       </trkpt>`
   })
-  const gpxString = `<gpx xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://www.garmin.com/xmlschemas/GpxExtensions/v3" creator="Garmin Connect" version="1.1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/11.xsd">
+  const gpxString = `<gpx 
+  xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+  xmlns="http://www.topografix.com/GPX/1/1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ns2="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
+  creator="${creator}"
+  version="1.1"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/11.xsd"
+  >
   <metadata>
-    <link href="connect.garmin.com">
-      <text>Garmin Connect</text>
+    <link href="xneek.github.io/gpx-tools/gpx-fit-combain">
+      <text>xneek gpx fit combine</text>
     </link>
     <time>${rows[0].timestamp}</time>
   </metadata>
   <trk>
-    <name>Пенза Бег</name>
+    <name>${trackName}</name>
     <type>running</type>
     <trkseg>
       ${trkpts.join('\n')}
@@ -46,7 +54,7 @@ function downloadGpx(rows) {
     const url = URL.createObjectURL(blob);
  const link = document.createElement('a');
   link.href = url;
-  link.download = 'Result.gpx';
+  link.download = trackName+'.gpx';
   
   // 4. Append to body, click it, and remove it immediately
   document.body.appendChild(link);

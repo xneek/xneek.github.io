@@ -28,8 +28,9 @@ let selectedChartItem = null;
 let resultsArr = [];
 
 let trackName = '';
+let creator = 'xneek gpx tools (interpolator)';
 
-function save() {
+function save(e) {
   console.log({ fitData });
 
   const trkpts = [...dom.querySelectorAll("trkpt")].map((r) => [
@@ -99,7 +100,7 @@ function save() {
       for (let i = 1; i < s.points.length; i++) {
         cumDist.push(
           cumDist[i - 1] +
-            haversineDistanceMeters(s.points[i - 1], s.points[i]),
+          haversineDistanceMeters(s.points[i - 1], s.points[i]),
         );
       }
       const totalDist = cumDist[cumDist.length - 1] || 1;
@@ -127,7 +128,10 @@ function save() {
     .filter((s) => !s.isPause)
     .map((x, i) => x.segment);
   console.log({ filledSegments });
-  downloadGpx(filledSegments, trackName);
+  downloadGpx(
+    filledSegments,
+    e.shiftKey ? prompt('Название тренировки и трека', trackName) : trackName,
+    e.altKey ? prompt('Creator', creator) : creator);
 }
 
 function bindToFit(lat, lng) {
@@ -160,7 +164,8 @@ document.getElementById("gpxInput").addEventListener("change", async (e) => {
   step1.classList.add("hiddenStep");
   step2.classList.remove("hiddenStep");
 
-  trackName = goodDocDom.querySelector("name").textContent
+  trackName = goodDocDom.querySelector("name").textContent;
+  creator = goodDocDom.querySelector('gpx')?.getAttribute('creator') ?? creator;
 
   res1.innerHTML = `<p>
             Отлично! Твой трек «<strong>${trackName}</strong>» что надо, 
@@ -259,7 +264,7 @@ function savePoint(type = "time") {
   selectedChartItem = null;
 }
 
-document.getElementById("saveBtn").onclick = () => save();
+document.getElementById("saveBtn").onclick = save;
 
 document.getElementById("fitInput").addEventListener("change", async (e) => {
   const fitFile = e.target.files[0];

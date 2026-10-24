@@ -116,6 +116,7 @@ export class RadioWidget extends Widget {
                 },
               },
             },
+            crEl('option', { value: '' }, ' -- '),
             list.map((li) => {
               return crEl("option", { value: li.id }, li.name);
             }),

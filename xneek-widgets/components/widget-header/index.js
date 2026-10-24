@@ -70,9 +70,14 @@ export class WidgetHeader {
   }
 
 
-  setTitle(text) {
-    if (!this.title?.parentNode !== this.header) this.header.append(this.title)
-    this.title.textContent = text;
+  setTitle(textOrNode) {
+    if (!this.title?.parentNode !== this.header) this.header.prepend(this.title);
+    if (typeof textOrNode === 'string') {
+      this.title.textContent = textOrNode;
+    } else {
+      this.title.innerHTML = '';
+      this.title.append(textOrNode)
+    }
   }
   addAsideItem(el) {
     if (!this.header.contains(this.aside)) this.header.append(this.aside);

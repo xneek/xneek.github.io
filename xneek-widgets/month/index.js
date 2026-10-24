@@ -1,3 +1,4 @@
+import { WidgetHeader } from "../components/widget-header/index.js";
 import { Widget } from "../widget.js";
 
 export class MonthCalendarWidget extends Widget {
@@ -9,6 +10,12 @@ export class MonthCalendarWidget extends Widget {
     const calendarTable = this.shadowRoot.getElementById("calendarTable");
     const calendarHeader = this.shadowRoot.getElementById("calendarHeader");
     const yearDialog = this.shadowRoot.getElementById("yearDialog");
+
+
+    this.header = new WidgetHeader();
+    this.shadowRoot.prepend(this.header.getNode());
+    this.header.setTitle('Блокнот');
+
 
     let currentDate = new Date();
 
@@ -129,77 +136,71 @@ export class MonthCalendarWidget extends Widget {
     const renderCurHeader = () => {
       curHeader.innerHTML = "";
 
-      curHeader.append(
-
-        crEl('div',
-          currentDate.toLocaleString("default", {
-            month: "long",
-          }),
-          ' ',
-          crEl(
-            "a",
-            {
-              href: "#",
-              e: {
-                click: (e) => {
-                  e.preventDefault();
-                  showYearModal(currentDate.getFullYear());
-                },
+      const el = crEl('div', { c: 'calendarHeader' },
+        currentDate.toLocaleString("default", {
+          month: "long",
+        }),
+        ' ',
+        crEl(
+          "a",
+          {
+            href: "#",
+            e: {
+              click: (e) => {
+                e.preventDefault();
+                showYearModal(currentDate.getFullYear());
               },
             },
-            currentDate.getFullYear().toString(),
-          ),
-        )
-      );
+          },
+          currentDate.getFullYear().toString(),
+        ),
+      )
+
+      curHeader.append(el);
+
+      this.header.setTitle(el)
     };
 
+    this.header.addAsideItem(crEl(
+      "button",
+      {
+        e: {
+          click: () => {
+            currentDate = new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth() + 1,
+              1,
+            );
+            calendarTable.innerHTML = "";
+            calendarTable.append(renderMonth(currentDate));
+            renderCurHeader();
+          },
+        },
+      },
+      ">",
+    ))
+
+    this.header.addAsideItem(crEl(
+      "button",
+      {
+        e: {
+          click: () => {
+            currentDate = new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth() - 1,
+              1,
+            );
+            calendarTable.innerHTML = "";
+            calendarTable.append(renderMonth(currentDate));
+            renderCurHeader();
+          },
+        },
+      },
+      "<",
+    ));
+
+
     calendarHeader.innerHTML = "";
-    calendarHeader.append(
-      crEl(
-        "header",
-        {},
-        curHeader,
-        crEl(
-          "aside",
-          crEl(
-            "button",
-            {
-              e: {
-                click: () => {
-                  currentDate = new Date(
-                    currentDate.getFullYear(),
-                    currentDate.getMonth() - 1,
-                    1,
-                  );
-                  calendarTable.innerHTML = "";
-                  calendarTable.append(renderMonth(currentDate));
-                  renderCurHeader();
-                },
-              },
-            },
-            "<",
-          ),
-          crEl(
-            "button",
-            {
-              e: {
-                click: () => {
-                  currentDate = new Date(
-                    currentDate.getFullYear(),
-                    currentDate.getMonth() + 1,
-                    1,
-                  );
-                  calendarTable.innerHTML = "";
-                  calendarTable.append(renderMonth(currentDate));
-                  renderCurHeader();
-                },
-              },
-            },
-            ">",
-          ),
-        ),
-      ),
-    );
 
     calendarTable.innerHTML = "";
     calendarTable.append(renderMonth());

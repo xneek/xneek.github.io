@@ -3,11 +3,11 @@
   height: 100%;
 
   display: flex;
-  align-items: start;
-  justify-content: center;
+  align-items: center;
+  justify-content: start;
   flex-direction: column;
 
-  padding: var(--dimension4);
+
   box-sizing: border-box;
 
   .weekend {
@@ -21,7 +21,7 @@
   }
 
   table {
-    width: 100%;
+    width: calc(100% - var(--dimension2));
   }
 
   td,
@@ -36,38 +36,7 @@
     text-transform: uppercase;
   }
 
-  #calendarHeader {
-    width: 100%;
-    text-transform: uppercase;
-    color: var(--accent-color, var(--accent));
-    padding: 0.4rem;
-    font-size: 1.4rem;
 
-    header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-
-      a {
-        text-decoration: none;
-        color: inherit;
-
-        &:hover {
-          color: var(--amber);
-        }
-      }
-
-      button {
-        background: transparent;
-        border: none;
-        opacity: 0.2;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-    }
-  }
 
   .day {
     aspect-ratio: 1;
@@ -118,4 +87,31 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, 1fr);
   }
+}
+
+.calendarHeader {
+  width: 100%;
+  text-transform: uppercase;
+  color: var(--accent-color, var(--accent));
+  font-size: 1.2rem;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: var(--amber);
+    }
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    opacity: 0.2;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
 }

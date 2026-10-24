@@ -4,11 +4,11 @@ import { WidgetHeader } from "../components/widget-header/index.js";
 export class NotepadWidget extends Widget {
   constructor() {
     super(import.meta.url, "NotepadWidget");
-    this.header = new WidgetHeader();
+
   }
 
   init() {
-
+    this.header = new WidgetHeader();
     this.shadowRoot.prepend(this.header.getNode());
     this.header.setTitle('Блокнот');
     this.header.addMenuItem(crEl('button', {
@@ -19,8 +19,8 @@ export class NotepadWidget extends Widget {
           saveTextAsFile(notepadTextarea.value, `${notepadTextarea.value.split(/\s+/).map(s => s.replaceAll(/[^A-я]+/g, '')).slice(0, 3).join('_')}_${new Date().toISOString()}.txt`);
         },
       }
-    }, 'Сохранить как файл'))
-    const notepadHeader = this.shadowRoot.getElementById("notepadHeader");
+    }, 'Сохранить как файл'));
+
     const notepadTextarea = this.shadowRoot.getElementById("notepadTextarea");
     function saveTextAsFile(
       text,

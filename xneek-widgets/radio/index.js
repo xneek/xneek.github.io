@@ -50,12 +50,13 @@ export class RadioWidget extends Widget {
     const renderSelected = async () => {
       const selected = this.storage.getValue("selectedRadio");
       radioSelected.innerHTML = "";
+      if (!selected) return;
 
       radioSelected.append(
         crEl("section", {}, crEl("h5", selected.name), playPauseBtn),
       );
       radioAudio.src = selected.url;
-      
+
 
       const selectedAudioOutputDevice = this.storage.getValue(
         "selectedOutputDevice",
@@ -90,7 +91,7 @@ export class RadioWidget extends Widget {
                 change: (e) => {
                   const target = list.find((x) => x.id === e.target.value);
                   this.storage.setValue("selectedRadio", target);
-                  
+
                   renderSelected();
                   radioAudio.play();
                 },
@@ -193,7 +194,7 @@ export class RadioWidget extends Widget {
             crEl(
               "small",
               this.storage.getValue("selectedOutputDevice").label ??
-                "Устройство вывода",
+              "Устройство вывода",
             ),
             crEl("button", { e: { click: initOutDevices } }, "✎"),
           ),
@@ -211,8 +212,8 @@ export class RadioWidget extends Widget {
         { c: "out-device-container" },
         crEl(
           "small",
-          this.storage.getValue("selectedOutputDevice").label ??
-            "Устройство вывода",
+          this.storage.getValue("selectedOutputDevice")?.label ??
+          "Устройство вывода",
         ),
         crEl("button", { e: { click: initOutDevices } }, "✎"),
       ),

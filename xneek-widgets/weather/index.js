@@ -1,3 +1,4 @@
+import { WidgetHeader } from "../components/widget-header/index.js";
 import { Widget } from "../widget.js";
 const iconCodes = {
   "01d": "☀️",
@@ -26,8 +27,11 @@ export class CurrentWeatherWidget extends Widget {
   }
 
   init() {
-    console.log(`xneek`, this, this.header, this.storage);
+
+    this.header = new WidgetHeader();
+    this.shadowRoot.prepend(this.header.getNode());
     this.header.setTitle('Погода');
+
 
 
     const weatherHeader = this.shadowRoot.getElementById("weatherHeader");

@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+}
+
+
+html {
+  display: grid;
+  height: 100%;
+}
+
+body {
+  background: transparent;
+  display: flex;
+  place-content: center;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.notifications {}
+
+#addForm {
+  min-width: clamp(400px, 40vw, 800px);
+
+  label {
+    small {
+      display: block;
+      margin-bottom: 0;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 4px 8px;
+      box-sizing: border-box;
+    }
+  }
+
+  .checkbox-input {
+    display: flex;
+
+    input, small {
+      width: auto !important;
+      display: inline;
+    }
+  }
+
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+
+  .repeat-list {
+    display: none;
+    margin-left: 30px;
+  }
+
+  label:has([name='isRepeat']:checked)+label {
+    display: block;
+  }
+}
+
+
+.list-item {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  list-style: none;
+  margin: 0;
+  padding: 4px 8px;
+  min-width: 240px;
+  max-width: 240px;
+
+  em {
+    opacity: 0.5;
+    font-size: 0.8em;
+  }
+
+  .list-item-data {
+    * {
+      white-space: nowrap;
+    }
+
+    strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    position: relative;
+
+    &:after {
+      position: absolute;
+      top: 3px;
+      right: 0;
+      font-size: 10px;
+      padding: 2px;
+      line-height: 10px;
+      color: #fff;
+      border-radius: 2px;
+    }
+
+    &.enabled:after {
+      content: 'on';
+      background-color: green;
+    }
+
+    &.disabled:after {
+      content: 'off';
+      background-color: red;
+    }
+  }
+
+  .div1 {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+    margin-bottom: -4px;
+  }
+}
+
+.addBtn {
+  background: transparent;
+  border: none;
+  color: skyblue;
+  display: block;
+  padding: 8px;
+  text-align: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: none;
+}
+
+dialog {
+  border: none;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+  border-radius: 8px;
+}

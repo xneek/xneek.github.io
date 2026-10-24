@@ -1,0 +1,31 @@
+<div class="radio">
+
+  <header id="radioHeader"></header>
+  <div id="radioSelected"></div>
+  <div id="radioVolume">
+    🔈<input type="range" min="0" max="100" id="volumeInp" /> 🔊
+  </div>
+  <div id="radioOutput"></div>
+  <div id="radioBody"></div>
+  <audio controls preload="none" id="radioAudio"></audio>
+
+  <dialog id="addDialog">
+    <form method="dialog" id="addForm">
+      <section>
+        <input type="hidden" name="id" />
+        <p>
+          <label for="radioName">Название:</label>
+          <input id="radioName" name="name" required />
+        </p>
+        <p>
+          <label for="radioUrl"> URL потока:</label>
+          <input id="radioUrl" name="url" required type="url" />
+        </p>
+      </section>
+      <menu>
+        <button id="cancel" type="reset">Отмена</button>
+        <button type="submit">Сохранить</button>
+      </menu>
+    </form>
+  </dialog>
+</div>

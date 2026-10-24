@@ -1,0 +1,298 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  min-height: 0;
+}
+
+main {
+  margin: 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-basis: 0;
+  width: 100%;
+  flex-grow: 1;
+  flex-wrap: wrap;
+
+}
+
+:root {
+  --brand: #6c8894;
+  --accent: #fe4542;
+
+  --widget-width: 255px;
+
+
+  /* Брендовые оттенки */
+  --brand-dk: color-mix(in srgb, var(--brand), black 25%);
+  --brand-lt: color-mix(in srgb, var(--brand), white 30%);
+  --brand-pale: color-mix(in srgb, var(--brand), white 92%);
+  --brand-mid: color-mix(in srgb, var(--brand), white 60%);
+
+
+  /* Информационные цвета */
+  --info: #0EA5E9;
+  --red: #DC2626;
+  --red-bg: #FEE2E2;
+  --amber: #D97706;
+  --amber-bg: #FEF3C7;
+  --gray: #F1F1F2;
+  /* #87898F; */
+  --gray-dk: #adadad;
+  /* #87898F; */
+
+  /* Фоны и поверхности */
+  --bg: color-mix(in srgb, var(--brand), white 96%);
+  --surface: white;
+  --card: color-mix(in srgb, var(--brand), white 98%);
+  --border: color-mix(in srgb, var(--brand), white 80%);
+  --border-md: color-mix(in srgb, var(--brand), white 65%);
+
+  /* Текст */
+  --text: color-mix(in srgb, var(--brand), black 92%);
+  --text1: color-mix(in srgb, var(--brand), black 92%);
+  --text2: color-mix(in srgb, var(--brand), black 70%);
+  --text3: color-mix(in srgb, var(--brand), black 50%);
+
+  /* Шрифты */
+  --font-family-mono: 'JetBrains Mono', monospace;
+  --font-family-main: 'Montserrat', sans-serif;
+
+  /* Тени и свечения */
+  --shadow: 0 1px 3px rgba(43, 162, 76, 8%), 0 4px 12px rgba(43, 162, 76, 6%);
+  --shadow-md: 0 2px 8px rgba(43, 162, 76, 12%), 0 8px 24px rgba(43, 162, 76, 8%);
+
+  /* Прозрачные версии для теней и свечений */
+  --brand-glow7: color-mix(in srgb, var(--brand), transparent 93%);
+  --brand-glow12: color-mix(in srgb, var(--brand), transparent 88%);
+  --brand-glow22: color-mix(in srgb, var(--brand), transparent 78%);
+
+  /* "Почти чёрный" с оттенком бренда для тёмных фонов */
+  --bg-dark-strong: color-mix(in srgb, var(--brand), black 95%);
+  /* ~ #0F2419 */
+  --bg-dark-weak: color-mix(in srgb, var(--brand), black 92%);
+  /* ~ #0C1A12 */
+
+  /* Белый с прозрачностью (альтернатива, если нужен чёрный) */
+  --shadow-dark: 0 6px 20px rgba(0, 0, 0, 40%);
+
+  /* dimensions */
+  --dimension: 4px;
+
+  /* radius */
+  --dimension1: calc(var(--dimension) * 1);
+  --dimension2: calc(var(--dimension) * 2);
+  --dimension3: calc(var(--dimension) * 3);
+  --dimension4: calc(var(--dimension) * 4);
+  --dimension5: calc(var(--dimension) * 5);
+  --dimension6: calc(var(--dimension) * 6);
+  --dimension7: calc(var(--dimension) * 7);
+  --dimension8: calc(var(--dimension) * 8);
+  --dimension9: calc(var(--dimension) * 9);
+  --dimension10: calc(var(--dimension) * 10);
+
+  /* colors-brand light */
+  --colors-brand-surface: var(--brand-pale);
+  --colors-brand-text: var(--brand-dk);
+  --colors-brand-border: var(--brand-mid);
+  --colors-brand-accent: var(--brand);
+
+  /* colors-success light */
+  --colors-success-surface: #EDF7ED;
+  --colors-success-text: #1E4620;
+  --colors-success-border: #C8E6C9;
+  --colors-success-accent: #4CAF50;
+
+  /* colors-info light */
+  --colors-info-surface: #E8F4F8;
+  --colors-info-text: #0D3C55;
+  --colors-info-border: #AED6F1;
+  --colors-info-icon: #2980B9;
+
+
+  /* colors-warning light */
+  --colors-warning-surface: #FFF4E5;
+  --colors-warning-text: #5A3A00;
+  --colors-warning-border: #FF9800;
+  --colors-warning-accent: #FDECEA;
+
+
+  /* colors-error light */
+  --colors-error-surface: #FDECEA;
+  --colors-error-text: #5F1F1F;
+  --colors-error-border: #FCDAD7;
+  --colors-error-accent: #F44336;
+}
+
+[data-theme='dark'] {
+  /* Фоны и поверхности */
+  --bg: color-mix(in srgb, var(--brand), black 95%);
+  --surface: color-mix(in srgb, var(--brand), black 90%);
+  --card: color-mix(in srgb, var(--brand), black 87%);
+  --border: color-mix(in srgb, var(--brand), black 75%);
+
+  /* Текст */
+  --text: color-mix(in srgb, var(--brand), white 92%);
+  --text1: color-mix(in srgb, var(--brand), white 92%);
+  --text2: color-mix(in srgb, var(--brand), white 70%);
+  --text3: color-mix(in srgb, var(--brand), white 50%);
+
+  /* colors-brand dark */
+  --colors-brand-surface: color-mix(in srgb, var(--brand), black 85%);
+  --colors-brand-text: var(--brand-lt);
+  --colors-brand-border: var(--brand);
+  --colors-brand-accent: var(--brand-lt);
+
+  /* colors-success dark */
+  --colors-success-surface: #1E4620;
+  --colors-success-text: #81C784;
+  --colors-success-border: #4CAF50;
+  --colors-success-accent: #81C784;
+
+  /* colors-info dark */
+  --colors-info-surface: #0D3C55;
+  --colors-info-text: #85C1E9;
+  --colors-info-border: #2980B9;
+  --colors-info-accent: #85C1E9;
+
+  /* colors-warning dark */
+  --colors-warning-surface: #5A3A00;
+  --colors-warning-text: #FFB347;
+  --colors-warning-border: #FF9800;
+  --colors-warning-accent: #FFB347;
+
+  /* colors-error dark */
+  --colors-error-surface: #5F1F1F;
+  --colors-error-text: #E57373;
+  --colors-error-border: #F44336;
+  --colors-error-accent: #E57373;
+}
+
+.widget {
+  border: 1px solid var(--border);
+  border-radius: var(--dimension1);
+  width: var(--widget-width);
+  height: var(--widget-width);
+  background: var(--surface);
+  overflow: hidden;
+  resize: horizontal;
+}
+
+:root {
+  text-rendering: optimizelegibility;
+  accent-color: var(--brand);
+
+  font-synthesis: none;
+
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: var(--font-family-main);
+  color: var(--text1);
+
+  background: var(--bg);
+}
+
+a {
+  color: var(--brand-dk);
+  text-decoration: none;
+  transition: color .12s;
+
+  &:hover {
+    color: var(--brand);
+    text-decoration: underline;
+  }
+}
+
+#themeBtn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+}
+
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+.menu-main-item {
+  .menu-toggle {
+    font-size: 8px;
+    padding: 0;
+    height: 14px;
+    width: 14px;
+    border: none;
+    background: transparent;
+    margin: 0;
+    float: right;
+    opacity: 0.1;
+    cursor: pointer;
+
+    &:hover {
+      border: 1px solid var(--gray);
+      border-radius: 50%;
+      opacity: 1;
+    }
+  }
+
+  menu {
+    /* Already has this from the HTML */
+    /* position-anchor: --card; */
+
+    /* Put it in place */
+    position-area: block-start span-inline-start;
+
+    transition-property: translate, opacity, display, overlay;
+    transition-duration: 0.45s;
+    /* Important for swapping timing of when the display properly flips */
+    transition-behavior: allow-discrete;
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 0;
+
+    /* OUTGOING style */
+    opacity: 0;
+    display: none;
+    translate: 10px 0;
+
+    &:popover-open {
+      /* MENU OPEN style */
+      opacity: 1;
+      display: block;
+      translate: 0 0;
+
+      /* INCOMING style */
+      @starting-style {
+        opacity: 0;
+        translate: 0 -20px;
+      }
+    }
+
+    position-try: flip-inline flip-block;
+    min-width: 100px;
+    border: 1px solid var(--gray);
+    border-radius: var(--dimension1);
+  }
+}

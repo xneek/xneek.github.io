@@ -1,0 +1,200 @@
+.clock {
+  --widget-width: clamp(5rem, calc(var(--widget-width) - var(--dimension4)), 98dvh);
+  --clock-width: 88cqi;
+  --radius: calc((var(--clock-width) - var(--time-caption-size)) / 2);
+  --time-caption-size: 12cqi;
+
+
+
+  background: var(--brand-dk);
+  block-size: var(--widget-width);
+  border-radius: 50%;
+  container-type: inline-size;
+  display: grid;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  inline-size: var(--widget-width);
+  margin-inline: auto;
+  place-content: center;
+
+  width: var(--widget-width);
+  height: var(--widget-width);
+  aspect-ratio: 1;
+
+
+  .clock-face {
+    aspect-ratio: 1;
+    background: var(--surface);
+    border-radius: 50%;
+    block-size: var(--clock-width);
+    font-size: 6cqi;
+    font-weight: 700;
+    list-style-type: none;
+    inline-size: var(--clock-width);
+    padding: unset;
+    position: relative;
+
+
+    background:
+      radial-gradient(circle at center, var(--surface) 68%,transparent 68%),
+      repeating-conic-gradient(var(--text) 0 1deg, transparent 0 30deg),
+      radial-gradient(circle at center, var(--surface) 69%, transparent 68%),
+      repeating-conic-gradient(var(--text) 0 0.5deg, var(--surface) 0 6deg);
+
+  }
+
+  .clock-face time {
+    --x: calc(var(--radius) + (var(--radius) * cos(var(--place-degree))));
+    --y: calc(var(--radius) + (var(--radius) * sin(var(--place-degree))));
+    display: grid;
+    height: var(--time-caption-size);
+    left: var(--x);
+    place-content: center;
+    position: absolute;
+    top: var(--y);
+    width: var(--time-caption-size);
+  }
+
+  .clock-face time:nth-child(1) {
+    --place-degree: 270deg;
+  }
+
+  .clock-face time:nth-child(2) {
+    --place-degree: 300deg;
+  }
+
+  .clock-face time:nth-child(3) {
+    --place-degree: 330deg;
+  }
+
+  .clock-face time:nth-child(4) {
+    --place-degree: 0deg;
+  }
+
+  .clock-face time:nth-child(5) {
+    --place-degree: 30deg;
+  }
+
+  .clock-face time:nth-child(6) {
+    --place-degree: 60deg;
+  }
+
+  .clock-face time:nth-child(7) {
+    --place-degree: 90deg;
+  }
+
+  .clock-face time:nth-child(8) {
+    --place-degree: 120deg;
+  }
+
+  .clock-face time:nth-child(9) {
+    --place-degree: 150deg;
+  }
+
+  .clock-face time:nth-child(10) {
+    --place-degree: 180deg;
+  }
+
+  .clock-face time:nth-child(11) {
+    --place-degree: 210deg;
+  }
+
+  .clock-face time:nth-child(12) {
+    --place-degree: 240deg;
+  }
+
+  .arm {
+    background-color: var(--arm-bg);
+    border-radius: calc(var(--arm-width) * 2);
+    display: block;
+    height: var(--arm-height);
+    left: calc((var(--clock-width) - var(--arm-width)) / 2);
+    position: absolute;
+    top: calc((var(--clock-width) / 2) - var(--arm-height));
+    transform: rotate(0deg);
+    transform-origin: bottom;
+    width: var(--arm-width);
+  }
+
+  .seconds {
+    --arm-bg: var(--accent, rgb(255, 140, 5));
+    --arm-height: 40cqi;
+    --arm-width: 1cqi;
+    animation: turn 60s linear infinite;
+    animation-delay: var(--default-seconds, 0ms);
+
+z-index: 5;
+    &:after {
+      background-color: var(--amber, #fff);
+      border: 1cqi solid var(--arm-bg);
+      border-radius: 50%;
+      content: "";
+      display: block;
+      height: 4cqi;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4cqi;
+      z-index: 2;
+    }
+    &:before {
+      background-color: var(--arm-bg);
+      content: "";
+      display: block;
+      height: 4cqi;
+      width: 1cqi;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      z-index: 2;
+      border-bottom-left-radius: calc(var(--arm-width) * 2);
+      border-bottom-right-radius: calc(var(--arm-width) * 2);
+    }
+
+  }
+
+  .minutes {
+    --arm-bg: var(--brand, #333);
+    --arm-height: 35cqi;
+    --arm-width: 2cqi;
+    animation: turn 3600s steps(60, end) infinite;
+    animation-delay: var(--default-minutes, 0ms);
+z-index: 2;
+
+    &:after {
+      background-color: #fff;
+      border: 1cqi solid var(--arm-bg);
+      border-radius: 50%;
+      content: "";
+      display: block;
+      height: 5cqi;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 5cqi;
+      z-index: 2;
+    }
+
+  }
+
+  .hours {
+    --arm-bg: var(--brand-dk, #333);
+    --arm-height: 26cqi;
+    --arm-width: 2.5cqi;
+    animation: turn 43200s linear infinite;
+    /* 60 * 60 * 12 */
+    animation-delay: var(--default-hours, 0ms);
+    position: relative;
+     z-index: 1;
+  }
+
+
+}
+
+@keyframes turn {
+  to {
+    transform: rotate(1turn);
+  }
+}

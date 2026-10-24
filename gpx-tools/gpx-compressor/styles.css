@@ -1,0 +1,19 @@
+table {
+  border-collapse: collapse;
+
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  font-size: 10px;
+}
+
+thead, th, thead>tr {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  /* Crucial: Prevents body text from bleeding through */
+  z-index: 1;
+  box-shadow: 0 1px 0 #000;
+  border: 1px solid #000;
+}
+
+

@@ -1,0 +1,76 @@
+<div class="notifications">
+  <div id="notificationsBody"></div>
+  <header id="notificationsHeader"></header>
+
+  <dialog id="addFormDialog">
+    <form id="addForm">
+      <input type="hidden" name="id" />
+      <fieldset>
+        <legend>Основное</legend>
+        <div class="checkbox-input">
+          <label
+            ><input type="checkbox" name="isEnable" /><small
+              >Включено</small
+            ></label
+          >
+        </div>
+        <label>
+          <small>Название</small>
+          <input
+            placeholder="Имя для отображения в списке"
+            required
+            name="name"
+          />
+        </label>
+        <label>
+          <small>Дата и время</small>
+          <div style="display: flex; gap: 12px">
+            <input type="date" required name="date" />
+            <input type="time" required name="time" />
+          </div>
+        </label>
+        <div class="checkbox-input">
+          <label
+            ><input type="checkbox" name="isRepeat" /><small
+              >Повторять</small
+            ></label
+          >
+          <label class="repeat-list">
+            <label><input type="checkbox" name="day1" /><small>ПН</small></label>
+            <label><input type="checkbox" name="day2" /><small>ВТ</small></label>
+            <label><input type="checkbox" name="day3" /><small>СР</small></label>
+            <label><input type="checkbox" name="day4" /><small>ЧТ</small></label>
+            <label><input type="checkbox" name="day5" /><small>ПТ</small></label>
+            <label><input type="checkbox" name="day6" /><small>СБ</small></label>
+            <label><input type="checkbox" name="day0" /><small>ВС</small></label>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Всплывающее сообщение</legend>
+        <label>
+          <small>Заголовок</small>
+          <input required name="title" />
+        </label>
+        <label>
+          <small>Текст</small>
+          <input name="text" />
+        </label>
+        <label>
+          <small>Адрес картинки</small>
+          <input type="url" name="icon" />
+        </label>
+        <label>
+          <small>URL для перехода при клике</small>
+          <input type="url" name="url" />
+        </label>
+        <label>
+          <small>Автозакрытие через (милисек)</small>
+          <input type="number" name="timeout" />
+        </label>
+      </fieldset>
+
+      <input type="submit" value="Сохранить" />
+    </form>
+  </dialog>
+</div>

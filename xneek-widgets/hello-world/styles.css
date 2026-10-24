@@ -1,0 +1,12 @@
+div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  h1 {
+  color: var(--brand);
+  margin: 0;
+  padding: 0;
+}
+}

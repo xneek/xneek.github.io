@@ -1,0 +1,26 @@
+.search {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--dimension4);
+  gap: var(--dimension4);
+  box-sizing: border-box;
+
+ 
+  form {
+    width: 100%;
+    display: flex;
+    input {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: var(--dimension1) var(--dimension2);
+    }
+  }
+
+
+}

@@ -1,0 +1,121 @@
+.calendar {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+
+  padding: var(--dimension4);
+  box-sizing: border-box;
+
+  .weekend {
+    color: #777;
+  }
+
+  .today {
+    background: var(--accent-color, var(--accent));
+    color: white;
+    border-radius: 50%;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  td,
+  th {
+
+    text-align: center;
+    padding: 0.2rem;
+  }
+
+  th {
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  #calendarHeader {
+    width: 100%;
+    text-transform: uppercase;
+    color: var(--accent-color, var(--accent));
+    padding: 0.4rem;
+    font-size: 1.4rem;
+
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+
+      a {
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+          color: var(--amber);
+        }
+      }
+
+      button {
+        background: transparent;
+        border: none;
+        opacity: 0.2;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .day {
+    aspect-ratio: 1;
+    width: 1.4rem;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    text-align: center;
+  }
+
+}
+
+#yearDialog {
+  header {
+    h2 {
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: lighter;
+      margin: 0;
+      font-size: 3rem;
+      padding-bottom: var(--dimension2);
+      margin-bottom: var(--dimension2);
+    }
+  }
+
+  article {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: var(--dimension2);
+
+    strong {
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: lighter;
+    }
+  }
+}
+
+@media (orientation: landscape) {
+  #yearDialog article {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+}
+
+@media (orientation: portrait) {
+  #yearDialog article {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+}

@@ -1,0 +1,62 @@
+<div class="search">
+  <form
+    target="_blank"
+    action="//chat.deepseek.com"
+    onsubmit="
+      this.submit();
+      this.reset();
+      return false;
+    "
+  >
+    <input type="search" name="q" placeholder="Start deepSeek chat" />
+    <input type="hidden" name="search" value="1" />
+    <input type="hidden" name="autosend" value="1" />
+  </form>
+  <form
+    target="_blank"
+    action="//www.perplexity.ai/search"
+    onsubmit="
+      this.submit();
+      this.reset();
+      return false;
+    "
+  >
+    <input type="search" name="q" placeholder="Start perplexity" />
+    <input type="hidden" name="collection" value="writing" />
+  </form>
+  <form
+    target="_blank"
+    action="//www.google.com/search"
+    onsubmit="
+      this.submit();
+      this.reset();
+      return false;
+    "
+  >
+    <input type="search" name="q" placeholder="Search in Google" />
+  </form>
+  <form
+    target="_blank"
+    action="//www.google.com/search"
+    onsubmit="
+      this.submit();
+      this.reset();
+      return false;
+    "
+  >
+    <input type="search" name="q" placeholder="Google AI" />
+    
+    <input type="hidden" name="udm" value="50" />
+  </form>
+  <form
+    target="_blank"
+    action="//ya.ru"
+    onsubmit="
+      this.submit();
+      this.reset();
+      return false;
+    "
+  >
+    <input type="search" name="q" placeholder="Search in Yandex" />
+  </form>
+</div>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>xneek-start-page</title>
+    <link rel="stylesheet" href="../common.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="gitlab">
+      
+      <header id="gitlabHeader"></header>
+      <div id="gitlabBody"></div>
+    </div>
+
+    
+
+    <script>
+      class Storage {
+        constructor(name) {
+          this.prefix = name;
+        }
+
+        getValue(key) {
+          return JSON.parse(
+            localStorage.getItem([this.prefix, key].join("__")) ?? "null",
+          );
+        }
+
+        setValue(key, value) {
+          localStorage.setItem(
+            [this.prefix, key].join("__"),
+            JSON.stringify(value),
+          );
+        }
+
+        deleteValue() {
+          localStorage.removeItem([this.prefix, key].join("__"));
+        }
+      }
+
+      const storage = new Storage("youtrack");
+
+
+      
+const t = 'perm:bmlrb2xheS5mZWRvc2Vldg==.NjAtMTY=.41zEmfOoLKorlPuo8kFpzhDdAP9uO7';
+    
+      const tick = () => {
+        fetch('https://yt.avelana.ru/api/users/me', {
+  headers: {
+    'Authorization': `Bearer ${t}`
+  }
+})
+
+        console.log({  });
+      };
+
+      tick();
+
+      //setInterval(() => tick(), 5000);
+    </script>
+  </body>
+</html>

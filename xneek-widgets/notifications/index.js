@@ -1,3 +1,4 @@
+import { WidgetHeader } from "../components/widget-header/index.js";
 import { Widget } from "../widget.js";
 
 export class NotificationsWidget extends Widget {
@@ -14,6 +15,12 @@ export class NotificationsWidget extends Widget {
 
     const addForm = this.shadowRoot.getElementById("addForm");
     const addFormDialog = this.shadowRoot.getElementById("addFormDialog");
+
+
+    this.header = new WidgetHeader();
+    this.shadowRoot.prepend(this.header.getNode());
+    this.header.setTitle('Напоминания');
+
 
     const checkPermissions = () => {
       if (Notification?.permission === "granted") return;
@@ -69,7 +76,7 @@ export class NotificationsWidget extends Widget {
     const formatRepeatDays = (days) => {
       const parts = [];
       let lastPart = [];
-      for(let i = 0; i< days.length; i++) {
+      for (let i = 0; i < days.length; i++) {
         if (days[i]) {
           lastPart.push(weekdays[i]);
         } else {
@@ -80,7 +87,7 @@ export class NotificationsWidget extends Widget {
 
       parts.push(lastPart);
 
-      const filteredParts = parts.filter(a => a.length).map(x=> {
+      const filteredParts = parts.filter(a => a.length).map(x => {
         if (x.length === 1) return x[0];
         if (x.length === 2) return x.join(',');
         if (x.length > 2) return [x.at(0), x.at(-1)].join('-');
@@ -106,14 +113,14 @@ export class NotificationsWidget extends Widget {
       small.textContent =
         (data.isRepeat
           ? formatRepeatDays([
-              data.day1,
-              data.day2,
-              data.day3,
-              data.day4,
-              data.day5,
-              data.day6,
-              data.day0,
-            ])
+            data.day1,
+            data.day2,
+            data.day3,
+            data.day4,
+            data.day5,
+            data.day6,
+            data.day0,
+          ])
           : data.date) +
         " " +
         data.time;
@@ -236,8 +243,8 @@ export class NotificationsWidget extends Widget {
 
       const dataForSave = data.id.length
         ? storedDate.map((x) =>
-            x.id === data.id ? data : { ...defaultData, ...x },
-          )
+          x.id === data.id ? data : { ...defaultData, ...x },
+        )
         : [...storedDate, { ...data, id: self.crypto.randomUUID() }];
 
       this.storage.setValue("list", dataForSave);
@@ -250,7 +257,7 @@ export class NotificationsWidget extends Widget {
 
     drawList();
 
-    const filterActual = () => {};
+    const filterActual = () => { };
 
     const already = [];
     const tick = () => {
@@ -277,6 +284,14 @@ export class NotificationsWidget extends Widget {
     };
 
     setInterval(() => tick(), 5000);
+
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          addOrEdit();
+        },
+      }
+    }, 'Добавить'));
   }
 }
 customElements.define("widget-notifications", NotificationsWidget);

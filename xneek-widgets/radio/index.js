@@ -1,3 +1,4 @@
+import { WidgetHeader } from "../components/widget-header/index.js";
 import { Widget } from "../widget.js";
 
 export class RadioWidget extends Widget {
@@ -14,6 +15,24 @@ export class RadioWidget extends Widget {
     const radioSelected = this.shadowRoot.getElementById("radioSelected");
     const radioOutput = this.shadowRoot.getElementById("radioOutput");
     const volumeInp = this.shadowRoot.getElementById("volumeInp");
+
+
+
+    this.header = new WidgetHeader();
+    this.shadowRoot.prepend(this.header.getNode());
+    this.header.setTitle('Радио');
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          addOrEditRadio({
+            id: self.crypto.randomUUID(),
+            name: "",
+            url: "",
+          });
+        }
+      }
+    }, 'Добавить'));
+
 
     const playPauseBtn = crEl("button", {
       c: "play-pause-btn play",
@@ -219,24 +238,7 @@ export class RadioWidget extends Widget {
       ),
     );
 
-    radioHeader.append(
-      crEl(
-        "button",
-        {
-          c: "fab fab-add",
-          e: {
-            click: () => {
-              addOrEditRadio({
-                id: self.crypto.randomUUID(),
-                name: "",
-                url: "",
-              });
-            },
-          },
-        },
-        "+",
-      ),
-    );
+
 
     volumeInp.oninput = (e) => {
       radioAudio.volume = e.target.value / 100;

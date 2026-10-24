@@ -1,3 +1,4 @@
+import { WidgetHeader } from "../components/widget-header/index.js";
 import { Widget } from "../widget.js";
 
 export class NotesWidget extends Widget {
@@ -6,6 +7,29 @@ export class NotesWidget extends Widget {
   }
 
   init() {
+
+    this.header = new WidgetHeader();
+    this.shadowRoot.prepend(this.header.getNode());
+    this.header.setTitle('Заметки');
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          const list = this.storage.getValue("list") ?? [];
+          const newNote = {
+            id: crypto.randomUUID(),
+            createdAt: new Date().toISOString(),
+            content: "\u200B",
+            bg: colors[Math.floor(Math.random() * colors.length)],
+            paperRotate: -4 + (Math.random() * 8),
+            textRotate: -4 + (Math.random() * 8),
+          };
+
+          this.storage.setValue("list", [...list, newNote]);
+          update({ focusOnId: newNote.id });
+        }
+      }
+    }, 'Добавить'));
+
     const notesHeader = this.shadowRoot.getElementById("notesHeader");
     const notesBody = this.shadowRoot.getElementById("notesBody");
 
@@ -57,7 +81,7 @@ export class NotesWidget extends Widget {
       const el = crEl("div", {
         c: "note",
         d: { id: id },
-        s: {rotate: `${n.textRotate}deg`},
+        s: { rotate: `${n.textRotate}deg` },
         contentEditable: true,
         e: {
           input: (e) => {
@@ -70,7 +94,7 @@ export class NotesWidget extends Widget {
 
       return crEl(
         "div",
-        { c: "note-wrapper",       s: { background: n.bg ?? colors[0], rotate: `${n.paperRotate}deg` }, },
+        { c: "note-wrapper", s: { background: n.bg ?? colors[0], rotate: `${n.paperRotate}deg` }, },
         el,
         crEl(
           "div",
@@ -100,7 +124,7 @@ export class NotesWidget extends Widget {
                 {
                   e: {
                     click: (e) => {
-                      alert(JSON.stringify(n, null,'  '));
+                      alert(JSON.stringify(n, null, '  '));
                     },
                   },
                 },

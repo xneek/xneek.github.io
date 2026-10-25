@@ -1,4 +1,4 @@
-import { Widget } from "../widget.js";
+import { Widget } from "../../widget.js";
 
 export class GitlabMrWidget extends Widget {
   constructor() {
@@ -14,26 +14,26 @@ export class GitlabMrWidget extends Widget {
     const domain = this.storage.getValue("domain");
     const auth = () => {
       const dom = prompt('Введите адрес вашего гитлаба', 'https://gitlab.mysite.ru');
-this.storage.setValue("domain", new URL(dom).host);
+      this.storage.setValue("domain", new URL(dom).host);
 
 
       const tok = prompt("Ввести glpat Токен", pt || "glpat-...........");
-      
+
       this.storage.setValue("pt", tok);
       this.init();
     };
     if (!domain) {
-        gitlabBody.innerHTML = '';
-        gitlabBody.append(crEl('div',
-   
-            crEl("button", { e: { click: auth } }, "Ввести данные для доступа к гитлабу"),
+      gitlabBody.innerHTML = '';
+      gitlabBody.append(crEl('div',
 
-        ));
+        crEl("button", { e: { click: auth } }, "Ввести данные для доступа к гитлабу"),
 
-        return;
+      ));
+
+      return;
     }
-    
-logoLink.setAttribute(`href`, `https://${domain}`);
+
+    logoLink.setAttribute(`href`, `https://${domain}`);
 
 
 
@@ -54,12 +54,12 @@ logoLink.setAttribute(`href`, `https://${domain}`);
       })
       .then((user) => {
         gitlabHeader.innerHTML = "";
-        gitlabHeader.append(crEl("div", {c:'user-header', s:{backgroundImage: `url(${user.avatar_url})`}},
-         
-            crEl('strong', {}, user.name),
-            crEl('br'),
-            crEl('small', {}, user.email),
-         
+        gitlabHeader.append(crEl("div", { c: 'user-header', s: { backgroundImage: `url(${user.avatar_url})` } },
+
+          crEl('strong', {}, user.name),
+          crEl('br'),
+          crEl('small', {}, user.email),
+
         ));
       })
       .catch((e) => {
@@ -76,8 +76,8 @@ logoLink.setAttribute(`href`, `https://${domain}`);
         gitlabBody.innerHTML = '';
         gitlabBody.append(crEl('div',
           crEl("button", { e: { click: () => this.init() } }, "Обновить"),
-            crEl('br'),
-            crEl("button", { e: { click: auth } }, "Ввести glpat Токен"),
+          crEl('br'),
+          crEl("button", { e: { click: auth } }, "Ввести glpat Токен"),
 
         ))
       });
@@ -163,4 +163,4 @@ logoLink.setAttribute(`href`, `https://${domain}`);
     //setInterval(() => tick(), 5000);
   }
 }
-customElements.define("widget-gitlab-mr", GitlabMrWidget);
+customElements.define("widget-gitlab", GitlabMrWidget);

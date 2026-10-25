@@ -1,4 +1,5 @@
-import { Widget } from "../widget.js";
+import { WidgetHeader } from "../../components/widget-header/index.js";
+import { Widget } from "../../widget.js";
 
 export class AnalogClockWidget extends Widget {
   constructor() {
@@ -6,6 +7,9 @@ export class AnalogClockWidget extends Widget {
   }
 
   init() {
+    this.header = new WidgetHeader();
+    this.shadowRoot.prepend(this.header.getNode());
+    this.header.addMenuItem(crEl('button', {}, "ololo"));
     const app = this.shadowRoot.getElementById("app");
 
     const time = new Date();
@@ -17,4 +21,4 @@ export class AnalogClockWidget extends Widget {
     app.style.setProperty("--default-hours", `${hour + mins + seconds}s`);
   }
 }
-customElements.define("widget-analog-clock", AnalogClockWidget);
+customElements.define("widget-clock", AnalogClockWidget);

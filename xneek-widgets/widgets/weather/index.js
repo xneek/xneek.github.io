@@ -1,5 +1,5 @@
-import { WidgetHeader } from "../components/widget-header/index.js";
-import { Widget } from "../widget.js";
+import { WidgetHeader } from "../../components/widget-header/index.js";
+import { Widget } from "../../widget.js";
 const iconCodes = {
   "01d": "☀️",
   "02d": "⛅",
@@ -261,6 +261,12 @@ export class CurrentWeatherWidget extends Widget {
         }
       }
     }, 'Уточнить местоположение'));
+
+    setTimeout(() => {
+      update();
+    }, 30e3);
   }
+
+
 }
-customElements.define("widget-current-weather", CurrentWeatherWidget);
+customElements.define("widget-weather", CurrentWeatherWidget);

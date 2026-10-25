@@ -1,5 +1,4 @@
-import styles from './widget-header.css' with { type: "css" }
-
+import { WidgetHeaderButton } from "../widget-header-button/index.js";
 
 class DDMenu {
   static container;
@@ -8,13 +7,13 @@ class DDMenu {
 
   constructor(id, activatorEl, ...menuEls) {
     this.id = id;
-    this.activator = crEl('button', {
+    this.activator = new WidgetHeaderButton(activatorEl, {
       c: "menu-toggle",
       command: "toggle-popover",
       commandfor: `card-menu-${id}`,
       interestfor: "card-menu",
       s: { anchorName: `--card-${id}` },
-    }, activatorEl);
+    }).getNode();
 
     this.menu = crEl(
       "menu",
@@ -48,21 +47,9 @@ export class WidgetHeader {
 
   constructor(id, parent) {
     this.id = crypto.randomUUID();
-    this.header = crEl('header', { c: 'header' });
-    this.title = crEl('h5', { c: 'header-title' });
-    this.aside = crEl('aside', { c: 'header-aside' });
-
-
-    const sheet = new CSSStyleSheet();
-    sheet.replaceSync(styles)
-    //someShadowRoot.adoptedStyleSheets = [ sheet ];
-    if (!document.adoptedStyleSheets.includes(sheet)) {
-      document.adoptedStyleSheets.push(sheet)
-    }
-
-    //document.adoptedStyleSheets.push(styles);
-
-
+    this.header = crEl('header', { c: 'widget-header' });
+    this.title = crEl('h5', { c: 'widget-header-title' });
+    this.aside = crEl('aside', { c: 'widget-header-aside' });
   }
 
   getNode() {
@@ -71,7 +58,7 @@ export class WidgetHeader {
 
 
   setTitle(textOrNode) {
-    if (!this.title?.parentNode !== this.header) this.header.prepend(this.title);
+    if (!this.header.contains(this.title)) this.header.prepend(this.title);
     if (typeof textOrNode === 'string') {
       this.title.textContent = textOrNode;
     } else {
@@ -81,7 +68,7 @@ export class WidgetHeader {
   }
   addAsideItem(el) {
     if (!this.header.contains(this.aside)) this.header.append(this.aside);
-    this.aside.prepend(crEl('span', { c: 'aside-item' }, el));
+    this.aside.prepend(crEl('span', { c: 'widget-header-aside-item' }, el));
   }
 
   addMenuItem(el) {

@@ -1,5 +1,5 @@
-import { Widget } from "../widget.js";
-import { WidgetHeader } from "../components/widget-header/index.js";
+import { Widget } from "../../widget.js";
+import { WidgetHeader } from "../../components/widget-header/index.js";
 
 export class NotepadWidget extends Widget {
   constructor() {

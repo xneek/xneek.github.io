@@ -21,7 +21,7 @@
   }
 
   table {
-    width: calc(100% - var(--dimension2));
+    width: 100%;
   }
 
   td,
@@ -94,6 +94,7 @@
   text-transform: uppercase;
   color: var(--accent-color, var(--accent));
   font-size: 1.2rem;
+  padding-left: var(--dimension3);
 
   a {
     text-decoration: none;
@@ -114,4 +115,11 @@
     }
   }
 
+}
+
+#calendarTable {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

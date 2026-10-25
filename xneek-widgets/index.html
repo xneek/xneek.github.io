@@ -1,63 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>xneek-widgets</title>
-    <link
-      rel="icon"
-      sizes="512x512"
-      href="icons/512.png"
-    />
+  <link rel="icon" sizes="512x512" href="icons/512.png" />
+  <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json" />
 </head>
+
 <body data-theme="light">
-    
-<script src="https://cdn.jsdelivr.net/npm/xneek-crel@2.4.0/dist/crel.min.js"></script>
 
-
-  <script src="./hello-world/index.js" type="module"></script>
-  <script src="./clock/index.js" type="module"></script>
-  <script src="./month/index.js?ololo=1" type="module"></script>
-  <script src="./weather/index.js" type="module"></script>
-  <script src="./notifications/index.js" type="module"></script>
-  <script src="./gitlab/index.js" type="module"></script>
-  <script src="./notes/index.js" type="module"></script>
-  <script src="./notepad/index.js" type="module"></script>
-  <script src="./radio/index.js" type="module"></script>
-  <script src="./search/index.js" type="module"></script>
-  <main>
-    <widget-analog-clock class="widget"></widget-analog-clock>
-    <widget-month-calendar class="widget"></widget-month-calendar>
-    <widget-current-weather class="widget"></widget-current-weather>
-    <widget-notifications class="widget"></widget-notifications>
-    <widget-gitlab-mr class="widget"></widget-gitlab-mr>
-    <widget-notes class="widget"></widget-notes>
-    <widget-search class="widget"></widget-search>
-    <widget-radio class="widget"></widget-radio>
-    <widget-notepad class="widget"></widget-notes>
-      
-  </main>
-<button id="themeBtn">theme</button>
+  <script src="https://cdn.jsdelivr.net/npm/xneek-crel@2.4.0/dist/crel.min.js"></script>
+  <script src="./main.js" type="module"></script>
+  <main id="mainEl"></main>
+  <button id="themeBtn">theme</button>
   <script>
-themeBtn.onclick = () => {
-  const nv = document.body.dataset.theme === 'dark' ?'light':'dark';
-  document.body.dataset.theme = nv;
-  window.localStorage.setItem('theme', nv)
-}
+    themeBtn.onclick = () => {
+      const nv = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.body.dataset.theme = nv;
+      window.localStorage.setItem('theme', nv)
+    }
 
-document.body.dataset.theme = window.localStorage.getItem('theme') ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    document.body.dataset.theme = window.localStorage.getItem('theme') ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
 
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then((reg) => console.log('ServiceWorker зарегистрирован:', reg.scope))
-      .catch((err) => console.log('Ошибка регистрации ServiceWorker:', err));
-  });
-}
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('ServiceWorker зарегистрирован:', reg.scope))
+          .catch((err) => console.log('Ошибка регистрации ServiceWorker:', err));
+      });
+    }
   </script>
-  
+
 </body>
+
 </html>

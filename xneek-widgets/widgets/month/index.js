@@ -1,5 +1,6 @@
-import { WidgetHeader } from "../components/widget-header/index.js";
-import { Widget } from "../widget.js";
+import { WidgetHeaderButton } from "../../components/widget-header-button/index.js";
+import { WidgetHeader } from "../../components/widget-header/index.js";
+import { Widget } from "../../widget.js";
 
 export class MonthCalendarWidget extends Widget {
   constructor() {
@@ -161,9 +162,8 @@ export class MonthCalendarWidget extends Widget {
       this.header.setTitle(el)
     };
 
-    this.header.addAsideItem(crEl(
-      "button",
-      {
+    this.header.addAsideItem(
+      new WidgetHeaderButton('>', {
         e: {
           click: () => {
             currentDate = new Date(
@@ -176,12 +176,12 @@ export class MonthCalendarWidget extends Widget {
             renderCurHeader();
           },
         },
-      },
-      ">",
-    ))
+        s: { marginRight: 'var(--dimension3)' }
+      }).getNode()
+    )
 
-    this.header.addAsideItem(crEl(
-      "button",
+    this.header.addAsideItem(new WidgetHeaderButton(
+      "<",
       {
         e: {
           click: () => {
@@ -196,8 +196,8 @@ export class MonthCalendarWidget extends Widget {
           },
         },
       },
-      "<",
-    ));
+
+    ).getNode());
 
 
     calendarHeader.innerHTML = "";
@@ -207,4 +207,4 @@ export class MonthCalendarWidget extends Widget {
     renderCurHeader();
   }
 }
-customElements.define("widget-month-calendar", MonthCalendarWidget);
+customElements.define("widget-month", MonthCalendarWidget);

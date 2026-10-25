@@ -1,5 +1,5 @@
-import { WidgetHeader } from "../components/widget-header/index.js";
-import { Widget } from "../widget.js";
+import { WidgetHeader } from "../../components/widget-header/index.js";
+import { Widget } from "../../widget.js";
 
 export class RadioWidget extends Widget {
   constructor() {
@@ -7,7 +7,7 @@ export class RadioWidget extends Widget {
   }
 
   init() {
-    const radioHeader = this.shadowRoot.getElementById("radioHeader");
+
     const radioAudio = this.shadowRoot.getElementById("radioAudio");
     const addDialog = this.shadowRoot.getElementById("addDialog");
     const addForm = this.shadowRoot.getElementById("addForm");
@@ -161,15 +161,30 @@ export class RadioWidget extends Widget {
           { ...model, createdAt: new Date().toISOString() },
         ]);
       }
-
+      addDialog.close()
       render();
     };
 
+    addForm.onreset = () => addDialog.close()
+
     render();
 
-    const devicesListSelect = crEl("select");
 
-    const initOutDevices = async () => {
+
+    volumeInp.oninput = (e) => {
+      radioAudio.volume = e.target.value / 100;
+      this.storage.setValue("volume", e.target.value);
+    };
+
+
+
+
+    const selectOutDevice = async () => {
+      const outDeviceSelectDialog = this.shadowRoot.getElementById("outDeviceSelectDialog");
+      const outDeviceSelectForm = this.shadowRoot.getElementById("outDeviceSelectForm");
+      const outputDevicesSelect = this.shadowRoot.getElementById("outputDevicesSelect");
+
+
       await navigator.mediaDevices.getUserMedia({ audio: true });
 
       const devices = await navigator.mediaDevices.enumerateDevices();
@@ -178,16 +193,30 @@ export class RadioWidget extends Widget {
         (device) => device.kind === "audiooutput",
       );
 
-      console.log("xneek", { audioOutputDevices });
-      devicesListSelect.innerHTML = "";
+
+      outputDevicesSelect.innerHTML = "";
       audioOutputDevices.forEach((d) => {
-        devicesListSelect.append(
+        outputDevicesSelect.append(
           crEl("option", { value: d.deviceId }, d.label),
         );
       });
-      devicesListSelect.onchange = async (e) => {
+
+
+
+      const selectedAudioOutputDevice = this.storage.getValue(
+        "selectedOutputDevice",
+      );
+
+      if (selectedAudioOutputDevice) {
+        outputDevicesSelect.value = selectedAudioOutputDevice.deviceId;
+      }
+
+      outDeviceSelectForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const deviceId = outputDevicesSelect.value;
+
         if (typeof radioAudio.sinkId !== "undefined") {
-          const deviceId = e.target.value;
+
           await radioAudio.setSinkId(deviceId); // или audioElement.setSinkId(deviceId)
 
           const targetDevice = audioOutputDevices.filter(
@@ -206,45 +235,30 @@ export class RadioWidget extends Widget {
         } else {
           console.warn("Браузер не поддерживает выбор аудиоустройства.");
         }
-        radioOutput.innerHTML = "";
-        radioOutput.append(
-          crEl(
-            "div",
-            { c: "out-device-container" },
-            crEl(
-              "small",
-              this.storage.getValue("selectedOutputDevice").label ??
-              "Устройство вывода",
-            ),
-            crEl("button", { e: { click: initOutDevices } }, "✎"),
-          ),
-        );
-      };
-      radioOutput.innerHTML = "";
-      radioOutput.append(
-        crEl("div", { c: "out-device-container" }, devicesListSelect),
-      );
-    };
 
-    radioOutput.append(
-      crEl(
-        "div",
-        { c: "out-device-container" },
-        crEl(
-          "small",
-          this.storage.getValue("selectedOutputDevice")?.label ??
-          "Устройство вывода",
-        ),
-        crEl("button", { e: { click: initOutDevices } }, "✎"),
-      ),
-    );
+        render();
+
+        outDeviceSelectDialog.close();
+      }
+
+      outDeviceSelectForm.onreset = (e) => {
+        e.preventDefault();
+        outDeviceSelectDialog.close();
+
+      }
+
+      outDeviceSelectDialog.showModal();
+    }
+
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          selectOutDevice();
+        }
+      }
+    }, 'Выбрать устройство воспроизведения'));
 
 
-
-    volumeInp.oninput = (e) => {
-      radioAudio.volume = e.target.value / 100;
-      this.storage.setValue("volume", e.target.value);
-    };
   }
 }
 customElements.define("widget-radio", RadioWidget);

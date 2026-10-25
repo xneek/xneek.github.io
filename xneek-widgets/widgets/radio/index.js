@@ -85,6 +85,7 @@ export class RadioWidget extends Widget {
         selectedAudioOutputDevice &&
         typeof radioAudio.sinkId !== "undefined"
       ) {
+        radioOutput.textContent = selectedAudioOutputDevice.label;
         await radioAudio.setSinkId(selectedAudioOutputDevice.deviceId); // или audioElement.setSinkId(deviceId)
       } else {
         console.warn("Браузер не поддерживает выбор аудиоустройства.");

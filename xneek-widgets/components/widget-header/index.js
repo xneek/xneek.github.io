@@ -45,7 +45,8 @@ export class WidgetHeader {
   static aside;
   static menu;
 
-  constructor(id, parent) {
+  constructor(attrsForSet) {
+    this.attrs = attrsForSet;
     this.id = crypto.randomUUID();
     this.header = crEl('header', { c: 'widget-header' });
     this.title = crEl('h5', { c: 'widget-header-title' });
@@ -59,7 +60,10 @@ export class WidgetHeader {
 
   setTitle(textOrNode) {
     if (!this.header.contains(this.title)) this.header.prepend(this.title);
-    if (typeof textOrNode === 'string') {
+    if (typeof textOrNode === 'undefined') {
+      this.title.textContent = this.attrs.name;
+      this.title.title = this.attrs.description;
+    } else if (typeof textOrNode === 'string') {
       this.title.textContent = textOrNode;
     } else {
       this.title.innerHTML = '';

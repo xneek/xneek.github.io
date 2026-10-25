@@ -8,9 +8,8 @@ export class NotepadWidget extends Widget {
   }
 
   init() {
-    this.header = new WidgetHeader();
-    this.shadowRoot.prepend(this.header.getNode());
-    this.header.setTitle('Блокнот');
+
+    this.header.setTitle();
     this.header.addMenuItem(crEl('button', {
       e: {
         click: () => {

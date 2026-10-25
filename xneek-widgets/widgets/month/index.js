@@ -13,9 +13,7 @@ export class MonthCalendarWidget extends Widget {
     const yearDialog = this.shadowRoot.getElementById("yearDialog");
 
 
-    this.header = new WidgetHeader();
-    this.shadowRoot.prepend(this.header.getNode());
-    this.header.setTitle('Блокнот');
+    this.header.setTitle();
 
 
     let currentDate = new Date();

@@ -7,8 +7,7 @@ export class AnalogClockWidget extends Widget {
   }
 
   init() {
-    this.header = new WidgetHeader();
-    this.shadowRoot.prepend(this.header.getNode());
+
     this.header.addMenuItem(crEl('button', {}, "ololo"));
     const app = this.shadowRoot.getElementById("app");
 

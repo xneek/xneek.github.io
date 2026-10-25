@@ -8,9 +8,7 @@ export class NotesWidget extends Widget {
 
   init() {
 
-    this.header = new WidgetHeader();
-    this.shadowRoot.prepend(this.header.getNode());
-    this.header.setTitle('Заметки');
+    this.header.setTitle();
     this.header.addMenuItem(crEl('button', {
       e: {
         click: () => {

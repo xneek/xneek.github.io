@@ -18,9 +18,8 @@ export class RadioWidget extends Widget {
 
 
 
-    this.header = new WidgetHeader();
-    this.shadowRoot.prepend(this.header.getNode());
-    this.header.setTitle('Радио');
+
+    this.header.setTitle();
     this.header.addMenuItem(crEl('button', {
       e: {
         click: () => {

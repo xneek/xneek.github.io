@@ -28,9 +28,8 @@ export class CurrentWeatherWidget extends Widget {
 
   init() {
 
-    this.header = new WidgetHeader();
-    this.shadowRoot.prepend(this.header.getNode());
-    this.header.setTitle('Погода');
+
+    this.header.setTitle();
 
 
 

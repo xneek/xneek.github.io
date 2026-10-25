@@ -17,9 +17,7 @@ export class NotificationsWidget extends Widget {
     const addFormDialog = this.shadowRoot.getElementById("addFormDialog");
 
 
-    this.header = new WidgetHeader();
-    this.shadowRoot.prepend(this.header.getNode());
-    this.header.setTitle('Напоминания');
+    this.header.setTitle();
 
 
     const checkPermissions = () => {

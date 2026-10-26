@@ -25,7 +25,7 @@ class DDMenu {
         e: {
           click: e => e.currentTarget.hidePopover()
         }
-      }, ...menuEls);
+      }, ...menuEls.map(el => { el.classList.add('widget-menu-item'); return el }));
 
     this.container = crEl('span', { c: 'menu-main-item' });
 
@@ -79,6 +79,8 @@ export class WidgetHeader {
     if (!this.header.contains(this.aside)) this.header.append(this.aside);
     if (!this.menu) this.menu = new DDMenu(this.id, "•••")
     if (!this.aside.contains(this.menu.container)) this.aside.append(this.menu.container);
+
+    el.classList.add('widget-menu-item')
     this.menu.menu.append(el);
   }
 

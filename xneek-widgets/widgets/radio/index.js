@@ -1,3 +1,4 @@
+import { WidgetHeaderButton } from "../../components/widget-header-button/index.js";
 import { WidgetHeader } from "../../components/widget-header/index.js";
 import { Widget } from "../../widget.js";
 
@@ -20,17 +21,7 @@ export class RadioWidget extends Widget {
 
 
     this.header.setTitle();
-    this.header.addMenuItem(crEl('button', {
-      e: {
-        click: () => {
-          addOrEditRadio({
-            id: self.crypto.randomUUID(),
-            name: "",
-            url: "",
-          });
-        }
-      }
-    }, 'Добавить'));
+
 
 
     const playPauseBtn = crEl("button", {
@@ -96,36 +87,73 @@ export class RadioWidget extends Widget {
     };
 
     const render = async () => {
-      const list = this.storage.getValue("list") ?? [];
+
       radioBody.innerHTML = "";
 
-      radioBody.append(
-        crEl(
-          "div",
-          { c: "radio-select" },
-          crEl(
-            "select",
-            {
-              e: {
-                change: (e) => {
-                  const target = list.find((x) => x.id === e.target.value);
-                  this.storage.setValue("selectedRadio", target);
 
-                  renderSelected();
-                  radioAudio.play();
-                },
-              },
-            },
-            crEl('option', { value: '' }, ' -- '),
-            list.map((li) => {
-              return crEl("option", { value: li.id }, li.name);
-            }),
-          ),
-        ),
-      );
 
       renderSelected();
     };
+
+    const showSelectList = ({ onSelect } = {}) => {
+      const list = this.storage.getValue("list") ?? [];
+      const selected = this.storage.getValue("selectedRadio");
+
+      const listDialog = this.shadowRoot.getElementById("listDialog");
+      listDialog.innerHTML = '';
+      listDialog.append(crEl(
+        "div",
+        { c: "radio-select-modal" },
+        crEl('h5', {}, 'Список радиостанций'),
+        crEl('ul',
+          list.map((li) => {
+            return crEl("li", { value: li.id, selected: selected.id === li.id }, crEl('button', {
+              e: {
+                click: () => {
+
+                  this.storage.setValue("selectedRadio", li);
+
+                  onSelect?.(li);
+
+                  renderSelected();
+                  radioAudio.play();
+                  listDialog.close();
+                }
+              }
+            },
+              crEl('div',
+                crEl('strong', li.name),
+                crEl('small', li.url),
+              ), crEl('aside',
+                new WidgetHeaderButton('Edit', {
+                  e: {
+                    click: (e) => {
+                      e.stopPropagation();
+                      addOrEditRadio(li);
+                    }
+                  }
+                }).getNode()
+              )
+
+            ));
+          })
+        ),
+        crEl({ s: { marginTop: '12px' } }),
+        crEl('button', {
+          e: {
+            click: () => {
+              addOrEditRadio({
+                id: self.crypto.randomUUID(),
+                name: "",
+                url: "",
+              });
+              listDialog.close();
+            }
+          }
+        }, 'Добавить новую')
+      ));
+      listDialog.showModal();
+    }
 
     const addOrEditRadio = (data) => {
       addForm.elements.name.value = data.name;
@@ -163,6 +191,8 @@ export class RadioWidget extends Widget {
       }
       addDialog.close()
       render();
+
+      renderSelected();
     };
 
     addForm.onreset = () => addDialog.close()
@@ -175,8 +205,6 @@ export class RadioWidget extends Widget {
       radioAudio.volume = e.target.value / 100;
       this.storage.setValue("volume", e.target.value);
     };
-
-
 
 
     const selectOutDevice = async () => {
@@ -200,6 +228,9 @@ export class RadioWidget extends Widget {
           crEl("option", { value: d.deviceId }, d.label),
         );
       });
+      audioOutputDevices.onchange = async (e) => {
+        await radioAudio.setSinkId(e.target.value); // или audioElement.setSinkId(deviceId)
+      }
 
 
 
@@ -257,6 +288,25 @@ export class RadioWidget extends Widget {
         }
       }
     }, 'Выбрать устройство воспроизведения'));
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          showSelectList();
+        }
+      }
+    }, "Список радиостанций"));
+
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          addOrEditRadio({
+            id: self.crypto.randomUUID(),
+            name: "",
+            url: "",
+          });
+        }
+      }
+    }, 'Добавить'));
 
 
   }

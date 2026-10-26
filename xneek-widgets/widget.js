@@ -96,12 +96,7 @@ export class Widget extends HTMLElement {
             this.attrs = { ...this.attrs, ...up };
             this.init(this.shadowRoot);
 
-            sheet.insertRule(`
-    .widget {
-        order: ${up.order};
-    }
-`)
-          });
+          }, this.shadowRoot);
         }
       }
     }, 'Параметры виджета'));

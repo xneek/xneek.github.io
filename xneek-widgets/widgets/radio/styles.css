@@ -69,10 +69,18 @@
   margin-top: auto;
   display: flex;
   align-items: center;
+  padding: 0 var(--dimension2);
 
   input {
     flex-grow: 1;
   }
+}
+
+#radioOutput {
+  font-size: 0.5em;
+  text-align: center;
+  opacity: 0.8;
+  padding-bottom: var(--dimension2);
 }
 
 .play-pause-btn {
@@ -101,5 +109,60 @@
 
     border-right-width: 0.85rem;
     border-left-width: 0.85rem;
+  }
+}
+
+#listDialog {
+  border: 1px solid var(--border);
+
+  h5 {
+    margin: 0;
+    margin-bottom: var(--dimension2);
+    ;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      position: relative;
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: var(--dimension2);
+        width: 100%;
+        background: var(--bg);
+        border: none;
+        text-align: left;
+        padding: var(--dimension1) var(--dimension2);
+
+        border: 1px solid var(--border);
+
+        &:hover {
+          background: var(--surface);
+        }
+      }
+
+      strong {
+        display: block;
+      }
+
+      aside {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        opacity: 0;
+      }
+
+      &:hover {
+        aside {
+          opacity: 1;
+        }
+      }
+    }
   }
 }

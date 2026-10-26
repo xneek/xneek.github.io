@@ -1,8 +1,8 @@
 import { Storage } from "../widget.js";
 
-export const showWidgetParamsModal = ({ id, name, description }, cb) => {
+export const showWidgetParamsModal = ({ id, name, description }, cb, parent) => {
   const dialog = crEl('dialog');
-  document.body.append(dialog);
+  parent.append(dialog);
 
   const storage = new Storage(`widgets_common_${id}`);
   const curChanges = storage.getValue('changes');
@@ -31,9 +31,28 @@ export const showWidgetParamsModal = ({ id, name, description }, cb) => {
     crEl('p',
       crEl('label', {},
         'Индекс сортировки',
-        crEl('input', { type: 'number', name: 'order', value: curChanges?.order ?? '' })
+        crEl('input', {
+          type: 'number', name: 'order', value: curChanges?.order ?? '', oninput: (e) => {
+            document.getElementById(id).style.order = e.currentTarget.value;
+          }
+        })
       ),
     ),
+
+    crEl('button', {
+      type: 'button', s: { float: 'right' }, e: {
+        click: () => {
+          const selectedWidgetsStorage = new Storage('selectedWidgets');
+
+
+          const selectedWidgets = selectedWidgetsStorage.getValue('list') ?? [];
+
+          selectedWidgetsStorage.setValue('list', selectedWidgets.filter(x => x !== id));
+          location.reload()
+
+        }
+      }
+    }, 'Скрыть виджет'),
     crEl('input', { type: 'submit' })
   ))
 

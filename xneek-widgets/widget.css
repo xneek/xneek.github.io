@@ -97,6 +97,8 @@
     align-items: stretch;
 
     position-area: block-end span-inline-start;
+    box-shadow: 0 0 8px var(--border),
+    0 2px 4px var(--border);
 
     transition-property: translate,
     opacity,
@@ -130,7 +132,20 @@
 
     position-try: flip-inline flip-block;
     min-width: 100px;
-    border: 1px solid var(--gray);
+    border: 1px solid var(--border);
     border-radius: var(--dimension1);
+
+    .widget-menu-item {
+      background: var(--surface);
+      text-align: start;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: var(--dimension1) var(--dimension2);
+      cursor: pointer;
+
+      &:hover {
+        background: var(--bg);
+      }
+    }
   }
 }

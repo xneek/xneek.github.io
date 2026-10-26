@@ -16,7 +16,10 @@
   <script src="https://cdn.jsdelivr.net/npm/xneek-crel@2.4.0/dist/crel.min.js"></script>
   <script src="./main.js" type="module"></script>
   <main id="mainEl"></main>
-  <button id="themeBtn">theme</button>
+  <footer id="mainFooter">
+    <button id="themeBtn">День/Ночь</button>
+    <button id="addBtn">Добавить</button>
+  </footer>
   <script>
     themeBtn.onclick = () => {
       const nv = document.body.dataset.theme === 'dark' ? 'light' : 'dark';

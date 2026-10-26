@@ -1,0 +1,51 @@
+.todos {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+
+
+  #todosHeader {}
+
+  #todosFooter {
+    flex-shrink: 0
+  }
+
+  #todosBody {
+    flex-grow: 1;
+    box-sizing: border-box;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+
+
+  }
+
+  .todo-item {
+    padding: var(--dimension1) var(--dimension2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: var(--dimension2);
+
+    &.completed {
+      text-decoration: line-through;
+    }
+  }
+
+
+}
+
+.todo-add-form {
+  display: block;
+
+  input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

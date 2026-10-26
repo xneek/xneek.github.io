@@ -93,8 +93,7 @@ export class Widget extends HTMLElement {
       e: {
         click: (e) => {
           showWidgetParamsModal(this.attrs, (up) => {
-            this.attrs = { ...this.attrs, ...up };
-            this.init(this.shadowRoot);
+            location.reload()
 
           }, this.shadowRoot);
         }

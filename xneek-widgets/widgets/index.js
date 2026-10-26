@@ -53,5 +53,11 @@ export const widgetsResource = [
     id: "weather",
     name: "Погода",
     description: "Текущая погода и прогноз на 5 дней"
+  },
+
+  {
+    id: "todos",
+    name: "Список дел",
+    description: "Список дел "
   }
 ];

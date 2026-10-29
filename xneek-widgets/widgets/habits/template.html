@@ -1,0 +1,41 @@
+<div class="habits">
+  <div id="habitsBody"></div>
+</div>
+
+<dialog id="addFormDialog">
+  <form id="addForm">
+    <input type="hidden" name="id" />
+    <fieldset>
+      <legend>Основное</legend>
+
+      <div class="checkbox-input">
+        <label><input type="checkbox" name="isEnable" /><small>Включено</small></label>
+      </div>
+
+      <label>
+        <small>Название</small>
+        <input placeholder="Название" required name="name" />
+      </label>
+
+      <div class="checkbox-input">
+        <label class="repeat-list">
+          <label><input type="checkbox" name="day1" /><small>ПН</small></label>
+          <label><input type="checkbox" name="day2" /><small>ВТ</small></label>
+          <label><input type="checkbox" name="day3" /><small>СР</small></label>
+          <label><input type="checkbox" name="day4" /><small>ЧТ</small></label>
+          <label><input type="checkbox" name="day5" /><small>ПТ</small></label>
+          <label><input type="checkbox" name="day6" /><small>СБ</small></label>
+          <label><input type="checkbox" name="day0" /><small>ВС</small></label>
+        </label>
+      </div>
+
+      <div class="checkbox-input">
+        <label><small>Таймер</small>: <input type="checkbox" name="isTimer" />
+          <input type="number" min="1" max="3600" name="targetMinutes">
+        </label>
+      </div>
+    </fieldset>
+
+    <input type="submit" value="Сохранить" />
+  </form>
+</dialog>

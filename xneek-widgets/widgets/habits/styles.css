@@ -1,0 +1,119 @@
+.habits {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+
+  #habitsBody {
+    flex-grow: 1;
+    box-sizing: border-box;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .habits-list-item {
+    header {
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        padding: 0;
+        height: 10px;
+        line-height: 10px;
+        font-size: 10px;
+        visibility: hidden;
+      }
+
+      &:hover button {
+        visibility: visible;
+      }
+    }
+
+    padding: var(--dimension1) var(--dimension2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .habit-item {
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--dimension1);
+
+
+    .day {
+      text-transform: uppercase;
+      padding: var(--dimension1);
+      text-align: center;
+      line-height: 0.9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      aspect-ratio: 1;
+
+      small {
+        display: block;
+        font-size: 0.6em;
+        color: grey;
+      }
+
+      background: var(--bg);
+    }
+
+    .today {
+      background: var(--colors-success-surface)
+    }
+
+    .past {
+      color: var(--text);
+    }
+
+    .future {
+      color: green;
+    }
+
+    .weekend {
+      color: var(--accent);
+    }
+
+  }
+
+  .habits-header {
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+
+    padding: var(--dimension1) var(--dimension2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .habit-header {
+    .day {
+      min-height: auto;
+      font-size: 10px;
+
+      padding: var(--dimension1) 0;
+      aspect-ratio: unset;
+    }
+  }
+
+}
+
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  font-size: 0.6em;
+  color: var(--border);
+}

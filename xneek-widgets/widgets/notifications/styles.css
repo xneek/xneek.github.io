@@ -54,6 +54,7 @@
     margin: 0;
     padding: 4px 8px;
     width: 100%;
+    box-sizing: border-box;
 
     em {
       opacity: 0.5;

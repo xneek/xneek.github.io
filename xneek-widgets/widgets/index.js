@@ -59,5 +59,11 @@ export const widgetsResource = [
     id: "todos",
     name: "Список дел",
     description: "Список дел "
+  },
+
+  {
+    id: "habits",
+    name: "Привычки",
+    description: "Привычки"
   }
 ];

@@ -138,6 +138,23 @@ export class HabitsWidget extends Widget {
       );
     };
 
+    const changeOne = (id, date, patch) => {
+      const storedData = this.storage.getValue("list") ?? [];
+      const targetHabit = storedData.find((x) => x.id === id);
+      if (!targetHabit) return console.warn(`Not found ${id}`);
+
+      if (!targetHabit.datesMap) targetHabit.datesMap = {};
+      if (!targetHabit.datesMap[date]) targetHabit.datesMap[date] = { createdAt: new Date().toISOString() };
+
+      const up = { ...targetHabit.datesMap[date], ...patch, updatedAt: new Date().toISOString() };
+
+      console.log('saved', up)
+
+      targetHabit.datesMap[date] = up
+
+      this.storage.setValue("list", storedData.map(x => x.id === id ? { ...targetHabit } : x));
+    }
+
     const renderRow = (w, data) => {
       return crEl(
         "article", { c: 'habits-list-item' },
@@ -163,7 +180,40 @@ export class HabitsWidget extends Widget {
                   .filter(Boolean)
                   .join(" "),
               },
-              !data.isTimer && data[`day${x.date.getDay()}`] ? crEl('input', { type: 'checkbox', disabled: x.isFuture }) : null
+              !data.isTimer && data[`day${x.date.getDay()}`] ? crEl('input', {
+                checked: !!data?.datesMap?.[x.date.toISOString().substring(0, 10)]?.checked,
+                type: 'checkbox', disabled: x.isFuture, e: {
+                  change: (e) => {
+                    changeOne(data.id, x.date.toISOString().substring(0, 10), { checked: e.target.checked });
+                    renderWeek(lastRendered)
+                  }
+                }
+              }) : null,
+              data.isTimer && data[`day${x.date.getDay()}`] ? crEl('button', {
+                disabled: x.isFuture,
+                e: {
+                  click: (e) => {
+                    const el = e.target;
+                    if (!el.dataset.startDate) {
+                      const startDate = new Date();
+                      el.dataset.startDate = startDate.toISOString();
+                      setInterval(() => {
+                        el.textContent = (`${Math.round(+el.textContent + 1)}`)
+                      }, 1000)
+                      return;
+                    }
+
+                    changeOne(
+                      data.id,
+                      x.date.toISOString().substring(0, 10),
+                      {
+                        seconds: Math.round(data?.datesMap?.[x.date.toISOString().substring(0, 10)]?.seconds ?? 0) + ((new Date() - new Date(e.target.dataset.startDate)) / 1000)
+                      });
+                    e.target.dataset.startDate = null;
+                    renderWeek(lastRendered);
+                  }
+                }
+              }, '' + Math.round(data?.datesMap?.[x.date.toISOString().substring(0, 10)]?.seconds ?? '00')) : null
             ),
           ),
         ),
@@ -191,7 +241,7 @@ export class HabitsWidget extends Widget {
 
 
     this.header.addAsideItem(
-      new WidgetHeaderButton('>', {
+      new WidgetHeaderButton(' > ', {
         e: {
           click: () => {
             renderWeek(new Date(lastRendered.getTime() + 86400e3 * 7));
@@ -202,7 +252,7 @@ export class HabitsWidget extends Widget {
     )
 
     this.header.addAsideItem(new WidgetHeaderButton(
-      "<",
+      " < ",
       {
         e: {
           click: () => {
@@ -245,14 +295,14 @@ export class HabitsWidget extends Widget {
       };
       console.log(data);
 
-      const storedDate = this.storage.getValue("list") ?? [];
+      const storedData = this.storage.getValue("list") ?? [];
 
 
       const dataForSave = data.id.length
-        ? storedDate.map((x) =>
+        ? storedData.map((x) =>
           x.id === data.id ? data : { ...defaultData, ...x },
         )
-        : [...storedDate, { ...data, id: self.crypto.randomUUID() }];
+        : [...storedData, { ...data, id: self.crypto.randomUUID() }];
 
       this.storage.setValue("list", dataForSave);
 

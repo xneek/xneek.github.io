@@ -1,0 +1,21 @@
+<div class="countdowns">
+  <div id="countdownsBody"></div>
+</div>
+
+<dialog id="addFormDialog">
+  <form id="addForm">
+    <input type="hidden" name="id" />
+
+    <label>
+      <small>Название</small>
+      <input placeholder="Название" required name="name" />
+    </label>
+
+    <label>
+      <small>Дата</small>
+      <input placeholder="Дата" type="datetime-local" required name="date" />
+    </label>
+
+    <input type="submit" value="Сохранить" />
+  </form>
+</dialog>

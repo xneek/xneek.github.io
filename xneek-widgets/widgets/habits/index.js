@@ -264,6 +264,7 @@ export class HabitsWidget extends Widget {
     };
 
     renderWeek(lastRendered);
+    setInterval(() => renderWeek(lastRendered), 3600000);
   }
 }
 customElements.define("widget-habits", HabitsWidget);

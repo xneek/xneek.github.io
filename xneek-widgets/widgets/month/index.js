@@ -125,7 +125,7 @@ export class MonthCalendarWidget extends Widget {
         );
         cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
       }
-
+      yearDialog.innerHTML = '';
       yearDialog.append(content);
       yearDialog.showModal();
     };
@@ -203,6 +203,7 @@ export class MonthCalendarWidget extends Widget {
     calendarTable.innerHTML = "";
     calendarTable.append(renderMonth());
     renderCurHeader();
+    setInterval(renderCurHeader, 3600000);
   }
 }
 customElements.define("widget-month", MonthCalendarWidget);

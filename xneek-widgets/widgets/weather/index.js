@@ -261,9 +261,7 @@ export class CurrentWeatherWidget extends Widget {
       }
     }, 'Уточнить местоположение'));
 
-    setTimeout(() => {
-      update();
-    }, 30e3);
+    setInterval(update, 3600000)
   }
 
 

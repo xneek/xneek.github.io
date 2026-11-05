@@ -41,6 +41,10 @@
   align-items: center;
   flex-shrink: 0;
 
+  &:has(.widget-header-title) {
+    border-bottom: 1px solid var(--border);
+  }
+
   &:not(:has(.widget-header-title)) {
     position: absolute;
     right: var(--dimension1);

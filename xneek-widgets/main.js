@@ -2,6 +2,7 @@ import { Storage } from "./widget.js";
 import { widgetsResource } from "./widgets/index.js";
 
 const selectedWidgetsStorage = new Storage('selectedWidgets');
+const settingsStorage = new Storage('settings');
 
 const render = () => {
   const selectedWidgets = selectedWidgetsStorage.getValue('list') ?? [];
@@ -52,6 +53,65 @@ addBtn.onclick = () => {
         }
       }, w.name)
     }).filter(Boolean)
+  ))
+  document.body.append(dialog)
+  dialog.showModal();
+
+}
+
+(() => {
+
+  const storedSettings = settingsStorage.getValue('settings') ?? {};
+  !!(storedSettings.brand) && document.documentElement.style.setProperty('--brand', storedSettings.brand)
+  !!(storedSettings.accent) && document.documentElement.style.setProperty('--accent', storedSettings.accent)
+
+})()
+
+document.getElementById('settingsBtn').onclick = () => {
+
+  const dialog = crEl('dialog');
+  dialog.onclose = () => {
+    dialog.remove();
+  }
+
+  dialog.append(crEl('form', {
+    s: { display: 'flex', flexDirection: 'column', gap: 'var(--dimension2)' },
+    e: {
+      submit: e => {
+        e.preventDefault();
+
+      }
+    }
+  },
+    crEl('label', {},
+      crEl('small', 'Основной цвет'),
+      crEl('input', {
+        type: 'color',
+        value: window.getComputedStyle(document.documentElement).getPropertyValue('--brand'),
+        e: {
+          input: (e) => {
+            document.documentElement.style.setProperty('--brand', e.target.value);
+            const storedSettings = settingsStorage.getValue('settings') ?? {};
+            settingsStorage.setValue('settings', { ...storedSettings, brand: e.target.value })
+          }
+        }
+      })
+    ),
+    crEl('label', {},
+      crEl('small', 'Акцентный цвет'),
+      crEl('input', {
+        type: 'color',
+        value: window.getComputedStyle(document.documentElement).getPropertyValue('--accent'),
+        e: {
+          input: (e) => {
+            document.documentElement.style.setProperty('--accent', e.target.value);
+            const storedSettings = settingsStorage.getValue('accent') ?? {};
+            settingsStorage.setValue('settings', { ...storedSettings, accent: e.target.value })
+          }
+        }
+      })
+    )
+
   ))
   document.body.append(dialog)
   dialog.showModal();

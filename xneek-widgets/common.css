@@ -3,6 +3,7 @@
   --accent: #fe4542;
 
   --widget-width: 255px;
+  --widgets-gap: 2rem;
 
 
   /* Брендовые оттенки */
@@ -172,8 +173,6 @@
 *:before,
 *:after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html,
@@ -197,5 +196,34 @@ a {
   &:hover {
     color: var(--brand);
     text-decoration: underline;
+  }
+}
+
+dialog {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--dimension2);
+  padding: var(--dimension2);
+
+  &::backdrop {
+    opacity: 0.4;
+    background-image: linear-gradient(90deg,
+        #123E66,
+        #593273 41.07%,
+        #623D45 76.05%);
+  }
+}
+
+form {
+  label {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--dimension2);
+    gap: var(--dimension2);
+
+    small {
+      opacity: 0.8;
+      display: block;
+    }
   }
 }

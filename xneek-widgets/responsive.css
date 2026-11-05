@@ -1,0 +1,31 @@
+/* For Desktop View */
+@media screen and (min-width: 1024px) {
+  :root {
+    --widget-width: 255px;
+    --widgets-gap: 2rem;
+  }
+}
+
+/* For Tablet View */
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  :root {
+    --widget-width: 400px;
+    --widgets-gap: 1rem;
+  }
+}
+
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+  :root {
+    --widgets-gap: 2dvw;
+    --widget-width: 96dvw;
+  }
+}
+
+/* For Mobile Landscape View */
+@media screen and (max-device-width: 640px) and (orientation: landscape) {
+  :root {
+    --widget-width: 49dvw;
+    --widgets-gap: 0.5dvw;
+  }
+}

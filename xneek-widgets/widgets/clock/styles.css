@@ -125,7 +125,7 @@
     z-index: 5;
 
     &:after {
-      background-color: var(--amber, #fff);
+      background-color: var(--bg, #fff);
       border: 1cqi solid var(--arm-bg);
       border-radius: 50%;
       content: "";

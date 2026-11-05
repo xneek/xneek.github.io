@@ -31,7 +31,7 @@ export class NotificationsWidget extends Widget {
       Notification.requestPermission().then((permission) => {
         // set the button to shown or hidden, depending on what the user answers
         notificationsHeader.innerHTML =
-          permission === "granted" ? "Ok!" : "block";
+          permission === "granted" ? crEl('div', { s: { padding: '16px', textAlign: 'center' } }, 'Добавьте напоминания') : "block";
       });
     };
 

@@ -1,4 +1,3 @@
-import { WidgetHeader } from "../../components/widget-header/index.js";
 import { Widget } from "../../widget.js";
 
 export class AnalogClockWidget extends Widget {
@@ -6,10 +5,40 @@ export class AnalogClockWidget extends Widget {
     super(import.meta.url);
   }
 
+
+
+
   init() {
 
-    this.header.addMenuItem(crEl('button', {}, "ololo"));
+
+
+
     const app = this.shadowRoot.getElementById("app");
+    const topLabel = this.shadowRoot.getElementById("topLabel");
+    const bottomLabel = this.shadowRoot.getElementById("bottomLabel");
+
+    topLabel.textContent = this.storage.getValue("topLabel") ?? ''
+    bottomLabel.textContent = this.storage.getValue("bottomLabel") ?? ''
+
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          const v = prompt('надпись сверху', this.storage.getValue("topLabel") ?? '')
+          this.storage.setValue("topLabel", v);
+          topLabel.textContent = v ?? ''
+
+        }
+      }
+    }, "Задать надпись сверху"));
+    this.header.addMenuItem(crEl('button', {
+      e: {
+        click: () => {
+          const v = prompt('надпись снизу', this.storage.getValue("bottomLabel") ?? '')
+          this.storage.setValue("bottomLabel", v);
+          bottomLabel.textContent = v ?? ''
+        }
+      }
+    }, "Задать надпись снизу"));
 
     const time = new Date();
     const hour = -3600 * (time.getHours() % 12);
